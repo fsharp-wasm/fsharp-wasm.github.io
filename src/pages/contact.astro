@@ -1,0 +1,91 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+
+const metadata = {
+  title: 'Contact',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero ============================================================== -->
+  <HeroText
+    tagline="Get in touch"
+    title="We'd love to hear from you"
+    subtitle="Have a question about FSharp WasmGC? Found a bug? Want to contribute? Here is how to reach us."
+  />
+
+  <!-- Contact options =================================================== -->
+  <Features2
+    title="Ways to connect"
+    subtitle="FSharp WasmGC is a community project — GitHub is our primary communication channel."
+    items={[
+      {
+        title: 'GitHub Issues',
+        description:
+          'Found a bug or have a feature request? Open an issue on GitHub. We triage and respond to all issues.',
+        icon: 'tabler:bug',
+        callToAction: {
+          text: 'Open an issue',
+          href: 'https://github.com/fsharp-wasm/fsharp-wasm/issues',
+          target: '_blank',
+        },
+      },
+      {
+        title: 'GitHub Discussions',
+        description:
+          'Questions, ideas, and general discussion about F# + WasmGC. A great place to get help and share your use-cases.',
+        icon: 'tabler:messages',
+        callToAction: {
+          text: 'Join the discussion',
+          href: 'https://github.com/fsharp-wasm/fsharp-wasm/discussions',
+          target: '_blank',
+        },
+      },
+      {
+        title: 'Contributing',
+        description:
+          'Want to contribute? Read the contributing guide to understand our workflow, coding standards, and how to get a PR merged.',
+        icon: 'tabler:git-pull-request',
+        callToAction: {
+          text: 'Read contributing guide',
+          href: 'https://github.com/fsharp-wasm/fsharp-wasm/blob/main/CONTRIBUTING.md',
+          target: '_blank',
+        },
+      },
+      {
+        title: 'Security',
+        description:
+          'Found a security vulnerability? Please do not open a public issue. Read our security policy for responsible disclosure.',
+        icon: 'tabler:shield',
+        callToAction: {
+          text: 'Security policy',
+          href: 'https://github.com/fsharp-wasm/fsharp-wasm/blob/main/SECURITY.md',
+          target: '_blank',
+        },
+      },
+      {
+        title: 'Sponsorship',
+        description:
+          'FSharp WasmGC is sponsored by Amano Services. If your organization wants to support the project, reach out via GitHub.',
+        icon: 'tabler:heart',
+        callToAction: {
+          text: 'Visit amano.services',
+          href: 'https://www.amano.services/',
+          target: '_blank',
+        },
+      },
+      {
+        title: 'RSS Feed',
+        description:
+          'Stay up to date with the latest blog posts, release notes, and announcements via our RSS feed.',
+        icon: 'tabler:rss',
+        callToAction: {
+          text: 'Subscribe to RSS',
+          href: '/rss.xml',
+        },
+      },
+    ]}
+  />
+</Layout>

@@ -1,0 +1,28 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<div
+  class="dark text-muted text-sm bg-black dark:bg-transparent dark:border-b dark:border-slate-800 dark:text-slate-400 hidden md:flex items-center gap-2 overflow-hidden px-4 py-2 relative"
+>
+  <span
+    class="dark:bg-slate-700 bg-white/40 dark:text-slate-300 font-semibold px-1.5 py-0.5 text-xs rounded rtl:mr-0 rtl:ml-1.5 inline-block shrink-0"
+    >NEW</span
+  >
+  <a
+    href="https://github.com/fsharp-wasm/fsharp-wasm/releases"
+    class="text-muted hover:underline dark:text-slate-400 font-medium truncate"
+  >
+    Latest release notes on GitHub »
+  </a>
+  <a
+    target="_blank"
+    rel="noopener"
+    href="https://github.com/fsharp-wasm/fsharp-wasm"
+    title="Star us on GitHub"
+    class="ltr:ml-auto rtl:mr-auto shrink-0 inline-flex items-center gap-1.5 rounded-full border border-slate-600 dark:border-slate-600 px-3 py-0.5 text-xs font-medium text-slate-300 hover:border-violet-400 hover:text-violet-300 transition-colors"
+  >
+    <Icon name="tabler:brand-github" class="w-3.5 h-3.5" />
+    Star
+  </a>
+</div>

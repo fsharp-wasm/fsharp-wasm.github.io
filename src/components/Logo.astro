@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import logoImg from '~/assets/images/logo_transparent.png';
+---
+
+<span class="self-center flex items-center gap-2">
+  <Image
+    src={logoImg}
+    alt="FSharp WasmGC logo"
+    width={32}
+    height={32}
+    class="rounded"
+    loading="eager"
+  />
+  <span class="text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white">
+    <span class="text-primary">F#</span><span class="text-accent">⚡</span>WasmGC
+  </span>
+</span>

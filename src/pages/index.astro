@@ -1,0 +1,255 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Features from '~/components/widgets/Features.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import Content from '~/components/widgets/Content.astro';
+import BlogLatestPosts from '~/components/widgets/BlogLatestPosts.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'FSharp WasmGC — Compile F# to WebAssembly GC',
+  ignoreTitleTemplate: true,
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero ============================================================== -->
+  <Hero
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Get Started',
+        href: '/docs/getting-started',
+        icon: 'tabler:rocket',
+      },
+      {
+        text: 'View on GitHub',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:brand-github',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/hero-wasm-terminal.png',
+      alt: 'F# code compiling to WebAssembly in a terminal',
+    }}
+  >
+    <Fragment slot="title">
+      Write <span class="text-accent dark:text-white highlight">F#</span>.<br />
+      Run in <span class="text-accent dark:text-white highlight">WebAssembly.</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      <span class="hidden sm:inline">
+        <strong>FSharp WasmGC</strong> is a clean-room F# compiler backend targeting
+        <strong>WebAssembly GC</strong>.
+      </span>
+      Compile idiomatic F# to compact, efficient WasmGC modules — no JavaScript runtime required.
+    </Fragment>
+  </Hero>
+
+  <!-- Note ============================================================== -->
+  <Note title="Built on Fable · WasmGC MVP Compliant · MIT Licensed · Actively Developed" />
+
+  <!-- Features ========================================================== -->
+  <Features
+    id="features"
+    tagline="Why FSharp WasmGC?"
+    title="F# semantics, natively in WebAssembly"
+    subtitle="A complete compiler backend that maps F# constructs directly to WebAssembly GC types — no JavaScript shim, no boxing hacks, no runtime overhead."
+    items={[
+      {
+        title: 'Zero JavaScript Runtime',
+        description:
+          'Pure WasmGC output. Your F# code compiles to a self-contained Wasm module with no JavaScript glue code or runtime shim required.',
+        icon: 'tabler:bolt',
+      },
+      {
+        title: 'Full F# Semantics',
+        description:
+          'Pattern matching, discriminated unions, closures, tail calls — all compile correctly to native WasmGC constructs without compromise.',
+        icon: 'tabler:code',
+      },
+      {
+        title: 'WasmGC-Native Types',
+        description:
+          'F# records map to struct types. F# lists become linked structs. Closures become typed function references. Clean mapping, no overhead.',
+        icon: 'tabler:cube',
+      },
+      {
+        title: 'Fable Foundation',
+        description:
+          "Built on Fable's battle-tested F# parser and type-checker. We replace only the code generation backend — zero forking, full compatibility.",
+        icon: 'tabler:stack-2',
+      },
+      {
+        title: 'Component Model Ready',
+        description:
+          'Automatic WIT export generation. Compile F# to WasmGC components and link them at the Wasm level — no JS glue needed between modules.',
+        icon: 'tabler:plug',
+      },
+      {
+        title: 'MIT Licensed & Open Source',
+        description:
+          'Fully open. Community-driven development. Every sprint is documented in detail. Contributions welcome from day one.',
+        icon: 'tabler:heart-handshake',
+      },
+    ]}
+  />
+
+  <!-- How It Works — Steps ============================================== -->
+  <Steps
+    title="From F# to WebAssembly in four steps"
+    items={[
+      {
+        title: 'Step 1: <span class="font-medium">Install the .NET tool</span>',
+        description:
+          'Add the FSharp.WasmGc dotnet tool to your project. Requires .NET 10 SDK and a single command to install.',
+        icon: 'tabler:package',
+      },
+      {
+        title: 'Step 2: <span class="font-medium">Write idiomatic F#</span>',
+        description:
+          'Create an .fsproj and write standard F#. No special attributes or interop layer needed for core functionality.',
+        icon: 'tabler:pencil',
+      },
+      {
+        title: 'Step 3: <span class="font-medium">Compile to WasmGC</span>',
+        description:
+          'Run the compiler. Get a .wasm binary and a human-readable .wat text representation you can inspect and debug.',
+        icon: 'tabler:player-play',
+      },
+      {
+        title: 'Step 4: <span class="font-medium">Deploy anywhere</span>',
+        description:
+          'Embed in a browser, Node.js, Wasmtime, or any WasmGC-capable runtime. Use the Component Model to link Wasm modules together.',
+        icon: 'tabler:world',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/how-it-works.png',
+      alt: 'Diagram showing the F# to WasmGC compilation pipeline',
+    }}
+  />
+
+  <!-- Content: Architecture ============================================= -->
+  <Content
+    isReversed
+    tagline="Under the hood"
+    title="Clean architecture, inspectable output"
+    items={[
+      {
+        title: 'Fable type-checker + WasmGC code generation',
+        description:
+          'Fable provides the full F# AST and type information. FSharp WasmGC replaces the code generation backend only — zero forking of the type-checker.',
+      },
+      {
+        title: 'Human-readable WAT intermediate format',
+        description:
+          'The compiler emits WebAssembly Text Format (WAT) before assembling. You can inspect exactly what Wasm your F# produces.',
+      },
+      {
+        title: 'Multi-file .fsproj project support',
+        description:
+          'Compile entire projects with multiple F# source files and a growing Base Class Library (BCL) implemented in WasmGC itself.',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/architecture-diagram.png',
+      alt: 'Compiler architecture: F# source → Fable AST → WasmGC IR → WAT → .wasm',
+    }}
+  />
+
+  <!-- Content: Component Model ========================================== -->
+  <Content
+    isAfterContent
+    title="First-class Wasm Component Model"
+    items={[
+      {
+        title: 'Automatic WIT interface generation',
+        description:
+          'Export interfaces are derived from your F# module automatically. WIT files are generated from primitive-typed exports with no manual authoring.',
+      },
+      {
+        title: 'wasm-tools integration',
+        description:
+          'When wasm-tools is available, WasmGC components are assembled automatically. Link multiple F# modules at the Wasm level.',
+      },
+      {
+        title: 'Cross-module FFI via [<Import>] attribute',
+        description:
+          "Import functions from other Wasm components using F#'s [<Import(\"name\",\"module\")>] attribute — the same pattern as Fable.",
+      },
+    ]}
+    image={{
+      src: '~/assets/images/component-model.png',
+      alt: 'Diagram showing two F# WasmGC modules linked via the Component Model',
+    }}
+  />
+
+  <!-- Stats ============================================================= -->
+  <Stats
+    title="Solid foundation, proven results"
+    subtitle="FSharp WasmGC ships working, tested code at every sprint."
+    stats={[
+      { title: 'QuickTests passing', amount: '353' },
+      { title: 'Showcase tests', amount: '26' },
+      { title: 'Component link tests', amount: '22/22' },
+      { title: 'License', amount: 'MIT' },
+    ]}
+  />
+
+  <!-- Benchmarks teaser ================================================= -->
+  <CallToAction
+    title="Benchmarks — coming soon"
+    subtitle="Comprehensive performance benchmarks are in preparation — binary size, startup time, compute throughput, and memory pressure compared to other compile-to-Wasm approaches."
+    actions={[
+      {
+        variant: 'secondary',
+        text: 'Preview benchmark plan',
+        href: '/benchmarks',
+      },
+      {
+        variant: 'primary',
+        text: 'Read the roadmap',
+        href: '/docs/roadmap',
+      },
+    ]}
+  />
+
+  <!-- Blog Latest Posts ================================================= -->
+  <BlogLatestPosts
+    title="From the blog"
+    information="Deep dives, release notes, and tutorials on F# compiler internals, WasmGC design, and functional programming for the web platform."
+  />
+
+  <!-- Final CTA ========================================================= -->
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Read the docs',
+        href: '/docs',
+        icon: 'tabler:book',
+      },
+      {
+        text: 'Star on GitHub',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:star',
+      },
+    ]}
+  >
+    <Fragment slot="title">
+      Build the future of F# on the web
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      FSharp WasmGC is open source and actively developed. Contributions, issues, and discussions are all welcome on GitHub.
+    </Fragment>
+  </CallToAction>
+</Layout>

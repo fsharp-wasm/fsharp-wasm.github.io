@@ -1,0 +1,142 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Steps2 from '~/components/widgets/Steps2.astro';
+import Content from '~/components/widgets/Content.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'About',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero ============================================================== -->
+  <HeroText
+    tagline="About FSharp WasmGC"
+    title="Bringing F# to the WebAssembly era"
+    subtitle="FSharp WasmGC is a community project building a clean-room F# compiler backend for WebAssembly GC. We believe strongly typed functional programming and Wasm are a perfect match."
+  />
+
+  <!-- Why section ======================================================= -->
+  <Content
+    isReversed
+    items={[
+      {
+        title: 'Why F# + WasmGC?',
+        description:
+          'F# is one of the most elegant functional languages on the .NET platform. WebAssembly GC brings structured, garbage-collected memory to the browser. Together they enable safe, expressive, high-performance web applications — without a JavaScript runtime as an intermediary.',
+      },
+      {
+        title: 'Clean-room implementation',
+        description:
+          "FSharp WasmGC replaces only the code generation backend of Fable. The F# parser, type-checker, and optimizer remain untouched — giving us a battle-tested foundation with zero maintenance burden on the front-end.",
+      },
+      {
+        title: 'Open, transparent development',
+        description:
+          'Every sprint is documented with design rationale. Architecture decisions are published as markdown docs in the repository. The entire codebase is MIT licensed and welcoming of contributions.',
+      },
+    ]}
+    image={{
+      src: '~/assets/images/about-project.png',
+      alt: 'FSharp WasmGC project overview showing F# source and Wasm output',
+    }}
+  />
+
+  <!-- Values ============================================================ -->
+  <Features3
+    title="Our core values"
+    subtitle="We build this compiler the way we wish all compilers were built — with clarity, correctness, and the F# community in mind."
+    columns={3}
+    items={[
+      {
+        title: 'Correctness first',
+        description:
+          'Every feature is validated with comprehensive test suites. 353 QuickTests catch regressions at every commit. We do not ship broken code.',
+        icon: 'tabler:check',
+      },
+      {
+        title: 'F# idioms preserved',
+        description:
+          'Write idiomatic F# — pattern matching, computation expressions, discriminated unions — and get correct Wasm. No compromises on language fidelity.',
+        icon: 'tabler:code',
+      },
+      {
+        title: 'Transparency',
+        description:
+          'All design decisions are documented in detailed sprint notes and architecture documents in the repository. Nothing is hidden behind closed doors.',
+        icon: 'tabler:eye',
+      },
+      {
+        title: 'Community-driven',
+        description:
+          'The roadmap is public. Issues and discussions on GitHub drive priorities. We build what the community needs, not just what is easy.',
+        icon: 'tabler:users',
+      },
+      {
+        title: 'Standards compliant',
+        description:
+          'We target the WasmGC MVP specification. Our output is compatible with Chrome, Firefox, Node.js, Wasmtime, and any compliant WasmGC runtime.',
+        icon: 'tabler:certificate',
+      },
+      {
+        title: 'Minimal dependencies',
+        description:
+          'The compiler is written in F#. The BCL is F# compiled with our own backend. We eat our own cooking and trust our own output.',
+        icon: 'tabler:circle-check',
+      },
+    ]}
+  />
+
+  <!-- Roadmap =========================================================== -->
+  <Steps2
+    title="Project roadmap highlights"
+    subtitle="We develop in focused sprints with clear, documented goals. Here is where we have been and where we are going."
+    items={[
+      {
+        title: 'Sprints 1–9: Core foundation',
+        description:
+          'WasmGC type system, closures, discriminated unions, multi-file pipeline, List/Array/String BCL. 353 QuickTests green.',
+      },
+      {
+        title: 'Sprints 10–17: BCL & architecture',
+        description:
+          'Computation expression builder architecture, BCL project structure, Map/Set, List sort, Showcase app, Component Model, vtable design.',
+      },
+      {
+        title: 'Sprint 18+: Generics & optimization',
+        description:
+          'Fat-pointer vtable generics, monomorphization, inlining, dead-code elimination, full Wasm component linking.',
+      },
+      {
+        title: 'v1.0: Production-ready F# subset',
+        description:
+          'Complete BCL coverage for common patterns, full generics, benchmark suite, polished documentation, and a stable public API.',
+      },
+    ]}
+  />
+
+  <!-- Sponsor =========================================================== -->
+  <CallToAction
+    title="Proudly sponsored by Amano Services"
+    subtitle="Amano Services believes in open-source tools that push the boundary of what is possible on the web. Their sponsorship helps us dedicate focused time to FSharp WasmGC."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Visit amano.services',
+        href: 'https://www.amano.services/',
+        target: '_blank',
+        icon: 'tabler:external-link',
+      },
+      {
+        variant: 'secondary',
+        text: 'Contribute on GitHub',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:brand-github',
+      },
+    ]}
+  />
+</Layout>

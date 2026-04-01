@@ -1,0 +1,114 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Benchmarks',
+};
+---
+
+<Layout metadata={metadata}>
+  <!-- Hero ============================================================== -->
+  <HeroText
+    tagline="Performance"
+    title="Benchmarks — coming soon"
+    subtitle="We are preparing a comprehensive benchmark suite to measure the real-world performance of FSharp WasmGC compiled modules across a range of dimensions."
+  />
+
+  <!-- What we will measure ============================================= -->
+  <Features3
+    title="What we will measure"
+    subtitle="Our benchmark suite will cover the full picture — both compile-time and runtime characteristics, compared against JS/TS and other compile-to-Wasm languages."
+    columns={3}
+    items={[
+      {
+        title: 'Binary size',
+        description:
+          'Wasm module size for equivalent programs. Smaller binaries mean faster network transfer and faster instantiation.',
+        icon: 'tabler:file-zip',
+      },
+      {
+        title: 'Startup time',
+        description:
+          'Time to instantiate the module and make the first function call — in Chrome, Firefox, Node.js, and Wasmtime.',
+        icon: 'tabler:clock-bolt',
+      },
+      {
+        title: 'Compute throughput',
+        description:
+          'Arithmetic microbenchmarks, recursive algorithms, tree traversal, and functional workloads like map/filter/fold.',
+        icon: 'tabler:cpu',
+      },
+      {
+        title: 'Memory allocation',
+        description:
+          'GC pressure benchmarks measuring allocation rate, live set size, and collection behavior in WasmGC runtimes.',
+        icon: 'tabler:database',
+      },
+      {
+        title: 'String operations',
+        description:
+          'Real-world string processing workloads testing the efficiency of WasmGC i32-array string representation.',
+        icon: 'tabler:letter-case',
+      },
+      {
+        title: 'Compile time',
+        description:
+          'End-to-end time from F# source to ready-to-run .wasm binary, for projects ranging from single-file to multi-module.',
+        icon: 'tabler:terminal-2',
+      },
+    ]}
+  />
+
+  <!-- Comparison targets ============================================= -->
+  <Features3
+    title="Comparison targets"
+    subtitle="FSharp WasmGC output will be benchmarked against reference implementations in comparable technologies."
+    columns={2}
+    items={[
+      {
+        title: 'Fable → JavaScript',
+        description:
+          'The same F# code compiled by Fable to JavaScript — the closest apples-to-apples comparison for F# semantics.',
+        icon: 'tabler:brand-javascript',
+      },
+      {
+        title: 'Blazor WebAssembly',
+        description: "Microsoft's .NET-on-Wasm stack — a different approach with a much larger runtime footprint.",
+        icon: 'tabler:brand-windows',
+      },
+      {
+        title: 'Hand-written JavaScript',
+        description: 'Idiomatic JS implementations of the same algorithms — the baseline that Wasm needs to beat.',
+        icon: 'tabler:code',
+      },
+      {
+        title: 'Kotlin/Wasm',
+        description: "Kotlin's WasmGC backend — another typed functional language targeting the same runtime.",
+        icon: 'tabler:brand-kotlin',
+      },
+    ]}
+  />
+
+  <!-- CTA ============================================================= -->
+  <CallToAction
+    title="Want to help shape the benchmarks?"
+    subtitle="We welcome benchmark contributions, methodology proposals, and real-world workloads from the community. If you have a use-case you would like us to measure, open an issue."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Open an issue on GitHub',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm/issues',
+        target: '_blank',
+        icon: 'tabler:brand-github',
+      },
+      {
+        variant: 'secondary',
+        text: 'Read the roadmap',
+        href: '/docs/roadmap',
+      },
+    ]}
+  />
+</Layout>

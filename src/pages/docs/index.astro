@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const docs = await getCollection('docs');
+const sorted = docs.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const metadata = {
+  title: 'Documentation',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Docs"
+    title="FSharp WasmGC Documentation"
+    subtitle="Everything you need to compile F# to WebAssembly GC — from installation to compiler internals."
+  />
+
+  <Features3
+    title="Documentation guides"
+    subtitle="Each guide is self-contained and can be read independently. Start with Getting Started if you are new to the project."
+    columns={3}
+    items={sorted.map((doc) => ({
+      title: doc.data.title,
+      description: doc.data.description ?? '',
+      icon: 'tabler:file-text',
+      callToAction: {
+        text: 'Read →',
+        href: `/docs/${doc.id}`,
+      },
+    }))}
+  />
+
+  <CallToAction
+    title="Something missing?"
+    subtitle="Documentation is a work in progress. If you find gaps, open an issue on GitHub — or better yet, submit a pull request."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Open an issue',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm/issues',
+        target: '_blank',
+        icon: 'tabler:brand-github',
+      },
+    ]}
+  />
+</Layout>
