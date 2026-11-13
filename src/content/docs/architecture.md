@@ -126,7 +126,7 @@ Fable generates `Import` nodes (not `IdentExpr`) for calls to functions defined 
 
 ## BCL implementation
 
-The Base Class Library for WasmGC is implemented in F# and compiled with our own compiler (`fable-library-wasmgc/`). This means the BCL implementation validates the compiler itself — a virtuous cycle.
+The Base Class Library for WasmGC is implemented in F# and compiled with our own compiler (`FSharp.Wasm.Core`, the repository [fsharp-wasm-core](https://github.com/fsharp-wasm/fsharp-wasm-core)). This means the BCL implementation validates the compiler itself — a virtuous cycle.
 
 Current BCL modules:
 

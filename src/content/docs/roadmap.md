@@ -32,7 +32,7 @@ FSharp WasmGC is developed in focused sprints, each with documented goals and ou
 
 - Multi-file `.fsproj` pipeline
 - Cross-file import resolution via `KnownFuncsByPath`
-- BCL project structure (`fable-library-wasmgc/`)
+- BCL project structure (`FSharp.Wasm.Core`, its own repository: fsharp-wasm-core)
 - String operations — UTF-16 as `i32` arrays
 - Array operations — typed WasmGC arrays
 - 353 QuickTests passing
