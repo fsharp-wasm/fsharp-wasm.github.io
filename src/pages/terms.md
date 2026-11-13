@@ -17,7 +17,7 @@ FSharp WasmGC is an open-source compiler backend that compiles F# to WebAssembly
 
 ## 3. Open source license
 
-The FSharp WasmGC compiler and all associated tooling are released under the **MIT License**. You are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the software, subject to the MIT License terms included in the repository.
+The FSharp WasmGC compiler and all associated tooling are released under the **Apache License 2.0** (the forks of Fable and of the F# compiler that the backend is built on keep their MIT License). You are free to use, copy, modify and distribute the software, subject to the terms of the licence in the repository; the licence also grants the patent rights of the contributors for their contributions.
 
 The full license text is available at: [https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE)
 
