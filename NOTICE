@@ -1,0 +1,7 @@
+fsharp-wasm.github.io
+Copyright 2026 The fsharp-wasm contributors
+
+The content and code of this website that are ours are licensed under the Apache License, Version 2.0 (see LICENSE).
+
+The site is built on the AstroWind template (https://github.com/onwidget/astrowind), MIT License, Copyright (c) 2023 onWidget.
+The parts that come from it keep that licence; its text is in LICENSES/MIT-AstroWind.md.

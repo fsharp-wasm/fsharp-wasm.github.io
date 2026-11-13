@@ -71,7 +71,7 @@ export const footerData = {
         { text: 'Terms', href: getPermalink('/terms') },
         { text: 'Privacy Policy', href: getPermalink('/privacy') },
         {
-          text: 'MIT License',
+          text: 'Apache License 2.0',
           href: 'https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE',
           target: '_blank',
         },

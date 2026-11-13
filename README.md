@@ -114,12 +114,12 @@ For Docker-based deployment, see [docker-compose.yml](docker-compose.yml) and [n
 
 ## Attributions
 
-- Website template: [AstroWind](https://github.com/arthelokyo/astrowind) by [Arthelokyo](https://github.com/arthelokyo) — MIT License
-- Compiler foundation: [Fable](https://fable.io) — Apache 2.0 License
+- Website template: [AstroWind](https://github.com/arthelokyo/astrowind) by [Arthelokyo](https://github.com/arthelokyo) — MIT License (kept in `LICENSES/MIT-AstroWind.md`)
+- Compiler foundation: [Fable](https://fable.io) — MIT License
 - Sponsor: [Amano Services](https://www.amano.services/)
 
 ## License
 
-The website source code is MIT licensed. See [LICENSE.md](LICENSE.md).
+Our content and code are [Apache License 2.0](LICENSE) (see [NOTICE](NOTICE)); the parts that come from the AstroWind template keep its MIT License, [LICENSES/MIT-AstroWind.md](LICENSES/MIT-AstroWind.md).
 
-The FSharp WasmGC compiler (separate repository) is also MIT licensed: [https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE)
+The FSharp WasmGC compiler (separate repository) is Apache License 2.0 as well: [https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/LICENSE)
