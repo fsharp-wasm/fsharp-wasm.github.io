@@ -1,0 +1,149 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'F# on the edge',
+  description:
+    'Backend modules written in F#, compiled to WebAssembly GC, run on Cloudflare Workers, Vercel, Netlify, Deno, Bun and Node by one small host.',
+};
+
+// what runs in the test matrix, and how real it is — the same table as the fsharp-wasm-edge README
+const platforms = [
+  ['Node 24', 'the packaged adapter, as a process', "the platform's own runtime"],
+  ['Bun 1.4', 'the packaged adapter, as a process', "the platform's own runtime"],
+  ['Deno 2.9 / Deno Deploy', 'the packaged adapter, as a process', "the platform's own runtime"],
+  ['Cloudflare Workers', 'the Worker and the Durable Object on workerd', "the platform's runtime and its Durable Object storage"],
+  ['Vercel Edge Functions', 'the edge adapter in the Edge Runtime sandbox', 'an emulation; Vercel itself is not exercised'],
+  ['Vercel Functions (Node)', "the Node adapter's handlers, called in Node 24", 'the handler contract'],
+  ['Netlify Edge Functions', 'the edge adapter under Deno', "Netlify's edge runtime is Deno; its bundler is not exercised by the matrix"],
+  ['Netlify Functions', "the function's handler, called in Node 24", 'the handler contract'],
+];
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Backend"
+    title="F# on the edge — one module, many platforms"
+    subtitle="Backend modules written in F#, compiled to WebAssembly GC, run on Cloudflare Workers (with a Durable Object), Vercel, Netlify, Deno, Bun and Node: a small host, one adapter per platform, the same answers everywhere."
+    callToAction={{
+      variant: 'primary',
+      text: 'The host (edge)',
+      href: 'https://github.com/fsharp-wasm/fsharp-wasm-edge',
+      icon: 'tabler:brand-github',
+    }}
+    callToAction2={{
+      variant: 'secondary',
+      text: 'The modules (backend)',
+      href: 'https://github.com/fsharp-wasm/fsharp-wasm-backend',
+      icon: 'tabler:brand-github',
+    }}
+  />
+
+  <WidgetWrapper id="status">
+    <div class="max-w-3xl mx-auto rounded-md border-l-4 border-amber-500 bg-amber-50 dark:bg-slate-800 p-5">
+      <h2 class="text-xl font-bold mb-2">Status: not deployed yet</h2>
+      <p class="text-muted">
+        There is no live URL to open yet, and we would rather say so than show a screenshot. In our test matrix the
+        same module answers identically on every platform below. The first deployments (Cloudflare first, then Vercel
+        and Netlify) are the next step, and the live <strong>Ghost Todo</strong> will be linked here as soon as an address answers.
+        Until then, run it yourself from the repository: <code>npm ci &amp;&amp; node build/package.mjs &amp;&amp; node dist/platforms/node/index.mjs</code>.
+      </p>
+    </div>
+  </WidgetWrapper>
+
+  <Features3
+    tagline="What it is"
+    title="Write the server in F#, ship it as a small module"
+    columns={3}
+    items={[
+      {
+        title: 'One module',
+        description: 'Ghost Todo, the demo, is 47 KB of WebAssembly GC: a todo list whose every change is a binary patch that a client applies to a shadow copy.',
+        icon: 'tabler:package',
+      },
+      {
+        title: 'A small host',
+        description: 'The core turns a web-standard Request into a call of the module and back; each platform adds a few lines of adapter and its configuration.',
+        icon: 'tabler:plug-connected',
+      },
+      {
+        title: 'The same answers',
+        description: 'Twenty-six checks run on every platform and the transcripts are compared: unicode, patches, parallel requests, errors, CORS. A platform that answers differently is a finding.',
+        icon: 'tabler:equal',
+      },
+    ]}
+  />
+
+  <WidgetWrapper id="matrix">
+    <Headline tagline="What is verified" title="Eight targets, and how real each one is" subtitle="Runtime means the platform's own engine; emulation means a stand-in for it. None of them is deployed yet." />
+    <div class="max-w-5xl mx-auto overflow-x-auto">
+      <table class="w-full text-left text-sm border-collapse">
+        <caption class="sr-only">Platforms in the test matrix, what runs there and how real that is</caption>
+        <thead>
+          <tr class="border-b border-slate-300 dark:border-slate-600">
+            <th scope="col" class="py-2 pr-4">Platform</th>
+            <th scope="col" class="py-2 pr-4">What runs in the test</th>
+            <th scope="col" class="py-2">How real</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            platforms.map(([name, what, real]) => (
+              <tr class="border-b border-slate-200 dark:border-slate-700">
+                <th scope="row" class="py-2 pr-4 font-semibold">{name}</th>
+                <td class="py-2 pr-4 text-muted">{what}</td>
+                <td class="py-2 text-muted">{real}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </WidgetWrapper>
+
+  <Features3
+    tagline="Where it is going"
+    title="Planned, not done"
+    subtitle="We list what exists and what is intended apart."
+    columns={3}
+    items={[
+      {
+        title: 'Real deployments',
+        description: 'Cloudflare, Vercel and Netlify, checked by the same 26 checks against the live addresses, with the addresses published here.',
+        icon: 'tabler:cloud-upload',
+      },
+      {
+        title: 'WebAssembly components',
+        description: 'Modules described by WIT worlds and linked by the host. A first experiment shows a GC module can be a component; the compiler work is next.',
+        icon: 'tabler:link',
+      },
+      {
+        title: 'Accessible interfaces',
+        description: 'A typed F# DSL for the host, and a GUI layer that renders semantic, accessible HTML — not everything can be WebAssembly drawing pixels.',
+        icon: 'tabler:accessible',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Read the roadmap',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm-edge/blob/main/docs/roadmap.md',
+        target: '_blank',
+        icon: 'tabler:map',
+      },
+      {
+        text: 'Live demos',
+        href: '/demos',
+        icon: 'tabler:player-play',
+      },
+    ]}
+  />
+</Layout>
