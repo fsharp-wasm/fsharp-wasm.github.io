@@ -18,7 +18,8 @@ jobs:
           node-version: 22
           cache: 'npm'
       - name: Install dependencies
-        run: npm install
+        # @astrojs/tailwind 6 declares a peer range that excludes the Astro of this project; npm refuses without the flag
+        run: npm install --legacy-peer-deps
       - name: Build Astro
         run: npm run build
       - name: Upload artifact
