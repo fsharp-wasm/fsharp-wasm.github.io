@@ -13,50 +13,68 @@ const metadata = {
   <!-- Hero ============================================================== -->
   <HeroText
     tagline="Performance"
-    title="Benchmarks — coming soon"
-    subtitle="We are preparing a comprehensive benchmark suite to measure the real-world performance of FSharp WasmGC compiled modules across a range of dimensions."
+    title="Benchmarks — measured and public"
+    subtitle="Thirteen compute kernels in F# (compiled to WasmGC by fsharp-wasm) and in plain JavaScript, on Node, Deno, Bun and Chromium; the size of every compiled module; and the time to download and compile it on Wi-Fi, 4G and 3G."
+    callToAction={{
+      variant: 'primary',
+      text: 'See the results',
+      href: 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/benchmarks/',
+      icon: 'tabler:chart-bar',
+    }}
+    callToAction2={{
+      variant: 'secondary',
+      text: 'Run it in your browser',
+      href: 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos/bench/',
+      icon: 'tabler:player-play',
+    }}
   />
 
-  <!-- What we will measure ============================================= -->
+  <!-- What is measured ================================================= -->
   <Features3
-    title="What we will measure"
-    subtitle="Our benchmark suite will cover the full picture — both compile-time and runtime characteristics, compared against JS/TS and other compile-to-Wasm languages."
+    title="What is measured"
+    subtitle="One machine (a 4-vCPU virtual machine), recorded as it came out; the raw reports are published next to the tables. How to read them: docs/benchmarks.md in fsharp-wasm-runtime."
     columns={3}
     items={[
       {
-        title: 'Binary size',
+        title: 'Speed',
         description:
-          'Wasm module size for equivalent programs. Smaller binaries mean faster network transfer and faster instantiation.',
-        icon: 'tabler:file-zip',
-      },
-      {
-        title: 'Startup time',
-        description:
-          'Time to instantiate the module and make the first function call — in Chrome, Firefox, Node.js, and Wasmtime.',
-        icon: 'tabler:clock-bolt',
-      },
-      {
-        title: 'Compute throughput',
-        description:
-          'Arithmetic microbenchmarks, recursive algorithms, tree traversal, and functional workloads like map/filter/fold.',
+          'On V8 (Node, Deno, Chromium) the F# module is faster in 8–9 of 13 kernels; the geometric mean against JavaScript is 1.4–1.5× without the list pipeline the compiler fuses into one loop. On JavaScriptCore (Bun) it is 1.0×. Part of the V8 result is V8 inlining small functions: with its inliner off the mean drops from 1.40× to 1.22×.',
         icon: 'tabler:cpu',
       },
       {
-        title: 'Memory allocation',
+        title: 'Binary size',
         description:
-          'GC pressure benchmarks measuring allocation rate, live set size, and collection behavior in WasmGC runtimes.',
+          'Modules are 12–153 KB raw and 4–45 KB with brotli (27–37 % of the raw size). Only the two graphics modules, the widget editor and the scene gallery, are larger than 12 KB compressed. For the small demos the JavaScript glue weighs as much as the module.',
+        icon: 'tabler:file-zip',
+      },
+      {
+        title: 'Network',
+        description:
+          'Latency, not size, dominates the small modules: a 7 KB module takes 0.40 s on 3G, 0.30 s of it the round trip. The widget editor needs 0.89 s on 3G with gzip (1.89 s without). GitHub Pages sends gzip, not brotli. Emulated network; a button measures your own line.',
+        icon: 'tabler:clock-bolt',
+      },
+    ]}
+  />
+
+  <!-- What is not measured yet ======================================== -->
+  <Features3
+    title="Not measured yet"
+    subtitle="Planned, not done: we publish what exists."
+    columns={3}
+    items={[
+      {
+        title: 'Startup of whole applications',
+        description: 'Only module size, download and compile time are recorded, not the time to a first interaction of a page.',
+        icon: 'tabler:clock',
+      },
+      {
+        title: 'Memory and GC',
+        description: 'No peak heap or pause measurements yet; the binary-trees kernel shows throughput only.',
         icon: 'tabler:database',
       },
       {
-        title: 'String operations',
-        description:
-          'Real-world string processing workloads testing the efficiency of WasmGC i32-array string representation.',
-        icon: 'tabler:letter-case',
-      },
-      {
-        title: 'Compile time',
-        description:
-          'End-to-end time from F# source to ready-to-run .wasm binary, for projects ranging from single-file to multi-module.',
+        title: 'Compile time and other engines',
+        description: 'End-to-end compile time of the compiler, and Firefox and Safari, are not measured.',
         icon: 'tabler:terminal-2',
       },
     ]}
@@ -65,7 +83,7 @@ const metadata = {
   <!-- Comparison targets ============================================= -->
   <Features3
     title="Comparison targets"
-    subtitle="FSharp WasmGC output will be benchmarked against reference implementations in comparable technologies."
+    subtitle="Hand-written JavaScript is measured today. The others are planned: the same programs in comparable technologies."
     columns={2}
     items={[
       {
