@@ -1,0 +1,169 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Live demos',
+  description:
+    'Every demo runs live in your browser: F# compiled to WebAssembly GC, from a counter to a visual widget editor.',
+};
+
+const base = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos';
+const open = (name: string) => ({ text: 'Open the demo', href: `${base}/${name}/`, icon: 'tabler:player-play' });
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Try it"
+    title="Live demos — F# in your browser"
+    subtitle="Every demo is F# compiled to WebAssembly GC by fsharp-wasm and served from this site. Nothing to install: open one."
+    callToAction={{
+      variant: 'primary',
+      text: 'All demos',
+      href: 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/',
+      icon: 'tabler:apps',
+    }}
+    callToAction2={{
+      variant: 'secondary',
+      text: 'Run the benchmark',
+      href: `${base}/bench/`,
+      icon: 'tabler:chart-bar',
+    }}
+  />
+
+  <Features3
+    tagline="Applications"
+    title="Interfaces written in F#"
+    subtitle="The model, the update and the view are F#; the page is real HTML."
+    columns={2}
+    items={[
+      {
+        title: 'Counter',
+        description: 'Classic increment / decrement counter: model, update and view in F# (Elmish MVU).',
+        icon: 'tabler:plus-minus',
+        callToAction: open('counter'),
+      },
+      {
+        title: 'Todo list',
+        description: 'Add, complete and remove todos: the full model-update-view cycle in F#.',
+        icon: 'tabler:checklist',
+        callToAction: open('todo'),
+      },
+      {
+        title: 'Full dashboard',
+        description: 'The counter, the todo list, a canvas, a message bus and storage in one tabbed layout.',
+        icon: 'tabler:layout-dashboard',
+        callToAction: open('full-dashboard'),
+      },
+      {
+        title: 'Web component',
+        description: 'A custom element, <code>&lt;fs-counter&gt;</code>, defined entirely in F#: embed it anywhere.',
+        icon: 'tabler:components',
+        callToAction: open('web-component'),
+      },
+    ]}
+  />
+
+  <Features3
+    tagline="The platform"
+    title="Browser APIs from F#"
+    subtitle="Typed bindings, no JavaScript application code."
+    columns={2}
+    items={[
+      {
+        title: 'IndexedDB CRUD',
+        description: 'Create, read, update and delete records in IndexedDB, wired from F#.',
+        icon: 'tabler:database',
+        callToAction: open('indexeddb-crud'),
+      },
+      {
+        title: 'Realtime pub/sub',
+        description: 'A message bus over a BroadcastChannel: open the page in two tabs and watch messages cross.',
+        icon: 'tabler:broadcast',
+        callToAction: open('realtime-pubsub'),
+      },
+      {
+        title: 'Worker actor',
+        description: 'An actor running inside a Web Worker; the main thread sends messages and gets replies, all in F#.',
+        icon: 'tabler:cpu',
+        callToAction: open('worker-actor'),
+      },
+      {
+        title: 'WebGPU basics',
+        description: 'A GPU compute pipeline bootstrapped from F#. Needs a browser with WebGPU.',
+        icon: 'tabler:brand-speedtest',
+        callToAction: open('webgpu-basic'),
+      },
+    ]}
+  />
+
+  <Features3
+    tagline="Graphics"
+    title="Drawn by the module"
+    subtitle="These three draw pixels onto a canvas, so they are visual demos, not accessible interfaces. A GUI layer that renders real, accessible HTML is on the roadmap."
+    columns={3}
+    items={[
+      {
+        title: 'Mandelbrot',
+        description: 'Escape-time calculation in F#; every calculation is a native WebAssembly GC call.',
+        icon: 'tabler:math-function',
+        callToAction: open('canvas-mandelbrot'),
+      },
+      {
+        title: 'Scene gallery',
+        description: 'Thirteen scenes of the FSharp.Graphics library: shapes, gradients, layout, text, animation, interaction.',
+        icon: 'tabler:photo',
+        callToAction: open('graphics-gallery'),
+      },
+      {
+        title: 'Widget editor',
+        description: 'A visual editor for widget layouts, itself written in F# and drawn by the module.',
+        icon: 'tabler:layout-grid',
+        callToAction: open('widget-editor'),
+      },
+    ]}
+  />
+
+  <Features3
+    tagline="Before you start"
+    title="What your browser needs"
+    subtitle="WebAssembly GC: Chrome and Edge 119 or later, Firefox 120 or later, Safari 18.2 or later. If a demo stays empty, that is the first thing to check — and tell us which browser it was."
+    columns={3}
+    items={[
+      {
+        title: 'Measured, not claimed',
+        description: 'The benchmark runs the same thirteen kernels in F# and in JavaScript in your browser: <a href="/benchmarks">results and method</a>.',
+        icon: 'tabler:chart-bar',
+      },
+      {
+        title: 'The backend',
+        description: 'The same F# runs on a server too: <a href="/backend">F# on the edge</a>, with an honest status.',
+        icon: 'tabler:server',
+      },
+      {
+        title: 'Source',
+        description: 'Every demo is in <a href="https://github.com/fsharp-wasm/fsharp-wasm-runtime/tree/main/demos">fsharp-wasm-runtime</a>.',
+        icon: 'tabler:brand-github',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Get started',
+        href: '/docs/getting-started',
+        icon: 'tabler:rocket',
+      },
+      {
+        text: 'fsharp-wasm-runtime on GitHub',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm-runtime',
+        target: '_blank',
+        icon: 'tabler:brand-github',
+      },
+    ]}
+  />
+</Layout>

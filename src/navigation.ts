@@ -11,6 +11,14 @@ export const headerData = {
       href: getBlogPermalink(),
     },
     {
+      text: 'Demos',
+      href: getPermalink('/demos'),
+    },
+    {
+      text: 'Backend',
+      href: getPermalink('/backend'),
+    },
+    {
       text: 'Benchmarks',
       href: getPermalink('/benchmarks'),
     },
@@ -38,6 +46,8 @@ export const footerData = {
         { text: 'Getting Started', href: getPermalink('/docs/getting-started') },
         { text: 'Architecture', href: getPermalink('/docs/architecture') },
         { text: 'Roadmap', href: getPermalink('/docs/roadmap') },
+        { text: 'Live demos', href: getPermalink('/demos') },
+        { text: 'Backend on the edge', href: getPermalink('/backend') },
         { text: 'Benchmarks', href: getPermalink('/benchmarks') },
       ],
     },
