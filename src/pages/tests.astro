@@ -41,7 +41,7 @@ const suiteCount = (s: { count?: number; workload?: string }) =>
   <Stats
     stats={[
       { title: 'named tests and checks', amount: fmt(totals.tests), icon: 'tabler:checklist' },
-      { title: 'suites in', amount: `${totals.suites}`, icon: 'tabler:list-details' },
+      { title: 'test suites', amount: `${totals.suites}`, icon: 'tabler:list-details' },
       { title: 'repositories', amount: `${totals.repos}`, icon: 'tabler:brand-github' },
       { title: 'generated calls, .NET against wasm: 0 disagreements', amount: '183 012', icon: 'tabler:equal' },
     ]}
