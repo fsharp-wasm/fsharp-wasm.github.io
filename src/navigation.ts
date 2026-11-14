@@ -11,16 +11,14 @@ export const headerData = {
       href: getBlogPermalink(),
     },
     {
-      text: 'Demos',
-      href: getPermalink('/demos'),
-    },
-    {
-      text: 'Backend',
-      href: getPermalink('/backend'),
-    },
-    {
-      text: 'Benchmarks',
-      href: getPermalink('/benchmarks'),
+      text: 'Explore',
+      links: [
+        { text: 'Live demos', href: getPermalink('/demos') },
+        { text: 'Examples', href: getPermalink('/examples') },
+        { text: 'Benchmarks', href: getPermalink('/benchmarks') },
+        { text: 'Tests', href: getPermalink('/tests') },
+        { text: 'Backend on the edge', href: getPermalink('/backend') },
+      ],
     },
     {
       text: 'About',
@@ -47,8 +45,10 @@ export const footerData = {
         { text: 'Architecture', href: getPermalink('/docs/architecture') },
         { text: 'Roadmap', href: getPermalink('/docs/roadmap') },
         { text: 'Live demos', href: getPermalink('/demos') },
-        { text: 'Backend on the edge', href: getPermalink('/backend') },
+        { text: 'Examples', href: getPermalink('/examples') },
         { text: 'Benchmarks', href: getPermalink('/benchmarks') },
+        { text: 'Tests', href: getPermalink('/tests') },
+        { text: 'Backend on the edge', href: getPermalink('/backend') },
       ],
     },
     {

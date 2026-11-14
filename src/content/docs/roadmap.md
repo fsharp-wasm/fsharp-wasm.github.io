@@ -1,6 +1,6 @@
 ---
 title: Roadmap
-description: The FSharp WasmGC development roadmap — where we have been and where we are going.
+description: Where fsharp-wasm is, and what comes next — in order, with the reasons.
 order: 3
 tags:
   - roadmap
@@ -9,113 +9,34 @@ tags:
 
 # Roadmap
 
-FSharp WasmGC is developed in focused sprints, each with documented goals and outcomes. This page summarises the major milestones — past, present, and future.
+The roadmap is ordered, not dated: this is an open-source project and timing depends on contributors and priorities. The rule behind the order is that **what is proven runs first, and new technology comes after the thing it builds on works.** Everything listed under "Next" is planned, not done.
 
-## Completed
+## Where we are
 
-### Sprints 1–3: Core WasmGC infrastructure
+Recorded on 2026-11-14 (see [tests](/tests), [demos](/demos), [benchmarks](/benchmarks)):
 
-- WasmGC AST types (`WType`, `WExpr`, `WFunc`, `WModule`)
-- WAT emitter — human-readable text output
-- Basic arithmetic, let bindings, conditionals
-- `wasm-tools` integration (binary encoding + validation)
+- **A compiler** from F# to WebAssembly GC with a WAT printer and a binary encoder, validated by `wasm-tools`; 656 regression tests, and a differential run against .NET of 183 012 calls without a disagreement.
+- **Speed and size, measured**: on V8 the F# module is faster than hand-written JavaScript in 9–11 of 13 kernels (geometric mean 1.45–1.58× without the one fused kernel); 1.03× on JavaScriptCore; whole demo applications are 12–153 KB.
+- **Twelve live demos** and a benchmark you can run in your browser.
+- **A server module** in F# (Ghost Todo, 47 KB) that gives identical answers on eight test targets: Node, Bun, Deno, Cloudflare Workers with a Durable Object, and the Vercel and Netlify handlers.
+- **A graphics stack, text shaping and a visual widget editor** written in F# (281 + 223 tests).
+- Known gaps in the language are listed, with the programs that show them, on the [status page](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/docs/STATUS.md).
 
-### Sprints 4–6: F# semantics
+## Next, in order
 
-- Closures via typed struct + funcref pairs
-- Discriminated unions — struct type hierarchies
-- Pattern matching compilations via `ref.test` / `ref.cast`
-- F# lists — linked WasmGC struct chains
-- Tail call support
+1. **Real deployments.** The host and the deploy workflow are written and tested against local servers; nothing is deployed to Cloudflare, Vercel or Netlify yet. The first deployment is the proof that production runtimes accept a WebAssembly GC module, and a public address anyone can open.
+2. **WebAssembly components.** Modules described by WIT worlds, linked by a small host. A GC module can be a component if the adapters of the canonical ABI are emitted into the module itself; experiments show it works for strings and what it costs. Next: lists, records and the worlds for the server module.
+3. **A typed F# DSL for the host** — routes, stores, platform settings — usable from Fable projects.
+4. **An accessible GUI layer.** Not everything can be WebAssembly drawing pixels: what people read and operate has to be semantic HTML with keyboard and screen-reader support, themeable with a plain CSS framework. The canvas graphics stay for drawing and editors. Automated accessibility checks come with it.
+5. **Tests that run everywhere.** Two compiler suites do not run at present (one does not compile, one has an outdated runner); the browser tests run in Chromium only. Both get fixed and Firefox and Safari get covered.
+6. **A new compiler release.** The latest is from April 2026 and predates most of this work; repositories that depend on the compiler should take a release binary instead of a submodule.
+7. **Language and library gaps** — stepped ranges, array slices, a few `System.Array` methods, `sprintf "%A"`, `async` / JSPI.
+8. **Independence.** Fewer dependencies on .NET's standard libraries and third-party packages: our own base library and our own graphics and text stack.
 
-### Sprints 7–9: Multi-file & BCL foundation
+## How we got here
 
-- Multi-file `.fsproj` pipeline
-- Cross-file import resolution via `KnownFuncsByPath`
-- BCL project structure (`FSharp.Wasm.Core`, its own repository: fsharp-wasm-core)
-- String operations — UTF-16 as `i32` arrays
-- Array operations — typed WasmGC arrays
-- 353 QuickTests passing
+The compiler began as a back end for Fable that emitted WebAssembly Text, grew a binary encoder, closures, unions, pattern matching, collections and strings on the GC heap, the host boundary with two string conventions, a base library of its own, a Component Model experiment, an optimiser, and finally the hosts: the browser runtime and the edge platforms.
 
-### Sprints 10–12: CE builder & architecture
+## Help shape it
 
-- Custom computation expression builder (`wasm { }`)
-- `wasmIf` with correct type inference (diverging branch handling)
-- Loop helpers: `whileLoop`, `countLoop`, `loopWithResult`
-- Subfolder source layout (`Runtime/`, `Transforms/`, `Emit/`)
-
-### Sprints 13–15: Component Model
-
-- WIT file generation from F# primitive exports
-- `wasm-tools` integration for component assembly
-- Component linking examples (`examples/component-linking/`)
-- Cross-module `[<Import>]` FFI — 22/22 linking tests pass
-
-### Sprints 16–17: Collections & Showcase
-
-- `Map<'K,'V>` — AVL tree implementation in WasmGC F#
-- `List.sortBy` / `List.sortByDescending`
-- `Array.toList`, `List.ofArray`
-- Showcase application — 26/26 Showcase tests pass
-- Vtable design document for generics
-
----
-
-## In progress
-
-### Sprint 18: Generics foundation
-
-- Fat-pointer vtable strategy for `'T` type parameters
-- Interface dispatch tables
-- Monomorphization for value-type generics
-
----
-
-## Planned
-
-### Sprint 19–20: Generics completion
-
-- Full `List<'T>`, `Array<'T>`, `Option<'T>` with type parameters
-- Generic functions with type constraints
-- `IComparable<'T>` dispatch for collections
-
-### Sprint 21–22: BCL expansion
-
-- `String`: split, trim, format, interpolation
-- `Seq<'T>` / `IEnumerable<'T>` via lazy lists
-- `Result<'T,'E>` standard operators
-- `Option<'T>` standard operators
-- `Dictionary<'K,'V>`, `HashSet<'T>`
-
-### Sprint 23–24: Optimization
-
-- Dead-code elimination (function-level)
-- Constant folding and propagation
-- Inlining of single-use functions
-- Wasm module size benchmarks
-
-### Sprint 25: Developer experience
-
-- Source maps (F# → WAT line mapping)
-- Error messages with F# source locations
-- `--watch` mode for iterative development
-
----
-
-## v1.0 goals
-
-A `v1.0` release requires:
-
-- [ ] Full generics support (List, Array, Map, Set, Option, Result)
-- [ ] BCL coverage sufficient for real applications
-- [ ] Wasm binary size competitive with equivalent JS/TS output
-- [ ] Stable public API (compiler flags, output format)
-- [ ] Published benchmark suite
-- [ ] Production-quality documentation
-- [ ] At least one real-world application built with FSharp WasmGC
-
----
-
-## Contributing to the roadmap
-
-The roadmap is community-driven. If you have a use-case or feature that is important to you, open an [issue on GitHub](https://github.com/fsharp-wasm/fsharp-wasm/issues) or start a [discussion](https://github.com/fsharp-wasm/fsharp-wasm/discussions). We read everything.
+Good places to start: a program that does not compile (an [issue](https://github.com/fsharp-wasm/fsharp-wasm/issues) with the F# source is the best bug report — it becomes a test), a benchmark we should add, a platform we should run on, documentation.

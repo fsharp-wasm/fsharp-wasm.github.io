@@ -1,128 +1,108 @@
 ---
 title: Getting Started
-description: Install FSharp WasmGC and compile your first F# project to WebAssembly GC in five minutes.
+description: Compile your first F# program to WebAssembly GC and run it — every step below was run as written.
 order: 1
 tags:
   - getting-started
-  - installation
+  - tutorial
 ---
 
-# Getting Started
+# Getting started
 
-FSharp WasmGC compiles F# source code to [WebAssembly GC](https://github.com/WebAssembly/gc) — a modern, typed extension to WebAssembly. This guide gets you from zero to a running `.wasm` file.
+This page takes you from nothing to an F# function running as WebAssembly GC on Node. The steps were run as written on 2026-11-14.
 
-## Prerequisites
+## What you need
 
-| Tool                                                         | Version | Purpose                                       |
-| ------------------------------------------------------------ | ------- | --------------------------------------------- |
-| [.NET SDK](https://dotnet.microsoft.com/download)            | 10.0+   | Build and run the compiler                    |
-| [Node.js](https://nodejs.org/)                               | 22+     | Run `.wasm` output in tests                   |
-| [wasm-tools](https://github.com/bytecodealliance/wasm-tools) | 1.245+  | Validate `.wasm` binaries and Component Model |
+- the **.NET 10 SDK** (the compiler runs on .NET),
+- **Node.js 22 or later** to run the result (any engine with WebAssembly GC works: Chrome and Edge 119+, Firefox 120+, Safari 18.2+),
+- [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) to validate the output and for the Component Model (optional).
 
-Install wasm-tools via Cargo (Rust):
+## 1. Get the compiler
 
-```bash
-cargo install wasm-tools
-```
-
-Or grab a prebuilt binary from the [releases page](https://github.com/bytecodealliance/wasm-tools/releases).
-
-> **Note:** wasm-tools is optional — the compiler works without it, but the test harness uses it for binary validation and Component Model assembly.
-
-## Installation
-
-FSharp WasmGC is a .NET tool. Install it globally or as a project-local tool:
+**From source** — this is the current compiler:
 
 ```bash
-# Global install (available anywhere)
-dotnet tool install -g FSharp.WasmGc
+git clone https://github.com/fsharp-wasm/fsharp-wasm.git
+cd fsharp-wasm
+git submodule update --init --depth 1 vendor/Fable vendor/fsharp core
 
-# Project-local install
-dotnet new tool-manifest  # only needed once per repo
-dotnet tool install FSharp.WasmGc
+# the patched F# compiler the front end uses (once; a few minutes; it pins the 10.0.3xx SDK band)
+(cd vendor/fsharp && mkdir -p artifacts && ./build/build.sh -c Release)
+export FSHARP_COMPILER=$PWD/vendor/fsharp/artifacts/bin/fsc/Release/net10.0/fsc.dll
+
+dotnet build tools/FSharp.Wasm.Cli -c Release
 ```
 
-## Your first project
+**Or a release** — a self-contained binary for Linux, macOS (x64, arm64) and Windows with the F# base library beside it, from the
+[releases page](https://github.com/fsharp-wasm/fsharp-wasm/releases). The latest one, `v0.1.24-experimental`, is from April 2026 and predates most of the work described on this
+site; build from source for the current compiler.
 
-### 1. Create an F# console project
+## 2. Write a program
 
-```bash
-dotnet new console -lang F# -o hello-wasm
-cd hello-wasm
-```
-
-### 2. Write F#
-
-Edit `Program.fs`:
+`Hello.fs`:
 
 ```fsharp
-let greet (name: string) : string =
-    "Hello, " + name + "!"
+module Hello
 
-let add (a: int) (b: int) : int = a + b
+let fibonacci n =
+    let mutable a, b = 0, 1
+    for _ in 1..n do
+        let t = a + b
+        a <- b
+        b <- t
+    a
+
+let isPrime n =
+    if n < 2 then false
+    else
+        let mutable i = 2
+        let mutable result = true
+        while i * i <= n && result do
+            if n % i = 0 then result <- false
+            i <- i + 1
+        result
 ```
 
-### 3. Compile
+`Hello.fsproj`:
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Hello.fs" />
+  </ItemGroup>
+</Project>
+```
+
+## 3. Compile it
 
 ```bash
-dotnet fsharpwasmgc build hello-wasm.fsproj
+dotnet run -c Release --project tools/FSharp.Wasm.Cli -- path/to/Hello --outDir out
+# out/Hello.wasm   (419 bytes)
+# out/Hello.wat    (the same module as text: read it)
+# out/wit/         (the WIT world of its exports)
+wasm-tools validate out/Hello.wasm --features gc
 ```
 
-Output files:
+The compiler takes a project or a directory (`--outDir`, `--noCache`, `--verbose`, `--silent`). Public top-level functions become exports.
 
-- `output/hello_wasm.wasm` — the binary Wasm module
-- `output/hello_wasm.wat` — human-readable WebAssembly Text Format (great for debugging)
-
-### 4. Run
+## 4. Run it
 
 ```javascript
-// test.mjs
-const { instance } = await WebAssembly.instantiate(
-  await Blob([]).arrayBuffer() // replace with readFileSync('./output/hello_wasm.wasm')
-);
-
-console.log(instance.exports.add(1, 2)); // 3
+// run.mjs — node run.mjs
+import { readFileSync } from "node:fs";
+const { instance } = await WebAssembly.instantiate(readFileSync("out/Hello.wasm"), {});
+const { fibonacci, isPrime } = instance.exports;
+console.log(fibonacci(10), isPrime(97), isPrime(100));   // 55 1 0   (a bool is an i32)
 ```
 
-## Project structure conventions
+## Where to go next
 
-FSharp WasmGC compiles `.fsproj` files. Multi-file projects are supported:
-
-```
-my-project/
-  MyProject.fsproj
-  Types.fs          ← compiled first (ordered in .fsproj)
-  Functions.fs
-  Program.fs
-  output/
-    myproject.wasm
-    myproject.wat
-```
-
-Files are compiled in `.fsproj` order, matching the standard F# compilation order guarantee.
-
-## Cross-module imports
-
-To call functions from another Wasm module, use the `[<Import>]` attribute:
-
-```fsharp
-// Reference external Wasm exports
-[<Import("add", "math-module")>]
-let externalAdd (a: int) (b: int) : int = nativeOnly
-```
-
-At runtime, provide the import when instantiating:
-
-```javascript
-const imports = {
-  'math-module': mathModuleInstance.exports,
-};
-WebAssembly.instantiate(wasm, imports);
-```
-
-## Next steps
-
-- [Architecture](/docs/architecture) — how the compiler works inside
-- [Roadmap](/docs/roadmap) — what is coming next
-- [Blog](/blog) — tutorials and deep dives
-- [GitHub](https://github.com/fsharp-wasm/fsharp-wasm) — source code and issues
+- **See what is possible:** the [live demos](/demos) and the [examples](/examples) — a counter and a todo list, a Web Worker actor, a canvas scene gallery, a server module.
+- **Talk to the browser:** [fsharp-wasm-runtime](https://github.com/fsharp-wasm/fsharp-wasm-runtime) has typed bindings (`Browser.*`) and the Elmish-style runtime the demos use.
+- **Run on a server:** [fsharp-wasm-edge](https://github.com/fsharp-wasm/fsharp-wasm-edge) runs a module on Node, Bun, Deno, Cloudflare Workers, Vercel and Netlify ([backend](/backend)).
+- **Know what is covered:** the [tests](/tests) page lists every suite, and the [status page](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/docs/STATUS.md) lists the programs that do not compile yet.
+- **How it works:** [architecture](/docs/architecture).

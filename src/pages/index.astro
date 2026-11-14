@@ -14,6 +14,7 @@ const metadata = {
   title: 'FSharp WasmGC — Compile F# to WebAssembly GC',
   ignoreTitleTemplate: true,
 };
+import { totals, recordedOn } from '~/data/catalog';
 ---
 
 <Layout metadata={metadata}>
@@ -53,7 +54,7 @@ const metadata = {
         <strong>FSharp WasmGC</strong> is a clean-room F# compiler backend targeting
         <strong>WebAssembly GC</strong>.
       </span>
-      Compile idiomatic F# to compact, efficient WasmGC modules — no JavaScript runtime required.
+      Compile idiomatic F# to compact WasmGC modules — no garbage collector and no runtime library to ship.
     </Fragment>
   </Hero>
 
@@ -65,12 +66,12 @@ const metadata = {
     id="features"
     tagline="Why FSharp WasmGC?"
     title="F# semantics, natively in WebAssembly"
-    subtitle="A complete compiler backend that maps F# constructs directly to WebAssembly GC types — no JavaScript shim, no boxing hacks, no runtime overhead."
+    subtitle="A compiler backend that maps F# constructs directly to WebAssembly GC types — no boxing hacks, and the engine's own garbage collector instead of one in the binary."
     items={[
       {
-        title: 'Zero JavaScript Runtime',
+        title: 'Nothing to ship but your code',
         description:
-          'Pure WasmGC output. Your F# code compiles to a self-contained Wasm module with no JavaScript glue code or runtime shim required.',
+          'WasmGC output uses the engine\'s garbage collector, so no GC or runtime sits inside the binary: whole demo applications are 12–153 KB. What a module touches outside itself — the DOM, the network, storage — comes through imports that a small host provides.',
         icon: 'tabler:bolt',
       },
       {
@@ -88,7 +89,7 @@ const metadata = {
       {
         title: 'Fable Foundation',
         description:
-          "Built on Fable's battle-tested F# parser and type-checker. We replace only the code generation backend — zero forking, full compatibility.",
+          "Built on a fork of Fable's F# parser and type-checker (MIT). The code generation back end, the base library and the hosts are ours.",
         icon: 'tabler:stack-2',
       },
       {
@@ -111,9 +112,9 @@ const metadata = {
     title="From F# to WebAssembly in four steps"
     items={[
       {
-        title: 'Step 1: <span class="font-medium">Install the .NET tool</span>',
+        title: 'Step 1: <span class="font-medium">Get the compiler</span>',
         description:
-          'Add the FSharp.WasmGc dotnet tool to your project. Requires .NET 10 SDK and a single command to install.',
+          'Download a release (a self-contained binary with the F# base library beside it) or build from source. A .NET 10 SDK has to be on the PATH.',
         icon: 'tabler:package',
       },
       {
@@ -131,7 +132,7 @@ const metadata = {
       {
         title: 'Step 4: <span class="font-medium">Deploy anywhere</span>',
         description:
-          'Embed in a browser, Node.js, Wasmtime, or any WasmGC-capable runtime. Use the Component Model to link Wasm modules together.',
+          'Run it in a browser, Node, Deno or Bun, or on Cloudflare, Vercel and Netlify: hosts for those exist (see the demos and the backend page). Any WasmGC-capable runtime works.',
         icon: 'tabler:world',
       },
     ]}
@@ -148,9 +149,9 @@ const metadata = {
     title="Clean architecture, inspectable output"
     items={[
       {
-        title: 'Fable type-checker + WasmGC code generation',
+        title: 'Fable front end + WasmGC code generation',
         description:
-          'Fable provides the full F# AST and type information. FSharp WasmGC replaces the code generation backend only — zero forking of the type-checker.',
+          'A fork of Fable provides the F# AST and the type information. FSharp WasmGC replaces the code generation back end.',
       },
       {
         title: 'Human-readable WAT intermediate format',
@@ -177,7 +178,7 @@ const metadata = {
       {
         title: 'Automatic WIT interface generation',
         description:
-          'Export interfaces are derived from your F# module automatically. WIT files are generated from primitive-typed exports with no manual authoring.',
+          'WIT files are generated from your module\'s exports. Today that covers primitive types; strings and records need adapters in the module, which is the next step on the roadmap.',
       },
       {
         title: 'wasm-tools integration',
@@ -199,11 +200,11 @@ const metadata = {
   <!-- Stats ============================================================= -->
   <Stats
     title="Solid foundation, proven results"
-    subtitle="FSharp WasmGC ships working, tested code at every sprint."
+    subtitle={`Counted in a recorded run on ${recordedOn}: every suite, demo and benchmark is listed on the Tests, Demos and Benchmarks pages.`}
     stats={[
-      { title: 'QuickTests passing', amount: '353' },
-      { title: 'Showcase tests', amount: '26' },
-      { title: 'Component link tests', amount: '22/22' },
+      { title: 'named tests and checks', amount: totals.tests.toLocaleString('en-US').replace(/,/g, '\u202f') },
+      { title: 'live demos in your browser', amount: `${totals.demos}` },
+      { title: 'benchmark kernels, F# against JavaScript', amount: `${totals.kernels}` },
       { title: 'License', amount: 'Apache-2.0' },
     ]}
   />

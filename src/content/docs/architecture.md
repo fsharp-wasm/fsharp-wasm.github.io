@@ -1,6 +1,6 @@
 ---
 title: Architecture
-description: How the FSharp WasmGC compiler works — from F# source to WebAssembly GC binary.
+description: How the compiler turns F# into WebAssembly GC — the phases, the type mapping, the two string ABIs and the hosts.
 order: 2
 tags:
   - architecture
@@ -8,139 +8,65 @@ tags:
   - internals
 ---
 
-# Compiler Architecture
+# Architecture
 
-FSharp WasmGC is a code generation backend for [Fable](https://fable.io). It replaces Fable's JavaScript emitter with a WasmGC emitter — leaving the F# parsing, type-checking, and optimization pipeline untouched.
+fsharp-wasm is a code-generation back end for a **fork of [Fable](https://fable.io)** (the fork is MIT-licensed, like Fable). The F# front end — parsing and type checking — comes from there, through a patched F# compiler; everything from the Fable AST onward is ours.
 
-## Pipeline overview
+## The pipeline
 
-```
+```text
 F# source (.fs, .fsproj)
-         │
-         ▼
-  ┌─────────────┐
-  │   Fable      │  Parsing, type-checking, F# AST → Fable AST
-  │  front-end   │  (unchanged from upstream Fable)
-  └──────┬──────┘
-         │  Fable.File (typed F# declarations)
-         ▼
-  ┌─────────────┐
-  │  WasmGC     │  Fable.File → WasmGC IR (WExpr / WFunc / WModule)
-  │  back-end   │  (FSharp WasmGC — this project)
-  └──────┬──────┘
-         │  WasmGC IR
-         ▼
-  ┌─────────────┐
-  │  WAT emitter│  WasmGC IR → WebAssembly Text Format (.wat)
-  └──────┬──────┘
-         │  .wat file
-         ▼
-  ┌─────────────┐
-  │  wasm-tools │  .wat → .wasm binary (Bytecode Alliance wasm-tools)
-  └──────┬──────┘
-         │
-         ▼
-    .wasm binary
+   │  patched F# compiler + Fable front end            parsing, type checking, F# AST → Fable AST
+   ▼
+Fable AST
+   │  Pipeline/    normalise · scope analysis · unique locals · lowering
+   │  Transforms/  Fable AST → WasmGC IR; the BCL replacements; host interop
+   ▼
+WasmGC IR  (WType · WExpr · WFunc · WModule, in Core/AST.fs)
+   │  Emit/Optimize   optimiser passes (list pipelines fused into loops, an optional inliner)
+   ▼
+   ├─ Emit/Wat      → .wat   the text form: read it, diff it            ─ wasm-tools parse → .wasm
+   └─ Emit/Encoder  → .wasm  a built-in binary encoder (the fallback when wasm-tools is not installed)
+   ▼
+wasm-tools validate --features gc        and, for the exports it can describe, a WIT file
 ```
 
-## Source layout
+The WAT path and the binary encoder are two printers of the same IR, and the backend test suite checks every scenario through both. A `.wat` that `wasm-tools parse` rejects is a compiler bug.
 
-```
-src/
-  WasmGc.AST.fs          ← WasmGC type definitions (WType, WExpr, WFunc, WModule)
-  WasmGcPipeline.fs      ← Top-level pipeline, .fsproj orchestration
+## What an F# value becomes
 
-  Runtime/
-    WasmGcTypes.fs       ← Pre-registered WasmGC types (AnyFn, WasmStr, ListBase)
-    WasmGcBuilder.fs     ← CE builder for linear WasmGC IR construction
-    WasmGcLoopHelpers.fs ← Loop sugar: whileLoop, countLoop, loopWithResult
-    WasmGcFreeVars.fs    ← Closure free-variable analysis
-    WasmGcRuntime.fs     ← Runtime helpers: makeFunc, string ops, list ops
+| F# | WebAssembly GC |
+|---|---|
+| record | `struct` |
+| discriminated union | a `struct` type hierarchy; pattern matching with `ref.test` / `br_on_cast` |
+| `list<'T>` | linked structs |
+| closure | a struct with a typed function reference; partial application and currying are compiled, not interpreted |
+| `string` | `$WasmStr`: an array of UTF-16 code units on the GC heap |
+| arrays | typed GC arrays; `bool[]` and `byte[]` are packed into 8 bits (a switch turns that off) |
+| generics | monomorphised |
+| tail calls | `return_call` |
+| exceptions | the WebAssembly exception-handling proposal |
+| `int64`, `float` | `i64`, `f64`: native |
 
-  Transforms/
-    WasmGcReplacements.fs ← BCL function implementations (List.map, String.concat…)
-    Fable2WasmGc.fs       ← Fable AST → WasmGC IR translation (main transform)
+There is no garbage collector in the binary: the engine's own collects the module's objects, which is why whole demo applications are 12–153 KB.
 
-  Emit/
-    WasmGcOptimize.fs    ← Dead-code elimination, peephole optimizations
-    WasmGcWat.fs         ← WasmGC IR → WAT text emission
-    WasmGcEmit.fs        ← File-level output coordination
-    WasmGcEncoder.fs     ← Binary .wasm encoding (future: direct emit)
-```
+## Talking to the outside
 
-## Key design decisions
+A module sees only what it imports. What it reaches beyond itself — the DOM, a network, storage — comes through imports a **host** provides: [fsharp-wasm-runtime](https://github.com/fsharp-wasm/fsharp-wasm-runtime) in the browser, [fsharp-wasm-edge](https://github.com/fsharp-wasm/fsharp-wasm-edge) on servers. Calls into the host are declared with `[<Import("name", "module")>]`.
 
-### Pre-registered WasmGC types
+Strings cross the boundary in one of two ways, chosen when the module is compiled:
 
-Three types are registered at the beginning of every module (order matters for Wasm type indices):
+- **Builtins** (the default): the engine's [JS String Builtins](https://github.com/WebAssembly/js-string-builtins), imported as `wasm:js-string`; a polyfill covers an engine without them.
+- **Exports** (`WASMGC_STRING_ABI=exports`): the module imports nothing from `wasm:js-string` and exports a few accessors with which the host reads and builds strings. Platforms that hand a module over precompiled — Cloudflare Workers, Vercel Edge — need this one.
 
-| Index | Type        | Description                       |
-| ----- | ----------- | --------------------------------- |
-| 0     | `$AnyFn`    | Base struct for all closures      |
-| 1     | `$WasmStr`  | String as `(array i32)` — UTF-16  |
-| 2     | `$ListBase` | Abstract base struct for F# lists |
+## The base library
 
-### CE Builder for IR construction
+The .NET library the program expects is not the BCL: [fsharp-wasm-core](https://github.com/fsharp-wasm/fsharp-wasm-core) is a **source-only** F# base library that every program is compiled with (collections, math, exceptions, interfaces). Under .NET the same project builds with the BCL's own types. Calls into .NET methods that remain are mapped by the replacements in `Transforms/`.
 
-WasmGC IR is constructed using a custom F# computation expression (`wasm { ... }`). This prevents a class of bugs where the wrong local variable scope is referenced:
+## The Component Model
 
-```fsharp
-let compiled = wasm {
-  let! x = compileExpr lhs    // x is a LocalGet expression — use directly
-  let! y = compileExpr rhs
-  return WExpr.BinOp(Add, x, y)
-}
-```
+WIT worlds are generated from a module's exports — today for primitive types. Strings and records cannot cross a component boundary without a linear memory and the canonical ABI's adapters, which a GC module does not have. Experiments show the way: the adapters can be emitted into the GC module itself, with the UTF-16 string encoding so that nothing is transcoded, and `jco` runs the result. That work is on the [roadmap](/docs/roadmap); two modules compiled apart and linked at run time (`examples/component-linking`) work today.
 
-`do!` is used for side-effectful void expressions:
+## How we know it works
 
-```fsharp
-wasm {
-  do! compileEffect expr
-  return someValue
-}
-```
-
-### Multi-file pipeline
-
-Files are processed in `.fsproj` order. Each file gets its own `Compiler` instance (for correct entity resolution) but shares a single `Ctx` (accumulates declarations). Key rule: library files get a `fileStem_` prefix on exported function names; the main project file does not.
-
-### Cross-file calls
-
-Fable generates `Import` nodes (not `IdentExpr`) for calls to functions defined in other files of the same project. The compiler resolves these via `KnownFuncsByPath` — a map from file path to compiled function name.
-
-## Type mapping reference
-
-| F# type                       | WasmGC type                              |
-| ----------------------------- | ---------------------------------------- |
-| `int`                         | `i32`                                    |
-| `float`                       | `f64`                                    |
-| `bool`                        | `i32` (0/1)                              |
-| `string`                      | `(ref $WasmStr)`                         |
-| `unit`                        | `i32` (always 0)                         |
-| Record `{ X: int; Y: float }` | `(struct (field $X i32) (field $Y f64))` |
-| DU case                       | Sub-struct of abstract base struct       |
-| `List<'T>`                    | Linked `$ListBase` structs               |
-| `'T[]`                        | `(array (ref $T))` or typed array        |
-| `'a -> 'b`                    | `(ref $Closure)` struct with funcref     |
-
-## BCL implementation
-
-The Base Class Library for WasmGC is implemented in F# and compiled with our own compiler (`FSharp.Wasm.Core`, the repository [fsharp-wasm-core](https://github.com/fsharp-wasm/fsharp-wasm-core)). This means the BCL implementation validates the compiler itself — a virtuous cycle.
-
-Current BCL modules:
-
-- `Core/Interop.fs` — minimal Fable.Core stubs (not compiled, type-checking only)
-- `Collections/Map.fs` — immutable Map via AVL tree
-- `Collections/Set.fs` — stub (in progress)
-
-## Component Model integration
-
-The pipeline optionally generates WIT files and invokes `wasm-tools` to create WasmGC components:
-
-1. Scan exported F# functions with primitive-typed signatures
-2. Generate a `.wit` file (kebab-case identifiers, quoted when necessary)
-3. Call `wasm-tools component embed` + `wasm-tools component new` if available
-4. Output: `output/mymodule-component.wasm`
-
-This enables F# modules to be linked as Wasm components without any JavaScript glue.
+The compiler is checked against .NET itself: the same F# functions run on both and the results must be identical (a recorded run of 183 012 calls had no disagreement). The [tests page](/tests) lists every suite, what it checks and whether CI runs it, and the [benchmarks](/benchmarks) say what the output costs and gains against JavaScript.
