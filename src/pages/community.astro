@@ -1,0 +1,149 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Steps from '~/components/widgets/Steps.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Community',
+  description:
+    'fsharp-wasm is early, open and looking for people: where to ask, what to work on, and how to contribute a change.',
+};
+
+const org = 'https://github.com/fsharp-wasm';
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Join in"
+    title="Build it with us"
+    subtitle="fsharp-wasm compiles F# to WebAssembly GC and builds the libraries, hosts and tools around it. It is experimental and early, which is the best time to join: what you do shapes the direction."
+    callToAction={{
+      variant: 'primary',
+      text: 'Start with the contributing guide',
+      href: `${org}/.github/blob/main/CONTRIBUTING.md`,
+      target: '_blank',
+      icon: 'tabler:book',
+    }}
+    callToAction2={{
+      variant: 'secondary',
+      text: 'Ask in a discussion',
+      href: `${org}/fsharp-wasm/discussions`,
+      target: '_blank',
+      icon: 'tabler:messages',
+    }}
+  />
+
+  <Features3
+    tagline="Ways to help"
+    title="Where you can make a difference"
+    subtitle="Everything below is real and open today."
+    columns={3}
+    items={[
+      {
+        title: 'Break the compiler',
+        description:
+          'A program that does not compile is the most useful thing you can send us: an issue with the F# source becomes a test. The <a href="https://github.com/fsharp-wasm/fsharp-wasm/blob/main/docs/STATUS.md">known gaps</a> — stepped ranges, array slices, a few <code>System.Array</code> methods, <code>sprintf "%A"</code> — are good first tasks.',
+        icon: 'tabler:bug',
+      },
+      {
+        title: 'Tests that run everywhere',
+        description:
+          'Two compiler suites do not run today, and the browser tests run in Chromium only. See the <a href="/tests">tests page</a> for every suite, and cover Firefox and Safari.',
+        icon: 'tabler:checklist',
+      },
+      {
+        title: 'Benchmarks and comparisons',
+        description:
+          'A kernel we should add, or the same programs in Fable → JavaScript, Blazor or Kotlin/Wasm. The <a href="/benchmarks">method is public</a>, so are the raw reports.',
+        icon: 'tabler:chart-bar',
+      },
+      {
+        title: 'Platforms and deployments',
+        description:
+          'The <a href="/backend">host</a> runs on eight test targets; a real deployment to Cloudflare, Vercel or Netlify, or another platform, is the next proof.',
+        icon: 'tabler:cloud-upload',
+      },
+      {
+        title: 'Accessible interfaces',
+        description:
+          'A GUI layer that renders semantic HTML, keyboard and screen-reader support, and automated accessibility checks. Not everything can be WebAssembly drawing pixels.',
+        icon: 'tabler:accessible',
+      },
+      {
+        title: 'Documentation',
+        description:
+          'A page that confused you is a page to fix. Every docs page has an edit link; the <a href="/docs/getting-started">getting-started path</a> is the one to try first.',
+        icon: 'tabler:pencil',
+      },
+    ]}
+  />
+
+  <Steps
+    title="Contributing a change"
+    items={[
+      {
+        title: 'Open an issue <span class="font-medium">for anything larger than a fix</span>',
+        description: 'So that we can agree on the direction before you spend the time.',
+        icon: 'tabler:message-plus',
+      },
+      {
+        title: 'Fork, and branch from <span class="font-medium">develop</span>',
+        description: '<code>develop</code> is where work happens; <code>main</code> is what has passed CI on it.',
+        icon: 'tabler:git-fork',
+      },
+      {
+        title: 'Keep it small, add a test',
+        description: 'For the compiler: a program that failed before, in <code>tests/QuickTest</code> or <code>tests/Showcase</code>. <code>bash tests/run-all.sh</code> runs everything.',
+        icon: 'tabler:flask',
+      },
+      {
+        title: 'Open a pull request',
+        description: 'Against <code>develop</code>. CI has to pass; we answer as soon as we can.',
+        icon: 'tabler:git-pull-request',
+      },
+    ]}
+  />
+
+  <Features3
+    tagline="Good to know"
+    title="How we work"
+    columns={3}
+    items={[
+      {
+        title: 'We say what is real',
+        description:
+          'Every claim on this site has a number or a link; what is planned is marked as planned. If you find one that is wrong, that is a bug — please open an issue.',
+        icon: 'tabler:scale',
+      },
+      {
+        title: 'Apache-2.0',
+        description:
+          'Everything we wrote is Apache-2.0. The two forks we build on, Fable and the F# compiler, keep their MIT licence.',
+        icon: 'tabler:license',
+      },
+      {
+        title: 'A code of conduct',
+        description:
+          'Be respectful, accept feedback, collaborate constructively. <a href="https://github.com/fsharp-wasm/.github/blob/main/CODE_OF_CONDUCT.md">The full text</a> says how to report a problem; <a href="https://github.com/fsharp-wasm/.github/blob/main/SECURITY.md">security reports</a> go privately.',
+        icon: 'tabler:heart-handshake',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Support the work"
+    subtitle="The organisation takes sponsorship through GitHub Sponsors. It supports the compiler, the libraries and hosts, the documentation, and the tests and benchmarks that let anyone check what is claimed."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Sponsor the organization',
+        href: 'https://github.com/sponsors/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:heart',
+      },
+      { text: 'See the roadmap', href: '/docs/roadmap', icon: 'tabler:map' },
+    ]}
+  />
+</Layout>

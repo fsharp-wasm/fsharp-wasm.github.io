@@ -11,6 +11,10 @@ export const headerData = {
       href: getBlogPermalink(),
     },
     {
+      text: 'Community',
+      href: getPermalink('/community'),
+    },
+    {
       text: 'Explore',
       links: [
         { text: 'Live demos', href: getPermalink('/demos') },
@@ -54,6 +58,7 @@ export const footerData = {
     {
       title: 'Community',
       links: [
+        { text: 'Join the community', href: getPermalink('/community') },
         { text: 'GitHub', href: 'https://github.com/fsharp-wasm' },
         { text: 'Discussions', href: 'https://github.com/fsharp-wasm/fsharp-wasm/discussions' },
         {
@@ -72,7 +77,7 @@ export const footerData = {
         { text: 'About', href: getPermalink('/about') },
         { text: 'Blog', href: getBlogPermalink() },
         { text: 'Contact', href: getPermalink('/contact') },
-        { text: 'Sponsor', href: 'https://www.amano.services/', target: '_blank' },
+        { text: 'Sponsor the organisation', href: 'https://github.com/sponsors/fsharp-wasm', target: '_blank' },
       ],
     },
     {

@@ -116,7 +116,7 @@ For Docker-based deployment, see [docker-compose.yml](docker-compose.yml) and [n
 
 - Website template: [AstroWind](https://github.com/arthelokyo/astrowind) by [Arthelokyo](https://github.com/arthelokyo) — MIT License (kept in `LICENSES/MIT-AstroWind.md`)
 - Compiler foundation: [Fable](https://fable.io) — MIT License
-- Sponsor: [Amano Services](https://www.amano.services/)
+- Sponsor: [Amano Services](https://www.amano.services/); the organisation takes sponsorship through [GitHub Sponsors](https://github.com/sponsors/fsharp-wasm)
 
 ## License
 
