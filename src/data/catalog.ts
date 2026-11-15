@@ -4,7 +4,7 @@
 // Counts are from a recorded run (see `recordedOn`), not from a badge; where a suite has no count here it was not counted.
 // `ci` says whether that repository's CI runs the suite.  A suite that does not run, or does not pass, is listed as such.
 
-export const recordedOn = '2026-11-14';
+export const recordedOn = '2026-11-15';
 const org = 'https://github.com/fsharp-wasm';
 const pages = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime';
 
@@ -186,8 +186,8 @@ export const tests: RepoTests[] = [
         what: 'The base library’s exceptions and math compiled through the backend and run.' },
       { name: 'Component embed', count: 39, ci: 'yes', run: 'cd examples/component-embed && bash run.sh', what: 'See Examples.' },
       { name: 'Component linking', count: 22, ci: 'yes', run: 'cd examples/component-linking && bash run.sh', what: 'See Examples.' },
-      { name: 'Wasm tests (wasmtime)', ci: 'no', status: 'does not compile at present (18 errors), needs wasmtime', run: 'bash tests/Wasm/run-tests.sh',
-        what: 'Compiles a test project to WebAssembly and runs it in wasmtime.' },
+      { name: 'Wasmecto tests (tests/Wasm)', count: 81, ci: 'yes', run: 'bash tests/Wasm/run-tests.sh',
+        what: 'A test project written with the Wasmecto framework, compiled to WebAssembly and run in Node: language core, collections, closures, a compiler pipeline smoke test.' },
     ],
   },
   {
@@ -202,8 +202,8 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasmecto',
     summary: 'The test framework itself.',
     suites: [
-      { name: 'Wasmecto tests', ci: 'no', status: 'its runner expects an older repository layout and does not run at present', run: 'bash run-tests.sh',
-        what: 'Dictionary, math, stack and StringBuilder tests compiled to WebAssembly with the Expecto-style framework and run in wasmtime.' },
+      { name: 'Wasmecto’s own tests', ci: 'no', status: 'does not compile at present: 7 errors, from gaps in the compiler and the base library (StringBuilder.AppendLine, Dictionary.SumValues, …)', run: 'bash run-tests.sh',
+        what: 'Dictionary, math, stack and StringBuilder tests compiled to WebAssembly with the Expecto-style framework and run in Node.' },
     ],
   },
   {
