@@ -4,7 +4,7 @@
 // Counts are from a recorded run (see `recordedOn`), not from a badge; where a suite has no count here it was not counted.
 // `ci` says whether that repository's CI runs the suite.  A suite that does not run, or does not pass, is listed as such.
 
-export const recordedOn = '2026-11-15';
+export const recordedOn = '2026-11-16';
 const org = 'https://github.com/fsharp-wasm';
 const pages = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime';
 
@@ -166,7 +166,7 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasm',
     summary: 'The compiler. tests/run-all.sh runs every suite and prints one table.',
     suites: [
-      { name: 'QuickTest', count: 656, ci: 'yes', run: 'bash tests/QuickTest/run.sh',
+      { name: 'QuickTest', count: 675, ci: 'yes', run: 'bash tests/QuickTest/run.sh',
         what: 'The compiler’s main regression suite: language features, collections, strings, closures, numerics, arrays; compiled once, run on Node. CI runs it three times: default, with unpacked bool[] / byte[], and with the inlining pass.' },
       { name: 'QuickTestMulti', workload: '17 domains, all passing', ci: 'yes', run: 'bash tests/QuickTestMulti/run.sh',
         what: 'The same kind of test, one compilation per domain (Array, Bitwise, Closures, DU, Exceptions, Interop, List, Map, Math, Option, Primitives, Printf, Result, Seq, Set, StringBuilder, Strings), so a failure names the area that broke.' },
@@ -202,8 +202,8 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasmecto',
     summary: 'The test framework itself.',
     suites: [
-      { name: 'Wasmecto’s own tests', ci: 'no', status: 'does not compile at present: 7 errors, from gaps in the compiler and the base library (StringBuilder.AppendLine, Dictionary.SumValues, …)', run: 'bash run-tests.sh',
-        what: 'Dictionary, math, stack and StringBuilder tests compiled to WebAssembly with the Expecto-style framework and run in Node.' },
+      { name: 'Wasmecto’s own tests', count: 36, ci: 'yes', run: 'bash run-tests.sh',
+        what: 'Dictionary, math, stack and StringBuilder tests compiled to WebAssembly with the Expecto-style framework, against the whole base library, and run in Node.' },
     ],
   },
   {

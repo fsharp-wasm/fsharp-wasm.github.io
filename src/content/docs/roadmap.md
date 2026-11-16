@@ -15,7 +15,7 @@ The roadmap is ordered, not dated: this is an open-source project and timing dep
 
 Recorded on 2026-11-14 (see [tests](/tests), [demos](/demos), [benchmarks](/benchmarks)):
 
-- **A compiler** from F# to WebAssembly GC with a WAT printer and a binary encoder, validated by `wasm-tools`; 656 regression tests, and a differential run against .NET of 183 012 calls without a disagreement.
+- **A compiler** from F# to WebAssembly GC with a WAT printer and a binary encoder, validated by `wasm-tools`; 675 regression tests, and a differential run against .NET of 183 012 calls without a disagreement.
 - **Speed and size, measured**: on V8 the F# module is faster than hand-written JavaScript in 9–11 of 13 kernels (geometric mean 1.45–1.58× without the one fused kernel); 1.03× on JavaScriptCore; whole demo applications are 12–153 KB.
 - **Twelve live demos** and a benchmark you can run in your browser.
 - **A server module** in F# (Ghost Todo, 47 KB) that gives identical answers on eight test targets: Node, Bun, Deno, Cloudflare Workers with a Durable Object, and the Vercel and Netlify handlers.
