@@ -77,6 +77,7 @@ export const footerData = {
         { text: 'About', href: getPermalink('/about') },
         { text: 'Blog', href: getBlogPermalink() },
         { text: 'Contact', href: getPermalink('/contact') },
+        { text: 'Why sponsor', href: getPermalink('/sponsor') },
         { text: 'Sponsor the organisation', href: 'https://github.com/sponsors/fsharp-wasm', target: '_blank' },
       ],
     },

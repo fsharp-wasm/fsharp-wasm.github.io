@@ -1,0 +1,127 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Stats from '~/components/widgets/Stats.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Content from '~/components/widgets/Content.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { totals, recordedOn } from '~/data/catalog';
+
+const metadata = {
+  title: 'Sponsor',
+  description:
+    'What sponsoring fsharp-wasm pays for, what it has produced so far (measured, with the method), and what it does not promise.',
+};
+
+const fmt = (n: number) => n.toLocaleString('en-US').replace(/,/g, ' ');
+const org = 'https://github.com/fsharp-wasm';
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Support the work"
+    title="Sponsor fsharp-wasm"
+    subtitle="F# that compiles to small, fast WebAssembly GC modules, with the libraries, hosts and tools around it. It is experimental, it is open (Apache-2.0), and everything we claim comes with the way to check it."
+    callToAction={{
+      variant: 'primary',
+      text: 'Sponsor on GitHub',
+      href: 'https://github.com/sponsors/fsharp-wasm',
+      target: '_blank',
+      icon: 'tabler:heart',
+    }}
+    callToAction2={{
+      variant: 'secondary',
+      text: 'See what exists',
+      href: '/tests',
+      icon: 'tabler:checklist',
+    }}
+  />
+
+  <Stats
+    stats={[
+      { title: 'named tests and checks, recorded ' + recordedOn, amount: fmt(totals.tests), icon: 'tabler:checklist' },
+      { title: 'test suites in ' + totals.repos + ' repositories', amount: `${totals.suites}`, icon: 'tabler:list-details' },
+      { title: 'calls compared with .NET, 0 disagreements', amount: '183 012', icon: 'tabler:equal' },
+      { title: 'live demos that run in your browser', amount: `${totals.demos}`, icon: 'tabler:player-play' },
+    ]}
+  />
+
+  <Features3
+    tagline="What it pays for"
+    title="Where the time goes"
+    subtitle="Time, mostly. Each item is something that exists in a measured state today and has a concrete next step."
+    columns={3}
+    items={[
+      {
+        title: 'A compiler that covers more of F#',
+        description:
+          'Gaps are found by writing programs and listed in <a href="https://github.com/fsharp-wasm/fsharp-wasm/blob/main/docs/STATUS.md">STATUS.md</a> with the test that shows each one. A batch was closed on 2026-11-16 (ranges with a step, slices, `Array.concat`, `StringBuilder.AppendLine` and more); `%A` of records and unions, local generic functions and `async` are next.',
+        icon: 'tabler:code',
+      },
+      {
+        title: 'Accessibility of the widget toolkit',
+        description:
+          'Measured: the widget editor exposes one node to a screen reader, cannot be used from the keyboard, and 8 of 19 (dark theme) and 12 of 19 (light theme) colour pairs miss WCAG AA. The plan (semantics in the scene, an ARIA overlay, keyboard in the toolkit, AA colours) is in <a href="https://github.com/fsharp-wasm/fsharp-wasm-graphics/blob/develop/docs/accessibility.md">docs/accessibility.md</a>.',
+        icon: 'tabler:accessible',
+      },
+      {
+        title: 'Documentation that developers can follow',
+        description:
+          'A first-ten-minutes path that runs, concepts, how-tos and a reference generated from the code, with the examples executed in CI so the pages cannot rot.',
+        icon: 'tabler:book',
+      },
+      {
+        title: 'Running on the edge',
+        description:
+          'One backend module answers identically on eight test targets today. Real deployments on Cloudflare, Vercel and Netlify, and the Component Model glue that lets a host link modules, are the next step.',
+        icon: 'tabler:cloud',
+      },
+      {
+        title: 'Staying mergeable with upstream',
+        description:
+          'The compiler builds on forks of F# and Fable. Taking their changes without breaking what is pinned is steady work with a written policy, and it keeps the door open for sending changes upstream.',
+        icon: 'tabler:git-merge',
+      },
+      {
+        title: 'Tests, benchmarks and the pages that show them',
+        description:
+          'Every suite, every benchmark kernel and every demo is listed with how to run it. Keeping that true, and widening it (other browsers, real deployments), is part of the work.',
+        icon: 'tabler:chart-bar',
+      },
+    ]}
+  />
+
+  <Content
+    isReversed
+    tagline="Honestly"
+    title="What it does not promise"
+    items={[
+      { title: 'No full-time work', description: 'Sponsorship supports the work across the repositories; it does not promise a schedule or a person who is paid to do nothing else.' },
+      { title: 'No hidden status', description: 'What exists and what is intended are listed apart, and the numbers on this site are from a recorded run with the date next to them.' },
+      { title: 'No lock-in', description: 'Apache-2.0 for what we wrote (the two forks stay MIT), no sign-up, no tracking scripts on this site.' },
+    ]}
+    image={{ src: '~/assets/images/hero-image.png', alt: '' }}
+  >
+    <Fragment slot="content">
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">The method is part of the offer</h3>
+      A claim without a way to check it is marketing. The test counts come from <code>tests/run-all.sh</code>, the speed
+      comparison names its machine and what it does <em>not</em> measure, and the accessibility numbers come from a script in the
+      repository that anyone can run against the live pages.
+    </Fragment>
+  </Content>
+
+  <CallToAction
+    title="Not able to sponsor? Help in other ways"
+    subtitle="A failing program as an issue with the F# source becomes a test. A benchmark we should add, a platform to run on, a page of documentation that was unclear: all of it counts."
+    actions={[
+      {
+        variant: 'primary',
+        text: 'Sponsor the organization',
+        href: 'https://github.com/sponsors/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:heart',
+      },
+      { text: 'Join in', href: '/community', icon: 'tabler:users' },
+    ]}
+  />
+</Layout>
