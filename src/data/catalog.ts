@@ -136,7 +136,7 @@ export const benchSuites: BenchSuite[] = [
   { title: 'Speed — in your browser', where: 'fsharp-wasm-runtime', href: `${pages}/demos/bench/`,
     summary: 'The same harness as a page: choose the kernels, see the chart and the table, download the JSON.' },
   { title: 'Binary size', where: 'fsharp-wasm-runtime', href: '/benchmarks#size',
-    summary: 'Raw, gzip and brotli size of every module and of what each page loads: 12–153 KB raw, 4–45 KB with brotli.' },
+    summary: 'Raw, gzip and brotli size of every module and of what each page loads: 6–160 KB raw, 2–46 KB with brotli.' },
   { title: 'Network — download and compile', where: 'fsharp-wasm-runtime', href: '/benchmarks#network',
     summary: 'Every module on five emulated networks (localhost, Wi-Fi, 4G, slow 4G, 3G) with three encodings; the benchmark page can also measure your own line.',
     run: 'E2E_ROOT=site node tests/e2e/network.mjs' },

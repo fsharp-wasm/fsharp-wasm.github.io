@@ -48,7 +48,7 @@ The WAT path and the binary encoder are two printers of the same IR, and the bac
 | exceptions | the WebAssembly exception-handling proposal |
 | `int64`, `float` | `i64`, `f64`: native |
 
-There is no garbage collector in the binary: the engine's own collects the module's objects, which is why whole demo applications are 12–153 KB.
+There is no garbage collector in the binary: the engine's own collects the module's objects, which is why whole demo applications are 6–160 KB.
 
 ## Talking to the outside
 
