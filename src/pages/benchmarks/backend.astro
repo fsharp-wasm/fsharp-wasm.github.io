@@ -5,6 +5,8 @@ import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import Headline from '~/components/ui/Headline.astro';
+import DataTable from '~/components/ui/DataTable.astro';
+import type { Cell } from '~/components/ui/dataTable';
 
 import nodeOriginal from '~/data/edge-bench/2026-11-22-node.json';
 import nodeBulk from '~/data/edge-bench/2026-11-22-node-bulk.json';
@@ -62,7 +64,23 @@ const history = runtimes.flatMap((rt) =>
     values: stages.map(([, which]) => pick((rt as any)[which].results as Row[], s, 'F#')[rt.key]!),
   })),
 );
-const barWidth = (ratio: number) => `${Math.min(100, (Math.min(ratio, 25) / 25) * 100).toFixed(0)}%`;
+/** the bar is the ratio capped at 25×, so that one outlier does not flatten the rest */
+const bar = (ratio: number) => Math.min(ratio, 25) / 25;
+const ratioRows = (lines: (typeof tables)[number]['lines']): Array<Array<string | Cell>> =>
+  lines.map((l) => [
+    l.scenario,
+    us(l.f),
+    { text: us(l.j), muted: true },
+    { text: us(l.h), muted: true },
+    { text: `${l.ratio.toFixed(1)}×`, strong: true },
+    { text: `${l.ratio.toFixed(1)}× as a bar, capped at 25×`, bar: bar(l.ratio) },
+  ]);
+const historyRows: Array<Array<string | Cell>> = history.map((h) => [
+  h.runtime,
+  h.scenario,
+  ...h.values.map((v): Cell => ({ text: us(v), strong: v === Math.min(...h.values), muted: v !== Math.min(...h.values) })),
+]);
+const sizeRows: Array<Array<string | Cell>> = size.rows.map((r) => [r.name, kb(r.bytes), kb(r.gzipBytes)]);
 ---
 
 <Layout metadata={metadata}>
@@ -119,37 +137,18 @@ const barWidth = (ratio: number) => `${Math.min(100, (Math.min(ratio, 25) / 25) 
           subtitle={t.header}
           classes={{ container: 'mb-6 md:mb-8' }}
         />
-        <div class="max-w-5xl mx-auto overflow-x-auto">
-          <table class="w-full text-left text-sm border-collapse">
-            <caption class="sr-only">{`The Ghost Todo on ${t.name}: F# module, hand-written JavaScript and Hono, and how many times the module needs what the JavaScript needs`}</caption>
-            <thead>
-              <tr class="border-b border-slate-300 dark:border-slate-600">
-                <th scope="col" class="py-2 pr-4">Scenario</th>
-                <th scope="col" class="py-2 pr-4 text-right">F# → WasmGC</th>
-                <th scope="col" class="py-2 pr-4 text-right">JavaScript</th>
-                <th scope="col" class="py-2 pr-4 text-right">Hono</th>
-                <th scope="col" class="py-2 pr-2 text-right">F# ÷ JavaScript</th>
-                <th scope="col" class="py-2 w-40"><span class="sr-only">As a bar, capped at 25×</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {t.lines.map((l) => (
-                <tr class="border-b border-slate-200 dark:border-slate-700">
-                  <th scope="row" class="py-2 pr-4 font-semibold whitespace-nowrap">{l.scenario}</th>
-                  <td class="py-2 pr-4 text-right tabular-nums">{us(l.f)}</td>
-                  <td class="py-2 pr-4 text-right tabular-nums text-muted">{us(l.j)}</td>
-                  <td class="py-2 pr-4 text-right tabular-nums text-muted">{us(l.h)}</td>
-                  <td class="py-2 pr-2 text-right tabular-nums font-semibold">{l.ratio.toFixed(1)}×</td>
-                  <td class="py-2" aria-hidden="true">
-                    <div class="h-2 rounded bg-slate-200 dark:bg-slate-700">
-                      <div class="h-2 rounded bg-secondary" style={`width:${barWidth(l.ratio)}`} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          caption={`The Ghost Todo on ${t.name}: F# module, hand-written JavaScript and Hono, and how many times the module needs what the JavaScript needs`}
+          columns={[
+            { label: 'Scenario', nowrap: true },
+            { label: 'F# → WasmGC', align: 'right' },
+            { label: 'JavaScript', align: 'right' },
+            { label: 'Hono', align: 'right' },
+            { label: 'F# ÷ JavaScript', align: 'right' },
+            { label: 'As a bar', hidden: true },
+          ]}
+          rows={ratioRows(t.lines)}
+        />
         {t.kind === 'median' && (
           <p class="max-w-5xl mx-auto mt-3 text-sm text-muted">
             The 99th percentile of a toggle in 5 000 todos is {us(t.lines.find((l) => l.scenario === 'toggle, 5 000 todos')!.p99!)}: every 64th change the module writes a checkpoint after its response, and in this in-process loop the next request
@@ -167,28 +166,12 @@ const barWidth = (ratio: number) => `${Math.min(100, (Math.min(ratio, 25) / 25) 
       subtitle="The same module, rebuilt twice. The first change was found by a CPU profile (42.5 % of a request was JavaScript-to-WebAssembly calls, one per character); the second by asking what a toggle writes: the whole list."
       classes={{ container: 'mb-6 md:mb-8' }}
     />
-    <div class="max-w-5xl mx-auto overflow-x-auto">
-      <table class="w-full text-left text-sm border-collapse">
-        <caption class="sr-only">The F# module in three builds, in the same scenarios</caption>
-        <thead>
-          <tr class="border-b border-slate-300 dark:border-slate-600">
-            <th scope="col" class="py-2 pr-4">Engine</th>
-            <th scope="col" class="py-2 pr-4">Scenario</th>
-            {stages.map(([name]) => <th scope="col" class="py-2 pr-4 text-right">{name}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {history.map((h) => (
-            <tr class="border-b border-slate-200 dark:border-slate-700">
-              <th scope="row" class="py-2 pr-4 font-semibold whitespace-nowrap">{h.runtime}</th>
-              <td class="py-2 pr-4 whitespace-nowrap">{h.scenario}</td>
-              {h.values.map((v, i) => (
-                <td class={`py-2 pr-4 text-right tabular-nums ${v === Math.min(...h.values) ? 'font-semibold' : 'text-muted'}`}>{us(v)}</td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <DataTable
+      caption="The F# module in three builds, in the same scenarios"
+      columns={[{ label: 'Engine', nowrap: true }, { label: 'Scenario', nowrap: true }, ...stages.map(([name]) => ({ label: name, align: 'right' as const }))]}
+      rows={historyRows}
+    />
+    <div class="max-w-5xl mx-auto">
       <p class="mt-3 text-sm text-muted">
         The lowest of each row is bold. The state of 5 000 todos is not what the third change touches: its slightly higher time on Node (6.81 to 7.47 ms) was not examined and is within what two runs of this machine differ by. In the first two builds the JavaScript of the benchmark persisted the whole list too, as the module did; in the third both persist the patch of a change, so the ratios above compare the module and the language, not two ways of persisting. How and why:
         <a class="underline" href="https://github.com/fsharp-wasm/fsharp-wasm-backend/blob/main/docs/persistence.md">docs/persistence.md</a>.
@@ -203,27 +186,12 @@ const barWidth = (ratio: number) => `${Math.min(100, (Math.min(ratio, 25) / 25) 
       subtitle={`Minified, and gzip -9 of that (${size.date}). The module grew by 10 KB when it learned to replay its log: the decoder and the transition the clients use are in it now.`}
       classes={{ container: 'mb-6 md:mb-8' }}
     />
-    <div class="max-w-3xl mx-auto overflow-x-auto">
-      <table class="w-full text-left text-sm border-collapse">
-        <caption class="sr-only">Size of the deployed code of the three implementations</caption>
-        <thead>
-          <tr class="border-b border-slate-300 dark:border-slate-600">
-            <th scope="col" class="py-2 pr-4">Deployed code</th>
-            <th scope="col" class="py-2 pr-4 text-right">Minified</th>
-            <th scope="col" class="py-2 text-right">gzip</th>
-          </tr>
-        </thead>
-        <tbody>
-          {size.rows.map((r) => (
-            <tr class="border-b border-slate-200 dark:border-slate-700">
-              <th scope="row" class="py-2 pr-4 font-semibold">{r.name}</th>
-              <td class="py-2 pr-4 text-right tabular-nums">{kb(r.bytes)}</td>
-              <td class="py-2 text-right tabular-nums">{kb(r.gzipBytes)}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+    <DataTable
+      caption="Size of the deployed code of the three implementations"
+      columns={[{ label: 'Deployed code' }, { label: 'Minified', align: 'right' }, { label: 'gzip', align: 'right' }]}
+      rows={sizeRows}
+      width="max-w-3xl"
+    />
   </WidgetWrapper>
 
   <Features3

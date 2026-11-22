@@ -5,7 +5,27 @@ import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
 import Headline from '~/components/ui/Headline.astro';
+import DataTable from '~/components/ui/DataTable.astro';
 import { kernels, benchSuites } from '~/data/catalog';
+import {
+  speedColumns,
+  speedRows,
+  speedNote,
+  sizeRows,
+  sizeDate,
+  sizeNote,
+  pageRows,
+  networkRows,
+  networkProfiles,
+  networkDate,
+  encodings,
+  hostRows,
+  hostNote,
+} from '~/data/runtimeBench';
+
+const reports = 'https://github.com/fsharp-wasm/fsharp-wasm-runtime/tree/main/site/benchmarks';
+const benchDemo = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos/bench/';
+const measureYourself = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/benchmarks/#live';
 
 const metadata = {
   title: 'Benchmarks',
@@ -21,7 +41,7 @@ const metadata = {
     callToAction={{
       variant: 'primary',
       text: 'See the results',
-      href: 'https://fsharp-wasm.github.io/fsharp-wasm-runtime/benchmarks/',
+      href: '#speed',
       icon: 'tabler:chart-bar',
     }}
     callToAction2={{
@@ -93,6 +113,112 @@ const metadata = {
     </div>
   </WidgetWrapper>
 
+  <!-- Speed: the recorded results ============================================ -->
+  <WidgetWrapper id="speed">
+    <Headline
+      tagline="Speed"
+      title="F# against JavaScript, kernel by kernel"
+      subtitle="How many times faster the F# module is than the JavaScript: above 1 the module wins and the number is coloured. The median of the recorded runs, and in brackets the range of the runs; ⚠ marks a kernel whose samples spread over more than a quarter of their median."
+      classes={{ container: 'mb-6 md:mb-8' }}
+    />
+    <DataTable
+      caption="Speed of the F# module against JavaScript per kernel and engine: how many times faster the module is"
+      columns={[
+        { label: 'Kernel', nowrap: true },
+        ...speedColumns.map((c) => ({ label: c.name, sub: c.runs.length > 1 ? `${c.runs.length} runs` : undefined, align: 'right' as const })),
+      ]}
+      rows={speedRows}
+      totalRows={2}
+    />
+    <div class="max-w-5xl mx-auto mt-3 text-sm text-muted">
+      <p>
+        {speedNote} † the list pipeline that the compiler fuses into one loop, which JavaScript does not; the geometric mean is given with and without it. The raw reports: <a class="underline" href={reports} target="_blank" rel="noopener">site/benchmarks</a>.
+      </p>
+      <p class="mt-4">
+        <a class="btn-primary" href={benchDemo} target="_blank" rel="noopener">Run the thirteen kernels in your browser</a>
+      </p>
+    </div>
+  </WidgetWrapper>
+
+  <!-- Size ========================================================================== -->
+  <WidgetWrapper id="size">
+    <Headline
+      tagline="Size"
+      title="What a module weighs"
+      subtitle={`Raw, gzip and brotli size of every module (${sizeDate}). ${sizeNote}`}
+      classes={{ container: 'mb-6 md:mb-8' }}
+    />
+    <DataTable
+      caption="Size of every compiled module, raw, with gzip and with brotli"
+      columns={[
+        { label: 'Module' },
+        { label: 'raw', align: 'right' },
+        { label: 'gzip', align: 'right' },
+        { label: 'brotli', align: 'right' },
+        { label: 'brotli ÷ raw', align: 'right' },
+      ]}
+      rows={sizeRows}
+      width="max-w-3xl"
+    />
+    <h3 class="max-w-5xl mx-auto mt-12 mb-4 text-xl font-bold">What a page loads</h3>
+    <DataTable
+      caption="What each page of the showcase loads: requests and bytes"
+      columns={[
+        { label: 'Page' },
+        { label: 'requests', align: 'right' },
+        { label: 'raw', align: 'right' },
+        { label: 'gzip', align: 'right' },
+        { label: 'brotli', align: 'right' },
+        { label: 'the largest two' },
+      ]}
+      rows={pageRows}
+    />
+  </WidgetWrapper>
+
+  <!-- Network ========================================================================= -->
+  <WidgetWrapper id="network">
+    <Headline
+      tagline="Network"
+      title="Download plus compile, on five networks"
+      subtitle={`Every module on an emulated network (${networkDate}), three runs; the time to download it and to compile it. Latency, not size, dominates the small modules.`}
+      classes={{ container: 'mb-6 md:mb-8' }}
+    />
+    {
+      encodings.map((e, i) => (
+        <details class="max-w-5xl mx-auto mb-4" open={i === 0}>
+          <summary class="cursor-pointer font-semibold py-2">{e.label}</summary>
+          <DataTable
+            caption={`Time to download and compile every module, sent with ${e.label}`}
+            columns={[
+              { label: 'Module' },
+              { label: 'on the wire', align: 'right' },
+              ...networkProfiles.map((p) => ({ label: p.label, sub: p.mbps ? `${p.mbps} Mbps, ${p.rtt} ms` : 'no limit', align: 'right' as const })),
+            ]}
+            rows={networkRows(e.id)}
+          />
+        </details>
+      ))
+    }
+    <h3 class="max-w-5xl mx-auto mt-12 mb-2 text-xl font-bold">The real host</h3>
+    <p class="max-w-5xl mx-auto mb-4 text-sm text-muted">
+      {hostNote} GitHub Pages sends gzip and no brotli: asked for brotli it answers with the file as it is.
+    </p>
+    <DataTable
+      caption="Time to fetch every module from the host: no compression, gzip, brotli"
+      columns={[
+        { label: 'Module' },
+        { label: 'raw', align: 'right' },
+        { label: 'sent as gzip', align: 'right' },
+        { label: 'request: none / gzip / brotli', align: 'right' },
+      ]}
+      rows={hostRows}
+      width="max-w-3xl"
+    />
+    <p class="max-w-5xl mx-auto mt-6 text-sm text-muted">
+      Your own line is another matter: <a class="underline" href={measureYourself} target="_blank" rel="noopener">a button on the runtime's page</a> downloads and compiles every module from this host and shows what it took.
+    </p>
+  </WidgetWrapper>
+
   <!-- The suites ====================================================== -->
   <WidgetWrapper id="suites">
     <Headline
@@ -114,7 +240,7 @@ const metadata = {
             )}
             <p class="mt-3 text-sm">
               {b.href && (
-                <a href={b.href} class="underline" target="_blank" rel="noopener">
+                <a href={b.href} class="underline" {...(b.href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}>
                   Open
                 </a>
               )}

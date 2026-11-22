@@ -1,0 +1,1191 @@
+{
+  "schema": "network-1",
+  "date": "2026-11-14T14:40:14.657Z",
+  "env": {
+    "chromium": "153.0.8010.12",
+    "os": "linux x64",
+    "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cores": 4,
+    "node": "22.23.4"
+  },
+  "runs": 3,
+  "profiles": [
+    {
+      "id": "local",
+      "label": "Localhost",
+      "mbps": null,
+      "rtt": 0
+    },
+    {
+      "id": "wifi",
+      "label": "Wi-Fi",
+      "mbps": 30,
+      "rtt": 20
+    },
+    {
+      "id": "4g",
+      "label": "4G",
+      "mbps": 9,
+      "rtt": 85
+    },
+    {
+      "id": "slow-4g",
+      "label": "Slow 4G",
+      "mbps": 1.6,
+      "rtt": 150
+    },
+    {
+      "id": "3g",
+      "label": "3G",
+      "mbps": 0.78,
+      "rtt": 300
+    }
+  ],
+  "encodings": [
+    "identity",
+    "gzip",
+    "br"
+  ],
+  "modules": [
+    {
+      "id": "bench/Bench.wasm",
+      "demo": "bench",
+      "file": "Bench.wasm",
+      "raw": 17706,
+      "gzip": 7489,
+      "brotli": 6595,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 17706,
+            "downloadMs": 4,
+            "compileMs": 0.39999999990686774
+          },
+          "gzip": {
+            "wireBytes": 7489,
+            "downloadMs": 4.099999999627471,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 6595,
+            "downloadMs": 3.900000000372529,
+            "compileMs": 0.2999999998137355
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 17706,
+            "downloadMs": 28.799999999813735,
+            "compileMs": 0.39999999990686774
+          },
+          "gzip": {
+            "wireBytes": 7489,
+            "downloadMs": 27.299999999813735,
+            "compileMs": 0.3000000002793968
+          },
+          "br": {
+            "wireBytes": 6595,
+            "downloadMs": 27.600000000093132,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 17706,
+            "downloadMs": 107.5,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 7489,
+            "downloadMs": 98.39999999990687,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 6595,
+            "downloadMs": 97.10000000009313,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 17706,
+            "downloadMs": 237.8000000002794,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 7489,
+            "downloadMs": 200.5,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 6595,
+            "downloadMs": 192.6999999997206,
+            "compileMs": 0.5
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 17706,
+            "downloadMs": 475.3000000002794,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 7489,
+            "downloadMs": 397.10000000009313,
+            "compileMs": 0.40000000037252903
+          },
+          "br": {
+            "wireBytes": 6595,
+            "downloadMs": 382.10000000009313,
+            "compileMs": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "canvas-mandelbrot/Mandelbrot.wasm",
+      "demo": "canvas-mandelbrot",
+      "file": "Mandelbrot.wasm",
+      "raw": 12632,
+      "gzip": 4907,
+      "brotli": 4295,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 12632,
+            "downloadMs": 3.8999999999068677,
+            "compileMs": 0.2999999998137355
+          },
+          "gzip": {
+            "wireBytes": 4907,
+            "downloadMs": 3.8999999999068677,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 4295,
+            "downloadMs": 4.100000000093132,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 12632,
+            "downloadMs": 28.799999999813735,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 4907,
+            "downloadMs": 26.299999999813735,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 4295,
+            "downloadMs": 26.5,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 12632,
+            "downloadMs": 103.09999999962747,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 4907,
+            "downloadMs": 95.79999999981374,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 4295,
+            "downloadMs": 95.60000000009313,
+            "compileMs": 0.40000000037252903
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 12632,
+            "downloadMs": 225,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 4907,
+            "downloadMs": 184,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 4295,
+            "downloadMs": 171.5,
+            "compileMs": 0.599999999627471
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 12632,
+            "downloadMs": 429,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 4907,
+            "downloadMs": 366.10000000009313,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 4295,
+            "downloadMs": 337.09999999962747,
+            "compileMs": 0.6000000000931323
+          }
+        }
+      }
+    },
+    {
+      "id": "counter/Counter.wasm",
+      "demo": "counter",
+      "file": "Counter.wasm",
+      "raw": 22966,
+      "gzip": 8968,
+      "brotli": 7643,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 22966,
+            "downloadMs": 4,
+            "compileMs": 0.40000000037252903
+          },
+          "gzip": {
+            "wireBytes": 8968,
+            "downloadMs": 4.300000000279397,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 7643,
+            "downloadMs": 4.2000000001862645,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 22966,
+            "downloadMs": 30.600000000093132,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 8968,
+            "downloadMs": 27.799999999813735,
+            "compileMs": 0.40000000037252903
+          },
+          "br": {
+            "wireBytes": 7643,
+            "downloadMs": 28.399999999906868,
+            "compileMs": 0.599999999627471
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 22966,
+            "downloadMs": 111.8000000002794,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 8968,
+            "downloadMs": 100,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 7643,
+            "downloadMs": 99,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 22966,
+            "downloadMs": 274.70000000018626,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 8968,
+            "downloadMs": 200.29999999981374,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 7643,
+            "downloadMs": 199.39999999990687,
+            "compileMs": 0.6000000000931323
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 22966,
+            "downloadMs": 536.1000000000931,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 8968,
+            "downloadMs": 411.20000000018626,
+            "compileMs": 0.6999999997206032
+          },
+          "br": {
+            "wireBytes": 7643,
+            "downloadMs": 397.10000000009313,
+            "compileMs": 0.7999999998137355
+          }
+        }
+      }
+    },
+    {
+      "id": "full-dashboard/Dashboard.wasm",
+      "demo": "full-dashboard",
+      "file": "Dashboard.wasm",
+      "raw": 46973,
+      "gzip": 15718,
+      "brotli": 12754,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 46973,
+            "downloadMs": 3.8999999999068677,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 15718,
+            "downloadMs": 4.100000000093132,
+            "compileMs": 0.7000000001862645
+          },
+          "br": {
+            "wireBytes": 12754,
+            "downloadMs": 4.2000000001862645,
+            "compileMs": 0.6000000000931323
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 46973,
+            "downloadMs": 39,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 15718,
+            "downloadMs": 30.299999999813735,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 12754,
+            "downloadMs": 29.90000000037253,
+            "compileMs": 0.6000000000931323
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 46973,
+            "downloadMs": 134.09999999962747,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 15718,
+            "downloadMs": 106.60000000009313,
+            "compileMs": 0.7999999998137355
+          },
+          "br": {
+            "wireBytes": 12754,
+            "downloadMs": 103.70000000018626,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 46973,
+            "downloadMs": 393.5,
+            "compileMs": 0.7999999998137355
+          },
+          "gzip": {
+            "wireBytes": 15718,
+            "downloadMs": 236.89999999990687,
+            "compileMs": 0.8000000002793968
+          },
+          "br": {
+            "wireBytes": 12754,
+            "downloadMs": 221.8000000002794,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 46973,
+            "downloadMs": 796.8999999999069,
+            "compileMs": 0.8999999999068677
+          },
+          "gzip": {
+            "wireBytes": 15718,
+            "downloadMs": 473.89999999990687,
+            "compileMs": 0.6999999997206032
+          },
+          "br": {
+            "wireBytes": 12754,
+            "downloadMs": 443.5,
+            "compileMs": 0.7000000001862645
+          }
+        }
+      }
+    },
+    {
+      "id": "graphics-gallery/SceneGallery.wasm",
+      "demo": "graphics-gallery",
+      "file": "SceneGallery.wasm",
+      "raw": 140071,
+      "gzip": 55256,
+      "brotli": 45211,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 140071,
+            "downloadMs": 5,
+            "compileMs": 1.1999999997206032
+          },
+          "gzip": {
+            "wireBytes": 55256,
+            "downloadMs": 5.7999999998137355,
+            "compileMs": 1.1999999997206032
+          },
+          "br": {
+            "wireBytes": 45211,
+            "downloadMs": 5.5,
+            "compileMs": 1
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 140071,
+            "downloadMs": 65.09999999962747,
+            "compileMs": 1.1000000000931323
+          },
+          "gzip": {
+            "wireBytes": 55256,
+            "downloadMs": 42.200000000186265,
+            "compileMs": 1.1000000000931323
+          },
+          "br": {
+            "wireBytes": 45211,
+            "downloadMs": 39.5,
+            "compileMs": 1.3000000002793968
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 140071,
+            "downloadMs": 215.89999999990687,
+            "compileMs": 1
+          },
+          "gzip": {
+            "wireBytes": 55256,
+            "downloadMs": 140.60000000009313,
+            "compileMs": 1.2000000001862645
+          },
+          "br": {
+            "wireBytes": 45211,
+            "downloadMs": 138.10000000009313,
+            "compileMs": 1.3999999999068677
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 140071,
+            "downloadMs": 858.8999999999069,
+            "compileMs": 1.3000000002793968
+          },
+          "gzip": {
+            "wireBytes": 55256,
+            "downloadMs": 431.89999999990687,
+            "compileMs": 1.5
+          },
+          "br": {
+            "wireBytes": 45211,
+            "downloadMs": 386.09999999962747,
+            "compileMs": 1.3000000002793968
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 140071,
+            "downloadMs": 1750,
+            "compileMs": 1.2000000001862645
+          },
+          "gzip": {
+            "wireBytes": 55256,
+            "downloadMs": 872.9000000003725,
+            "compileMs": 1.3000000002793968
+          },
+          "br": {
+            "wireBytes": 45211,
+            "downloadMs": 780.3000000002794,
+            "compileMs": 1.2999999998137355
+          }
+        }
+      }
+    },
+    {
+      "id": "indexeddb-crud/IndexedDbCrud.wasm",
+      "demo": "indexeddb-crud",
+      "file": "IndexedDbCrud.wasm",
+      "raw": 32195,
+      "gzip": 11953,
+      "brotli": 9987,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 32195,
+            "downloadMs": 3.2999999998137355,
+            "compileMs": 0.39999999990686774
+          },
+          "gzip": {
+            "wireBytes": 11953,
+            "downloadMs": 3.3999999999068677,
+            "compileMs": 0.40000000037252903
+          },
+          "br": {
+            "wireBytes": 9987,
+            "downloadMs": 4.7999999998137355,
+            "compileMs": 0.5
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 32195,
+            "downloadMs": 34,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 11953,
+            "downloadMs": 29.100000000093132,
+            "compileMs": 0.599999999627471
+          },
+          "br": {
+            "wireBytes": 9987,
+            "downloadMs": 27.700000000186265,
+            "compileMs": 0.6999999997206032
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 32195,
+            "downloadMs": 119.89999999990687,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 11953,
+            "downloadMs": 103.5,
+            "compileMs": 0.6999999997206032
+          },
+          "br": {
+            "wireBytes": 9987,
+            "downloadMs": 101.60000000009313,
+            "compileMs": 0.599999999627471
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 32195,
+            "downloadMs": 313,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 11953,
+            "downloadMs": 216,
+            "compileMs": 0.7000000001862645
+          },
+          "br": {
+            "wireBytes": 9987,
+            "downloadMs": 206.40000000037253,
+            "compileMs": 0.6999999997206032
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 32195,
+            "downloadMs": 642.6999999997206,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 11953,
+            "downloadMs": 443.29999999981374,
+            "compileMs": 0.7999999998137355
+          },
+          "br": {
+            "wireBytes": 9987,
+            "downloadMs": 411.60000000009313,
+            "compileMs": 0.6000000000931323
+          }
+        }
+      }
+    },
+    {
+      "id": "realtime-pubsub/RealtimePubSub.wasm",
+      "demo": "realtime-pubsub",
+      "file": "RealtimePubSub.wasm",
+      "raw": 25060,
+      "gzip": 9899,
+      "brotli": 8465,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 25060,
+            "downloadMs": 3.7999999998137355,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 9899,
+            "downloadMs": 3.3000000002793968,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 8465,
+            "downloadMs": 4.7000000001862645,
+            "compileMs": 0.599999999627471
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 25060,
+            "downloadMs": 31.5,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 9899,
+            "downloadMs": 27.600000000093132,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 8465,
+            "downloadMs": 28.100000000093132,
+            "compileMs": 0.6000000000931323
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 25060,
+            "downloadMs": 112.89999999990687,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 9899,
+            "downloadMs": 99.89999999990687,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 8465,
+            "downloadMs": 99.10000000009313,
+            "compileMs": 0.6000000000931323
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 25060,
+            "downloadMs": 282.5,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 9899,
+            "downloadMs": 207.29999999981374,
+            "compileMs": 0.6999999997206032
+          },
+          "br": {
+            "wireBytes": 8465,
+            "downloadMs": 196.60000000009313,
+            "compileMs": 0.6999999997206032
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 25060,
+            "downloadMs": 551.5,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 9899,
+            "downloadMs": 397.60000000009313,
+            "compileMs": 0.7000000001862645
+          },
+          "br": {
+            "wireBytes": 8465,
+            "downloadMs": 397.5,
+            "compileMs": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "todo/Todo.wasm",
+      "demo": "todo",
+      "file": "Todo.wasm",
+      "raw": 28518,
+      "gzip": 10956,
+      "brotli": 9312,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 28518,
+            "downloadMs": 3.8000000002793968,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 10956,
+            "downloadMs": 3.7000000001862645,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 9312,
+            "downloadMs": 4,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 28518,
+            "downloadMs": 32.3000000002794,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 10956,
+            "downloadMs": 28.200000000186265,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 9312,
+            "downloadMs": 27.700000000186265,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 28518,
+            "downloadMs": 117.5,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 10956,
+            "downloadMs": 102.90000000037253,
+            "compileMs": 0.7000000001862645
+          },
+          "br": {
+            "wireBytes": 9312,
+            "downloadMs": 99.39999999990687,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 28518,
+            "downloadMs": 305.10000000009313,
+            "compileMs": 0.8999999999068677
+          },
+          "gzip": {
+            "wireBytes": 10956,
+            "downloadMs": 208.59999999962747,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 9312,
+            "downloadMs": 207.10000000009313,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 28518,
+            "downloadMs": 611.2000000001863,
+            "compileMs": 0.7999999998137355
+          },
+          "gzip": {
+            "wireBytes": 10956,
+            "downloadMs": 427.79999999981374,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 9312,
+            "downloadMs": 412.5,
+            "compileMs": 0.8999999999068677
+          }
+        }
+      }
+    },
+    {
+      "id": "web-component/MyCounter.wasm",
+      "demo": "web-component",
+      "file": "MyCounter.wasm",
+      "raw": 13574,
+      "gzip": 5366,
+      "brotli": 4698,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 13574,
+            "downloadMs": 3.7999999998137355,
+            "compileMs": 0.2999999998137355
+          },
+          "gzip": {
+            "wireBytes": 5366,
+            "downloadMs": 4.699999999720603,
+            "compileMs": 0.2999999998137355
+          },
+          "br": {
+            "wireBytes": 4698,
+            "downloadMs": 3.8999999999068677,
+            "compileMs": 0.2999999998137355
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 13574,
+            "downloadMs": 28.5,
+            "compileMs": 0.39999999990686774
+          },
+          "gzip": {
+            "wireBytes": 5366,
+            "downloadMs": 25.700000000186265,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 4698,
+            "downloadMs": 26.899999999906868,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 13574,
+            "downloadMs": 103.10000000009313,
+            "compileMs": 0.39999999990686774
+          },
+          "gzip": {
+            "wireBytes": 5366,
+            "downloadMs": 96.10000000009313,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 4698,
+            "downloadMs": 96.29999999981374,
+            "compileMs": 0.39999999990686774
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 13574,
+            "downloadMs": 222.6999999997206,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 5366,
+            "downloadMs": 177.5,
+            "compileMs": 0.599999999627471
+          },
+          "br": {
+            "wireBytes": 4698,
+            "downloadMs": 178.89999999990687,
+            "compileMs": 0.5
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 13574,
+            "downloadMs": 444.8000000002794,
+            "compileMs": 0.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 5366,
+            "downloadMs": 368.39999999990687,
+            "compileMs": 0.7000000001862645
+          },
+          "br": {
+            "wireBytes": 4698,
+            "downloadMs": 365.29999999981374,
+            "compileMs": 0.5
+          }
+        }
+      }
+    },
+    {
+      "id": "webgpu-basic/WebGpuBasic.wasm",
+      "demo": "webgpu-basic",
+      "file": "WebGpuBasic.wasm",
+      "raw": 22878,
+      "gzip": 9112,
+      "brotli": 7874,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 22878,
+            "downloadMs": 3.8000000002793968,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 9112,
+            "downloadMs": 3.7999999998137355,
+            "compileMs": 0.3000000002793968
+          },
+          "br": {
+            "wireBytes": 7874,
+            "downloadMs": 3.8999999999068677,
+            "compileMs": 0.599999999627471
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 22878,
+            "downloadMs": 32.10000000009313,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 9112,
+            "downloadMs": 27.600000000093132,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 7874,
+            "downloadMs": 27.899999999906868,
+            "compileMs": 0.5
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 22878,
+            "downloadMs": 112.20000000018626,
+            "compileMs": 0.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 9112,
+            "downloadMs": 102.1999999997206,
+            "compileMs": 0.5
+          },
+          "br": {
+            "wireBytes": 7874,
+            "downloadMs": 100.29999999981374,
+            "compileMs": 0.599999999627471
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 22878,
+            "downloadMs": 268.20000000018626,
+            "compileMs": 0.6999999997206032
+          },
+          "gzip": {
+            "wireBytes": 9112,
+            "downloadMs": 206.1999999997206,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 7874,
+            "downloadMs": 200.1999999997206,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 22878,
+            "downloadMs": 551.4000000003725,
+            "compileMs": 0.6999999997206032
+          },
+          "gzip": {
+            "wireBytes": 9112,
+            "downloadMs": 412.20000000018626,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 7874,
+            "downloadMs": 398.20000000018626,
+            "compileMs": 0.6000000000931323
+          }
+        }
+      }
+    },
+    {
+      "id": "widget-editor/WidgetEditor.wasm",
+      "demo": "widget-editor",
+      "file": "WidgetEditor.wasm",
+      "raw": 153025,
+      "gzip": 56673,
+      "brotli": 46482,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 153025,
+            "downloadMs": 4.2000000001862645,
+            "compileMs": 1.1000000000931323
+          },
+          "gzip": {
+            "wireBytes": 56673,
+            "downloadMs": 4.699999999720603,
+            "compileMs": 1.2000000001862645
+          },
+          "br": {
+            "wireBytes": 46482,
+            "downloadMs": 6,
+            "compileMs": 1.1000000000931323
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 153025,
+            "downloadMs": 67.70000000018626,
+            "compileMs": 1.2000000001862645
+          },
+          "gzip": {
+            "wireBytes": 56673,
+            "downloadMs": 42.700000000186265,
+            "compileMs": 1.3000000002793968
+          },
+          "br": {
+            "wireBytes": 46482,
+            "downloadMs": 39.59999999962747,
+            "compileMs": 1.2000000001862645
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 153025,
+            "downloadMs": 229.09999999962747,
+            "compileMs": 1.7000000001862645
+          },
+          "gzip": {
+            "wireBytes": 56673,
+            "downloadMs": 141.29999999981374,
+            "compileMs": 1.8000000002793968
+          },
+          "br": {
+            "wireBytes": 46482,
+            "downloadMs": 136.20000000018626,
+            "compileMs": 1.3999999999068677
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 153025,
+            "downloadMs": 923.5,
+            "compileMs": 1.6000000000931323
+          },
+          "gzip": {
+            "wireBytes": 56673,
+            "downloadMs": 436.20000000018626,
+            "compileMs": 1.5
+          },
+          "br": {
+            "wireBytes": 46482,
+            "downloadMs": 391.10000000009313,
+            "compileMs": 1.5
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 153025,
+            "downloadMs": 1887.5,
+            "compileMs": 1.5
+          },
+          "gzip": {
+            "wireBytes": 56673,
+            "downloadMs": 888.3999999999069,
+            "compileMs": 1.5
+          },
+          "br": {
+            "wireBytes": 46482,
+            "downloadMs": 795.3999999999069,
+            "compileMs": 1.5
+          }
+        }
+      }
+    },
+    {
+      "id": "worker-actor/WorkerActor.wasm",
+      "demo": "worker-actor",
+      "file": "WorkerActor.wasm",
+      "raw": 26136,
+      "gzip": 10242,
+      "brotli": 8764,
+      "results": {
+        "local": {
+          "identity": {
+            "wireBytes": 26136,
+            "downloadMs": 3.6000000000931323,
+            "compileMs": 0.39999999990686774
+          },
+          "gzip": {
+            "wireBytes": 10242,
+            "downloadMs": 4,
+            "compileMs": 0.40000000037252903
+          },
+          "br": {
+            "wireBytes": 8764,
+            "downloadMs": 5.7000000001862645,
+            "compileMs": 1.1000000000931323
+          }
+        },
+        "wifi": {
+          "identity": {
+            "wireBytes": 26136,
+            "downloadMs": 31.799999999813735,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 10242,
+            "downloadMs": 28.200000000186265,
+            "compileMs": 0.39999999990686774
+          },
+          "br": {
+            "wireBytes": 8764,
+            "downloadMs": 27.40000000037253,
+            "compileMs": 0.5
+          }
+        },
+        "4g": {
+          "identity": {
+            "wireBytes": 26136,
+            "downloadMs": 113.8000000002794,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 10242,
+            "downloadMs": 100.10000000009313,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 8764,
+            "downloadMs": 99.60000000009313,
+            "compileMs": 0.7000000001862645
+          }
+        },
+        "slow-4g": {
+          "identity": {
+            "wireBytes": 26136,
+            "downloadMs": 282.89999999990687,
+            "compileMs": 0.5
+          },
+          "gzip": {
+            "wireBytes": 10242,
+            "downloadMs": 207.5,
+            "compileMs": 0.7000000001862645
+          },
+          "br": {
+            "wireBytes": 8764,
+            "downloadMs": 193.8000000002794,
+            "compileMs": 0.5
+          }
+        },
+        "3g": {
+          "identity": {
+            "wireBytes": 26136,
+            "downloadMs": 567.6000000000931,
+            "compileMs": 0.599999999627471
+          },
+          "gzip": {
+            "wireBytes": 10242,
+            "downloadMs": 397.5,
+            "compileMs": 0.6000000000931323
+          },
+          "br": {
+            "wireBytes": 8764,
+            "downloadMs": 396.5,
+            "compileMs": 0.8000000002793968
+          }
+        }
+      }
+    }
+  ]
+}
