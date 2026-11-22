@@ -67,13 +67,13 @@ const metadata = {
       {
         title: 'Binary size',
         description:
-          'Modules are 6–160 KB raw and 2–46 KB with brotli (29–39 % of the raw size); they are published without their name section, which was a third to a half of a small module. Only the two graphics modules, the widget editor and the scene gallery, are larger than 12 KB compressed. For the small demos the JavaScript glue and the stylesheet weigh about as much as the module.',
+          'Modules are 6–172 KB raw and 2–49 KB with brotli (29–39 % of the raw size); they are published without their name section, which was a third to a half of a small module. Only the two graphics modules, the widget editor and the scene gallery, are larger than 12 KB compressed. For the small demos the JavaScript glue and the stylesheet weigh about as much as the module.',
         icon: 'tabler:file-zip',
       },
       {
         title: 'Network',
         description:
-          'Latency, not size, dominates the small modules: a 6.5 KB module takes 0.34 s on 3G, 0.30 s of it the round trip. The widget editor needs 0.92 s on 3G with gzip (2.0 s without). GitHub Pages sends gzip, not brotli. Emulated network; a button measures your own line.',
+          'Latency, not size, dominates the small modules: a 6.5 KB module takes 0.34 s on 3G, 0.30 s of it the round trip. The widget editor needs 0.97 s on 3G with gzip (2.1 s without). GitHub Pages sends gzip, not brotli. Emulated network; a button measures your own line.',
         icon: 'tabler:clock-bolt',
       },
     ]}
