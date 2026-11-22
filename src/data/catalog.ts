@@ -81,7 +81,7 @@ export const examples: Example[] = [
   { title: 'Ghost Todo on a canvas', repo: 'fsharp-wasm-backend', path: 'demos/ghost-todo-canvas', kind: 'backend', checks: 22, run: 'bash build/build.sh --module canvas && node tests/e2e/canvas.mjs',
     summary: 'The second client of the same server, written in F# with the widgets of fsharp-wasm-graphics and drawn onto a canvas (197 KB of WebAssembly GC). It keeps a shadow of the list, applies the patches, copes with a server that is gone and can be operated by keyboard. Served by every platform at /canvas/; what it does shows on the first client and the other way round.' },
   { title: 'Ghost Todo benchmark', repo: 'fsharp-wasm-edge', path: 'bench', kind: 'backend', run: 'node bench/run.mjs',
-    summary: 'The module against hand-written JavaScript and Hono on Node, Bun and workerd, with three implementations that answer identically: close on a poll, 14 to 24 times slower on Node where the answer is long (measured 2026-11-22, local and in-process); the numbers and what they mean are in the README.' },
+    summary: 'The module against hand-written JavaScript and Hono on Node, Bun and workerd, with three implementations that answer identically: 1.8 times the hand-written JavaScript on a poll and 4 to 11 times where the answer is long on Node, after a bulk path for strings (14 to 24 times before; measured 2026-11-22, local and in-process); the numbers and what they mean are in the README.' },
   { title: 'Platform matrix', repo: 'fsharp-wasm-edge', path: 'tests/platforms', kind: 'backend', run: 'npm ci && node build/package.mjs && node tests/platforms/run.mjs',
     summary: 'The same module on Node, Bun, Deno, Cloudflare Workers (with a Durable Object), the Vercel and Netlify handlers: one command, identical answers.' },
   { title: 'Scene gallery sources', repo: 'fsharp-wasm-graphics', path: 'demo/FSharp.Graphics.Browser.Gallery', kind: 'graphics',
@@ -252,7 +252,7 @@ export const tests: RepoTests[] = [
     summary: 'The widget editor.',
     suites: [
       { name: 'Session test', count: 24, ci: 'yes', run: 'dotnet run --project tests/WidgetEditor.Session -c Release -- shots', what: 'Headless: a scripted pointer and keyboard session runs through the real hit tester and key path, the scenes are rendered by the software renderer, and the model is checked after every step; it writes the session’s screenshots.' },
-      { name: 'Editor in Chromium', count: 16, ci: 'yes', run: 'node tests/e2e/editor.mjs', what: 'The compiled editor in a real Chromium: it draws everything on one canvas, so it is driven by pointer and key events at canvas coordinates and judged by what the canvas shows.' },
+      { name: 'Editor in Chromium', count: 20, ci: 'yes', run: 'node tests/e2e/editor.mjs', what: 'The compiled editor in a real Chromium: it draws everything on one canvas, so it is driven by pointer and key events at canvas coordinates and judged by what the canvas shows.' },
     ],
   },
   {
