@@ -14,7 +14,9 @@ const metadata = {
   title: 'FSharp WasmGC — Compile F# to WebAssembly GC',
   ignoreTitleTemplate: true,
 };
-import { totals, recordedOn } from '~/data/catalog';
+import { totals, recordedOn, updatedOn, updated } from '~/data/catalog';
+import Features3 from '~/components/widgets/Features3.astro';
+import { layers } from '~/data/projects';
 ---
 
 <Layout metadata={metadata}>
@@ -31,6 +33,11 @@ import { totals, recordedOn } from '~/data/catalog';
         text: 'Live demos',
         href: '/demos',
         icon: 'tabler:player-play',
+      },
+      {
+        text: 'All projects',
+        href: '/projects',
+        icon: 'tabler:layout-grid',
       },
       {
         text: 'View on GitHub',
@@ -51,10 +58,10 @@ import { totals, recordedOn } from '~/data/catalog';
 
     <Fragment slot="subtitle">
       <span class="hidden sm:inline">
-        <strong>FSharp WasmGC</strong> is a clean-room F# compiler backend targeting
-        <strong>WebAssembly GC</strong>.
+        <strong>FSharp WasmGC</strong> compiles F# to <strong>WebAssembly GC</strong> — and around the compiler
+        there is a platform: libraries, a graphics stack, editors and a server host, all written in F#.
       </span>
-      Compile idiomatic F# to compact WasmGC modules — no garbage collector and no runtime library to ship.
+      Compact modules, no garbage collector and no runtime library to ship, in the browser and on the edge.
     </Fragment>
   </Hero>
 
@@ -105,6 +112,21 @@ import { totals, recordedOn } from '~/data/catalog';
         icon: 'tabler:heart-handshake',
       },
     ]}
+  />
+
+  <!-- The platform ====================================================== -->
+  <Features3
+    id="platform"
+    tagline="The platform"
+    title="One language, from the compiler to the edge"
+    subtitle="The compiler is the flagship, and what is built on it is the proof: libraries, a canvas graphics stack, a widget editor, a newsletter designer, server modules and the host that runs them. What works, what grows and what is only planned is written on each card."
+    columns={3}
+    items={layers.map((l) => ({
+      title: l.title,
+      description: `${l.projects.map((p) => p.name).join(', ')} — ${l.subtitle}`,
+      icon: l.id === 'planned' ? 'tabler:telescope' : 'tabler:box',
+      callToAction: { text: 'Details', href: `/projects#${l.id}`, icon: 'tabler:arrow-right' },
+    }))}
   />
 
   <!-- How It Works — Steps ============================================== -->
@@ -200,7 +222,7 @@ import { totals, recordedOn } from '~/data/catalog';
   <!-- Stats ============================================================= -->
   <Stats
     title="Solid foundation, proven results"
-    subtitle={`Counted in a recorded run on ${recordedOn}: every suite, demo and benchmark is listed on the Tests, Demos and Benchmarks pages.`}
+    subtitle={`Counted in a recorded run on ${recordedOn} and counted again on ${updatedOn} for what changed since (${updated.join(', ')}): every suite, demo and benchmark is listed on the Tests, Demos and Benchmarks pages.`}
     stats={[
       { title: 'named tests and checks', amount: totals.tests.toLocaleString('en-US').replace(/,/g, '\u202f') },
       { title: 'live demos in your browser', amount: `${totals.demos}` },
@@ -212,7 +234,7 @@ import { totals, recordedOn } from '~/data/catalog';
   <!-- Benchmarks teaser ================================================= -->
   <CallToAction
     title="Benchmarks — measured and public"
-    subtitle="Thirteen kernels in F# and in JavaScript, the size of every module and the time to download and compile it — with the method, the raw reports, and what is not measured yet."
+    subtitle="Thirteen kernels in F# and in JavaScript, the size of every module and the time to download and compile it — and a server module against hand-written JavaScript and Hono on Node, Bun and workerd, where it is close on a small answer and far behind on a long one, with the profile of why. The method, the raw reports and what is not measured yet are with the numbers."
     actions={[
       {
         variant: 'secondary',

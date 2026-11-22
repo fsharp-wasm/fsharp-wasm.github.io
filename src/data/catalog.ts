@@ -5,6 +5,9 @@
 // `ci` says whether that repository's CI runs the suite.  A suite that does not run, or does not pass, is listed as such.
 
 export const recordedOn = '2026-11-16';
+/** Suites whose counts were updated after that run, on this day: only these were counted again. */
+export const updatedOn = '2026-11-22';
+export const updated = ['QuickTest', 'String ABI', 'Host (graphics)', 'Widgets', 'Interact', 'the widget editor', 'the newsletter designer', 'the libraries of the core', 'the backend and the edge'];
 const org = 'https://github.com/fsharp-wasm';
 const pages = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime';
 
@@ -15,6 +18,7 @@ export type Repo =
   | 'fsharp-wasm-graphics'
   | 'fsharp-glyph-aura'
   | 'fsharp-wasm-ide'
+  | 'fsharp-wasm-newsletter'
   | 'fsharp-wasm-backend'
   | 'fsharp-wasm-edge'
   | 'fsharp-wasmecto';
@@ -170,7 +174,7 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasm',
     summary: 'The compiler. tests/run-all.sh runs every suite and prints one table.',
     suites: [
-      { name: 'QuickTest', count: 675, ci: 'yes', run: 'bash tests/QuickTest/run.sh',
+      { name: 'QuickTest', count: 699, ci: 'yes', run: 'bash tests/QuickTest/run.sh',
         what: 'The compiler’s main regression suite: language features, collections, strings, closures, numerics, arrays; compiled once, run on Node. CI runs it three times: default, with unpacked bool[] / byte[], and with the inlining pass.' },
       { name: 'QuickTestMulti', workload: '17 domains, all passing', ci: 'yes', run: 'bash tests/QuickTestMulti/run.sh',
         what: 'The same kind of test, one compilation per domain (Array, Bitwise, Closures, DU, Exceptions, Interop, List, Map, Math, Option, Primitives, Printf, Result, Seq, Set, StringBuilder, Strings), so a failure names the area that broke.' },
@@ -180,7 +184,7 @@ export const tests: RepoTests[] = [
         what: 'Classic algorithms and small programs end to end (see Examples).' },
       { name: 'Host interop', count: 14, ci: 'yes', run: 'bash tests/HostInterop/run.sh',
         what: 'The host boundary: callbacks delivered later, strings and numbers across, 500 closures called and called again after a GC.' },
-      { name: 'String ABI (exports)', count: 5, ci: 'yes', run: 'bash tests/StringAbi/run.sh',
+      { name: 'String ABI (exports)', count: 12, ci: 'yes', run: 'bash tests/StringAbi/run.sh',
         what: 'The module imports no wasm:js-string; the accessor exports exist; non-ASCII text round-trips; the empty string and null; a string of 10 000 characters.' },
       { name: 'IR pass tests', count: 27, workload: 'plus 50 000 random programs checked for equal results and unique binders', ci: 'yes', run: 'dotnet run -c Release --project tests/PassTests',
         what: 'Unit tests of the optimiser passes (pipe removal, partial application, shadowing, printf inlining, loop flattening), with property tests over generated programs.' },
@@ -198,6 +202,7 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasm-core',
     summary: 'The F# base library of compiled programs.',
     suites: [
+      { name: 'Libraries (Data, Ui, Edit, Icons)', count: 49, ci: 'yes', run: 'see tests/FSharp.Wasm.Libs.Tests', what: 'JSON and numbers, typed CSS and HTML, operations and undo history, and the icons, the same tests under .NET and as WebAssembly GC; the compiler compiles them as a gate.' },
       { name: 'Core tests (Expecto)', count: 90, ci: 'yes', run: 'dotnet run --project tests/FSharp.WasmCore.Tests -c Release',
         what: 'Dictionary, interfaces, math, ResizeArray, Stack and StringBuilder of the base library, under .NET with the BCL’s own types.' },
     ],
@@ -229,7 +234,9 @@ export const tests: RepoTests[] = [
       { name: 'Math', count: 37, workload: 'plus 200 generated cases', ci: 'yes', run: 'dotnet run --project tests/FSharp.Math.Tests -c Release', what: 'Vectors, matrices, colours, Bézier.' },
       { name: 'Unit and property', count: 118, workload: '63 unit and 55 property tests', ci: 'yes', run: 'dotnet run --project tests/FSharp.Graphics.Tests -c Release', what: 'The scene graph, layout, the command protocol and the TEA runtime.' },
       { name: 'Wasm entry', count: 30, ci: 'yes', run: 'dotnet run --project tests/FSharp.Graphics.WasmTests -c Release', what: 'The module entry points a host calls: mount, dispatch, render, submit.' },
-      { name: 'Host', count: 78, ci: 'no', run: 'dotnet run --project tests/FSharp.Graphics.HostTests -c Release', what: 'Hit testing, dispatch, timelines and easing, the command protocol, software-backend pixels.' },
+      { name: 'Host', count: 81, ci: 'no', run: 'dotnet run --project tests/FSharp.Graphics.HostTests -c Release', what: 'Hit testing, dispatch, timelines and easing, the command protocol, software-backend pixels.' },
+      { name: 'Widgets', count: 92, ci: 'yes', run: 'dotnet run --project tests/FSharp.Graphics.WidgetTests -c Release', what: 'Contrast of every theme pair (WCAG), the semantics of the widgets, the size of the targets, the keyboard (Tab order, Enter, Space, the arrows) and a button inside a scroll region.' },
+      { name: 'Interact', count: 44, ci: 'yes', run: 'dotnet run --project tests/FSharp.Graphics.InteractTests -c Release', what: 'Where a drag lands: the slots, before / after / into, the innermost slot, the threshold of a drag, Escape.' },
       { name: 'Golden images', count: 18, ci: 'yes', run: 'dotnet run --project tests/FSharp.Graphics.GoldenTests -c Release -- --compare', what: 'Eighteen scenes rendered by the software rasterizer and compared with PNG goldens.' },
     ],
   },
@@ -244,8 +251,16 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasm-ide',
     summary: 'The widget editor.',
     suites: [
-      { name: 'Session test', ci: 'yes', run: 'dotnet run --project tests/WidgetEditor.Session -c Release -- shots', what: 'Headless: a scripted pointer and keyboard session runs through the real hit tester and key path, the scenes are rendered by the software renderer, and the model is checked after every step; it writes the session’s screenshots.' },
-      { name: 'Editor in Chromium', ci: 'yes', run: 'node tests/e2e/editor.mjs', what: 'The compiled editor in a real Chromium: it draws everything on one canvas, so it is driven by pointer and key events at canvas coordinates and judged by what the canvas shows.' },
+      { name: 'Session test', count: 24, ci: 'yes', run: 'dotnet run --project tests/WidgetEditor.Session -c Release -- shots', what: 'Headless: a scripted pointer and keyboard session runs through the real hit tester and key path, the scenes are rendered by the software renderer, and the model is checked after every step; it writes the session’s screenshots.' },
+      { name: 'Editor in Chromium', count: 16, ci: 'yes', run: 'node tests/e2e/editor.mjs', what: 'The compiled editor in a real Chromium: it draws everything on one canvas, so it is driven by pointer and key events at canvas coordinates and judged by what the canvas shows.' },
+    ],
+  },
+  {
+    repo: 'fsharp-wasm-newsletter',
+    summary: 'The newsletter designer.',
+    suites: [
+      { name: 'Newsletter tests', count: 65, ci: 'yes', run: 'see tests/Newsletter.Tests', what: 'The blocks, the three outputs (email, web, text), the framework profiles, the checks, the undo history and drag and drop; the compiler compiles the library and the designer as a gate.' },
+      { name: 'Designer in Chromium', ci: 'yes', run: 'node tests/e2e/designer.mjs', what: 'The compiled designer in a real Chromium: dragging a block, dragging from the palette, inline editing, icons.' },
     ],
   },
   {

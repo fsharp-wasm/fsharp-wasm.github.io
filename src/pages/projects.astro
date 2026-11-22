@@ -1,0 +1,52 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import { layers, repoUrl, statusText, updatedOn } from '~/data/projects';
+
+const metadata = {
+  title: 'Projects — the fsharp-wasm platform',
+  description: 'Every repository of the fsharp-wasm platform: what it is, what works today, where to read the code and where to see it run.',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="The platform"
+    title="One language, from the compiler to the edge"
+    subtitle={`Eleven repositories and the plans behind them. What each one is, what works today and where to see it — written on ${updatedOn}; a card that says “planned” has no code yet.`}
+  />
+
+  {
+    layers.map((layer, i) => (
+      <Features3
+        id={layer.id}
+        isDark={i % 2 === 1}
+        tagline={`${i + 1} of ${layers.length}`}
+        title={layer.title}
+        subtitle={layer.subtitle}
+        columns={layer.projects.length > 2 ? 3 : 2}
+        items={layer.projects.map((p) => ({
+          title: `${p.name} · ${statusText[p.status]}`,
+          description: `${p.what}${p.state ? ` — ${p.state}` : ''}`,
+          icon: p.icon,
+          callToAction: p.repo
+            ? { text: p.page ? `${p.page.text}` : 'Repository', href: p.page ? p.page.href : repoUrl(p.repo), icon: p.page ? 'tabler:arrow-right' : 'tabler:brand-github' }
+            : undefined,
+        }))}
+      />
+    ))
+  }
+
+  <CallToAction
+    title="Where to go from here"
+    subtitle="Read the roadmap for the order and the reasons, the tests page for what is counted, the benchmarks page for what is measured and what is not."
+    actions={[
+      { variant: 'primary', text: 'Roadmap', href: '/docs/roadmap' },
+      { text: 'Tests', href: '/tests' },
+      { text: 'Benchmarks', href: '/benchmarks' },
+      { text: 'All repositories', href: 'https://github.com/fsharp-wasm', target: '_blank', icon: 'tabler:brand-github' },
+    ]}
+  />
+</Layout>

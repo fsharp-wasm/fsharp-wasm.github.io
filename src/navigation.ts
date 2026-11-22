@@ -3,6 +3,10 @@ import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 export const headerData = {
   links: [
     {
+      text: 'Projects',
+      href: getPermalink('/projects'),
+    },
+    {
       text: 'Docs',
       href: getPermalink('/docs'),
     },
@@ -22,6 +26,7 @@ export const headerData = {
         { text: 'Benchmarks', href: getPermalink('/benchmarks') },
         { text: 'Tests', href: getPermalink('/tests') },
         { text: 'Backend on the edge', href: getPermalink('/backend') },
+        { text: 'Roadmap', href: getPermalink('/docs/roadmap') },
       ],
     },
     {
@@ -44,6 +49,7 @@ export const footerData = {
     {
       title: 'Project',
       links: [
+        { text: 'All projects', href: getPermalink('/projects') },
         { text: 'Documentation', href: getPermalink('/docs') },
         { text: 'Getting Started', href: getPermalink('/docs/getting-started') },
         { text: 'Architecture', href: getPermalink('/docs/architecture') },
