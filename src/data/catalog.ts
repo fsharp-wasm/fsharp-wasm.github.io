@@ -259,8 +259,8 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasm-newsletter',
     summary: 'The newsletter designer.',
     suites: [
-      { name: 'Newsletter tests', count: 65, ci: 'yes', run: 'see tests/Newsletter.Tests', what: 'The blocks, the three outputs (email, web, text), the framework profiles, the checks, the undo history and drag and drop; the compiler compiles the library and the designer as a gate.' },
-      { name: 'Designer in Chromium', ci: 'yes', run: 'node tests/e2e/designer.mjs', what: 'The compiled designer in a real Chromium: dragging a block, dragging from the palette, inline editing, icons.' },
+      { name: 'Newsletter tests', count: 82, ci: 'yes', run: 'see tests/Newsletter.Tests', what: 'The blocks, the three outputs (email, web, text), the framework profiles, the checks, the undo history, drag and drop and the library of projects (ids, names, search, the index, the date arithmetic, opening, duplicating and deleting without ever keeping a project under another one's id); under .NET and as WebAssembly GC; the compiler compiles the library and the designer as a gate.' },
+      { name: 'Designer in Chromium', ci: 'yes', run: 'node tests/e2e/designer.mjs', what: 'The compiled designer in a real Chromium: dragging a block, dragging from the palette, inline editing, icons, the library of projects (new, open, duplicate, delete, search, reload, the migration of the single project of earlier versions) and axe-core.' },
     ],
   },
   {

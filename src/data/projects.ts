@@ -141,7 +141,7 @@ export const layers: Layer[] = [
         id: 'newsletter',
         name: 'fsharp-wasm-newsletter',
         repo: 'fsharp-wasm-newsletter',
-        what: 'The newsletter designer: blocks, three outputs (email, web, text), framework profiles and checks.',
+        what: 'The newsletter designer: blocks, three outputs (email, web, text), framework profiles, checks and a library of newsletters kept in the browser (new, open, duplicate, delete, search).',
         state: 'Drag and drop, inline editing, icons, undo; 65 tests and a gate of the compiler.',
         status: 'growing',
         icon: 'tabler:mail',
