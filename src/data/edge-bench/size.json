@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-22",
+  "note": "node bench/size.mjs of fsharp-wasm-edge: minified, and gzip -9 of that; the module is fixtures/GhostTodo.wasm (59 814 bytes), 'and the host core' adds host/runtime/server.js, minified",
+  "rows": [
+    { "name": "F# → WasmGC: the module", "bytes": 59814, "gzipBytes": 24048 },
+    { "name": "F# → WasmGC: the module and the host core", "bytes": 64496, "gzipBytes": 26315 },
+    { "name": "JavaScript (hand-written)", "bytes": 7206, "gzipBytes": 2822 },
+    { "name": "JavaScript (Hono)", "bytes": 27203, "gzipBytes": 10938 }
+  ]
+}

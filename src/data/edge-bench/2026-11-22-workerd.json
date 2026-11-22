@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-22T09:48:37.210Z",
+  "runtime": "workerd (miniflare)",
+  "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "cores": 4,
+  "equivalence": {
+    "steps": 18,
+    "implementations": 3,
+    "problems": []
+  },
+  "note": "mean of a batch timed from outside; workerd freezes the clock inside a Worker",
+  "results": [
+    {
+      "scenario": "poll, nothing new",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 905,
+      "meanUs": 41.81166519337018,
+      "perSecond": 23916.770484390174
+    },
+    {
+      "scenario": "poll, nothing new",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 3058,
+      "meanUs": 17.73235251798559,
+      "perSecond": 56394.09655237335
+    },
+    {
+      "scenario": "poll, nothing new",
+      "implementation": "JavaScript (Hono)",
+      "requests": 3755,
+      "meanUs": 14.468323834886801,
+      "perSecond": 69116.50661210292
+    },
+    {
+      "scenario": "state, 100 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 1768,
+      "meanUs": 295.7572799773755,
+      "perSecond": 3381.150922393176
+    },
+    {
+      "scenario": "state, 100 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 3479,
+      "meanUs": 32.358849382006305,
+      "perSecond": 30903.447406138836
+    },
+    {
+      "scenario": "state, 100 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 4274,
+      "meanUs": 28.65783575105289,
+      "perSecond": 34894.47035313056
+    },
+    {
+      "scenario": "state, 5 000 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 95,
+      "meanUs": 8541.85443157897,
+      "perSecond": 117.07059725848654
+    },
+    {
+      "scenario": "state, 5 000 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 794,
+      "meanUs": 776.0688211586903,
+      "perSecond": 1288.545516500682
+    },
+    {
+      "scenario": "state, 5 000 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 860,
+      "meanUs": 667.8760453488331,
+      "perSecond": 1497.283825290811
+    },
+    {
+      "scenario": "toggle, 100 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 849,
+      "meanUs": 556.6612285041248,
+      "perSecond": 1796.4247351791093
+    },
+    {
+      "scenario": "toggle, 100 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 3322,
+      "meanUs": 34.144772727273796,
+      "perSecond": 29287.059778881783
+    },
+    {
+      "scenario": "toggle, 100 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 4892,
+      "meanUs": 34.772784341781716,
+      "perSecond": 28758.12273676446
+    },
+    {
+      "scenario": "toggle, 5 000 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 74,
+      "meanUs": 11247.121202702712,
+      "perSecond": 88.91164076365581
+    },
+    {
+      "scenario": "toggle, 5 000 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 806,
+      "meanUs": 694.1560471463947,
+      "perSecond": 1440.5982690936696
+    },
+    {
+      "scenario": "toggle, 5 000 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 1078,
+      "meanUs": 600.2076419294999,
+      "perSecond": 1666.0900830673854
+    },
+    {
+      "scenario": "add + remove, 100 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 1640,
+      "meanUs": 568.6654945121984,
+      "perSecond": 1758.5030385179264
+    },
+    {
+      "scenario": "add + remove, 100 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 5370,
+      "meanUs": 53.03436350093108,
+      "perSecond": 18855.699097481276
+    },
+    {
+      "scenario": "add + remove, 100 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 6326,
+      "meanUs": 54.032831014858466,
+      "perSecond": 18507.266438158873
+    }
+  ]
+}

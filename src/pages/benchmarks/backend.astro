@@ -1,0 +1,271 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Headline from '~/components/ui/Headline.astro';
+
+import nodeOriginal from '~/data/edge-bench/2026-11-22-node.json';
+import nodeBulk from '~/data/edge-bench/2026-11-22-node-bulk.json';
+import nodeLog from '~/data/edge-bench/2026-11-22-node-log.json';
+import bunOriginal from '~/data/edge-bench/2026-11-22-bun.json';
+import bunBulk from '~/data/edge-bench/2026-11-22-bun-bulk.json';
+import bunLog from '~/data/edge-bench/2026-11-22-bun-log.json';
+import workerdOriginal from '~/data/edge-bench/2026-11-22-workerd.json';
+import workerdBulk from '~/data/edge-bench/2026-11-22-workerd-bulk.json';
+import workerdLog from '~/data/edge-bench/2026-11-22-workerd-log.json';
+import size from '~/data/edge-bench/size.json';
+
+const metadata = {
+  title: 'Backend benchmarks',
+  description:
+    'The Ghost Todo as a WebAssembly GC module against hand-written JavaScript and Hono, on Node, Bun and workerd: what a request costs, what changed in one day, and what the numbers leave out.',
+};
+
+// ── the data: a report is { runtime, date, cpu, results: [{ scenario, implementation, p50Us?, meanUs, p95Us?, p99Us? }] }; workerd freezes its clock inside a Worker, so it is timed in batches and has means only
+type Row = { scenario: string; implementation: string; meanUs: number; p50Us?: number; p95Us?: number; p99Us?: number };
+const runtimes = [
+  { id: 'node', name: 'Node', key: 'p50Us' as const, kind: 'median', original: nodeOriginal, bulk: nodeBulk, log: nodeLog },
+  { id: 'bun', name: 'Bun', key: 'p50Us' as const, kind: 'median', original: bunOriginal, bulk: bunBulk, log: bunLog },
+  { id: 'workerd', name: 'workerd (the engine of Cloudflare Workers, through Miniflare)', key: 'meanUs' as const, kind: 'mean', original: workerdOriginal, bulk: workerdBulk, log: workerdLog },
+];
+const pick = (rows: Row[], scenario: string, who: string): Row => rows.find((r) => r.scenario === scenario && r.implementation.startsWith(who))!;
+const us = (v: number) => (v >= 1000 ? `${(v / 1000).toFixed(2)} ms` : v < 100 ? `${v.toFixed(1)} µs` : `${Math.round(v)} µs`);
+const kb = (n: number) => `${(n / 1024).toFixed(1)} KB`;
+
+const scenarios = nodeLog.results.map((r) => r.scenario).filter((s, i, all) => all.indexOf(s) === i);
+const tables = runtimes.map((rt) => {
+  const rows = rt.log.results as Row[];
+  return {
+    ...rt,
+    header: `${rt.id === 'workerd' ? 'workerd' : rt.log.runtime} · ${rt.log.date.slice(0, 10)} · ${rt.log.cpu} × ${rt.log.cores}`,
+    lines: scenarios.map((s) => {
+      const f = pick(rows, s, 'F#'), j = pick(rows, s, 'JavaScript (hand'), h = pick(rows, s, 'JavaScript (Hono');
+      const fv = f[rt.key]!, jv = j[rt.key]!, hv = h[rt.key]!;
+      return { scenario: s, f: fv, j: jv, h: hv, ratio: fv / jv, p99: rt.key === 'p50Us' ? f.p99Us : undefined };
+    }),
+  };
+});
+
+// what changed in one day: the same module, three builds
+const stages = [
+  ['one call per character', 'original'],
+  ['a whole string through the module’s memory', 'bulk'],
+  ['a mutation persists its patch, not the state', 'log'],
+] as const;
+const historyScenarios = ['toggle, 5 000 todos', 'state, 5 000 todos', 'toggle, 100 todos'];
+const history = runtimes.flatMap((rt) =>
+  historyScenarios.map((s) => ({
+    runtime: rt.id === 'workerd' ? 'workerd (mean)' : rt.name,
+    scenario: s,
+    values: stages.map(([, which]) => pick((rt as any)[which].results as Row[], s, 'F#')[rt.key]!),
+  })),
+);
+const barWidth = (ratio: number) => `${Math.min(100, (Math.min(ratio, 25) / 25) * 100).toFixed(0)}%`;
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Performance · backend"
+    title="Backend benchmarks — one module on the edge's engines"
+    subtitle="The Ghost Todo, written in F# and compiled to WebAssembly GC, against the same API in hand-written JavaScript and in Hono: what one request costs on Node, Bun and workerd, what changed in a single day, and what these numbers do not say. Measured 2026-11-22, in one process, on one machine; nothing here is a deployment."
+    callToAction={{
+      variant: 'primary',
+      text: 'The benchmark and how to run it',
+      href: 'https://github.com/fsharp-wasm/fsharp-wasm-edge/tree/main/bench',
+      icon: 'tabler:brand-github',
+    }}
+    callToAction2={{
+      variant: 'secondary',
+      text: 'Browser benchmarks',
+      href: '/benchmarks',
+      icon: 'tabler:chart-bar',
+    }}
+  />
+
+  <Features3
+    title="What is measured"
+    subtitle="A request handled by the application, fetch(request) → response, without a network and without a platform in front. Before anything is timed, 18 requests go to all three implementations and the answers must be identical."
+    columns={3}
+    items={[
+      {
+        title: 'The same API three times',
+        description:
+          'State, add, toggle, delete and patches since a version. The F# module runs on the host core of fsharp-wasm-edge; the JavaScript and the Hono version share one logic file that does the same as the F# model, with the same GGBP patches and the same persistence.',
+        icon: 'tabler:equal',
+      },
+      {
+        title: 'Three engines',
+        description:
+          'Node 22.23.4, Bun 1.4.4 and workerd through Miniflare, the engine of Cloudflare Workers. workerd freezes the clock inside a Worker while it only computes, so it is timed in batches from outside: its numbers are means, not medians.',
+        icon: 'tabler:cpu',
+      },
+      {
+        title: 'Not a deployment',
+        description:
+          'It says what the module and the framework cost per request on each engine. It does not say what a request costs a user of Cloudflare, Vercel or Netlify: that needs deployments, which have not been made yet. The store here is memory, so no storage write is in the numbers.',
+        icon: 'tabler:alert-triangle',
+      },
+    ]}
+  />
+
+  {
+    tables.map((t) => (
+      <WidgetWrapper id={t.id}>
+        <Headline
+          tagline={t.kind === 'median' ? 'Median per request' : 'Mean per request'}
+          title={t.name}
+          subtitle={t.header}
+          classes={{ container: 'mb-6 md:mb-8' }}
+        />
+        <div class="max-w-5xl mx-auto overflow-x-auto">
+          <table class="w-full text-left text-sm border-collapse">
+            <caption class="sr-only">{`The Ghost Todo on ${t.name}: F# module, hand-written JavaScript and Hono, and how many times the module needs what the JavaScript needs`}</caption>
+            <thead>
+              <tr class="border-b border-slate-300 dark:border-slate-600">
+                <th scope="col" class="py-2 pr-4">Scenario</th>
+                <th scope="col" class="py-2 pr-4 text-right">F# → WasmGC</th>
+                <th scope="col" class="py-2 pr-4 text-right">JavaScript</th>
+                <th scope="col" class="py-2 pr-4 text-right">Hono</th>
+                <th scope="col" class="py-2 pr-2 text-right">F# ÷ JavaScript</th>
+                <th scope="col" class="py-2 w-40"><span class="sr-only">As a bar, capped at 25×</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {t.lines.map((l) => (
+                <tr class="border-b border-slate-200 dark:border-slate-700">
+                  <th scope="row" class="py-2 pr-4 font-semibold whitespace-nowrap">{l.scenario}</th>
+                  <td class="py-2 pr-4 text-right tabular-nums">{us(l.f)}</td>
+                  <td class="py-2 pr-4 text-right tabular-nums text-muted">{us(l.j)}</td>
+                  <td class="py-2 pr-4 text-right tabular-nums text-muted">{us(l.h)}</td>
+                  <td class="py-2 pr-2 text-right tabular-nums font-semibold">{l.ratio.toFixed(1)}×</td>
+                  <td class="py-2" aria-hidden="true">
+                    <div class="h-2 rounded bg-slate-200 dark:bg-slate-700">
+                      <div class="h-2 rounded bg-secondary" style={`width:${barWidth(l.ratio)}`} />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {t.kind === 'median' && (
+          <p class="max-w-5xl mx-auto mt-3 text-sm text-muted">
+            The 99th percentile of a toggle in 5 000 todos is {us(t.lines.find((l) => l.scenario === 'toggle, 5 000 todos')!.p99!)}: every 64th change the module writes a checkpoint after its response, and in this in-process loop the next request
+            waits behind it. The median does not show it.
+          </p>
+        )}
+      </WidgetWrapper>
+    ))
+  }
+
+  <WidgetWrapper id="history">
+    <Headline
+      tagline="Three changes, one day"
+      title="From one call per character to one patch per change"
+      subtitle="The same module, rebuilt twice. The first change was found by a CPU profile (42.5 % of a request was JavaScript-to-WebAssembly calls, one per character); the second by asking what a toggle writes: the whole list."
+      classes={{ container: 'mb-6 md:mb-8' }}
+    />
+    <div class="max-w-5xl mx-auto overflow-x-auto">
+      <table class="w-full text-left text-sm border-collapse">
+        <caption class="sr-only">The F# module in three builds, in the same scenarios</caption>
+        <thead>
+          <tr class="border-b border-slate-300 dark:border-slate-600">
+            <th scope="col" class="py-2 pr-4">Engine</th>
+            <th scope="col" class="py-2 pr-4">Scenario</th>
+            {stages.map(([name]) => <th scope="col" class="py-2 pr-4 text-right">{name}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {history.map((h) => (
+            <tr class="border-b border-slate-200 dark:border-slate-700">
+              <th scope="row" class="py-2 pr-4 font-semibold whitespace-nowrap">{h.runtime}</th>
+              <td class="py-2 pr-4 whitespace-nowrap">{h.scenario}</td>
+              {h.values.map((v, i) => (
+                <td class={`py-2 pr-4 text-right tabular-nums ${v === Math.min(...h.values) ? 'font-semibold' : 'text-muted'}`}>{us(v)}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="mt-3 text-sm text-muted">
+        The lowest of each row is bold. The state of 5 000 todos is not what the third change touches: its slightly higher time on Node (6.81 to 7.47 ms) was not examined and is within what two runs of this machine differ by. In the first two builds the JavaScript of the benchmark persisted the whole list too, as the module did; in the third both persist the patch of a change, so the ratios above compare the module and the language, not two ways of persisting. How and why:
+        <a class="underline" href="https://github.com/fsharp-wasm/fsharp-wasm-backend/blob/main/docs/persistence.md">docs/persistence.md</a>.
+      </p>
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="size">
+    <Headline
+      tagline="Shipped code"
+      title="What a deployment would carry"
+      subtitle={`Minified, and gzip -9 of that (${size.date}). The module grew by 10 KB when it learned to replay its log: the decoder and the transition the clients use are in it now.`}
+      classes={{ container: 'mb-6 md:mb-8' }}
+    />
+    <div class="max-w-3xl mx-auto overflow-x-auto">
+      <table class="w-full text-left text-sm border-collapse">
+        <caption class="sr-only">Size of the deployed code of the three implementations</caption>
+        <thead>
+          <tr class="border-b border-slate-300 dark:border-slate-600">
+            <th scope="col" class="py-2 pr-4">Deployed code</th>
+            <th scope="col" class="py-2 pr-4 text-right">Minified</th>
+            <th scope="col" class="py-2 text-right">gzip</th>
+          </tr>
+        </thead>
+        <tbody>
+          {size.rows.map((r) => (
+            <tr class="border-b border-slate-200 dark:border-slate-700">
+              <th scope="row" class="py-2 pr-4 font-semibold">{r.name}</th>
+              <td class="py-2 pr-4 text-right tabular-nums">{kb(r.bytes)}</td>
+              <td class="py-2 text-right tabular-nums">{kb(r.gzipBytes)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </WidgetWrapper>
+
+  <Features3
+    tagline="Read it this way"
+    title="What these numbers leave out"
+    columns={3}
+    items={[
+      {
+        title: 'One machine, one day',
+        description:
+          'A shared 4-core Xeon, 2026-11-22. Numbers vary by some percent from run to run and by a lot between machines; compare the ratios, not the absolute times.',
+        icon: 'tabler:calendar',
+      },
+      {
+        title: 'Still far behind on a long answer',
+        description:
+          'The state of 5 000 todos is 218 000 characters of JSON, and the module needs 6.7 to 22 times what the JavaScript needs for it: the JSON writer of the compiled code builds a tree first. That is the next thing to improve, in the compiler.',
+        icon: 'tabler:chart-line',
+      },
+      {
+        title: 'What the module buys',
+        description:
+          'Not speed or size: one language and the same code on the server and in the client (the model and the shadow of the Ghost Todo run in the module and in the canvas client), and a type checker for both.',
+        icon: 'tabler:link',
+      },
+    ]}
+  />
+
+  <CallToAction
+    actions={[
+      {
+        variant: 'primary',
+        text: 'F# on the edge',
+        href: '/backend',
+        icon: 'tabler:cloud',
+      },
+      {
+        text: 'The raw reports',
+        href: 'https://github.com/fsharp-wasm/fsharp-wasm-edge/tree/main/bench/results',
+        target: '_blank',
+        icon: 'tabler:file-code',
+      },
+    ]}
+  />
+</Layout>

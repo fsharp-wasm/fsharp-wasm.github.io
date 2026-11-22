@@ -1,0 +1,198 @@
+{
+  "date": "2026-11-22T15:18:23.345Z",
+  "runtime": "Bun 1.4.4",
+  "cpu": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+  "cores": 4,
+  "budgetMs": 1000,
+  "equivalence": {
+    "steps": 18,
+    "implementations": 3,
+    "problems": []
+  },
+  "coldStart": {
+    "compileMs": 1.2090050000000012,
+    "bytes": 49664
+  },
+  "results": [
+    {
+      "scenario": "poll, nothing new",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 74122,
+      "meanUs": 13.493305793151894,
+      "p50Us": 7.487000000082844,
+      "p95Us": 17.05299999991894,
+      "p99Us": 53.08899999999994,
+      "perSecond": 74110.82319853143
+    },
+    {
+      "scenario": "poll, nothing new",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 275507,
+      "meanUs": 3.6296717107006566,
+      "p50Us": 2.716999999847758,
+      "p95Us": 5.268999999998414,
+      "p99Us": 21.805000000313157,
+      "perSecond": 275507.0099182508
+    },
+    {
+      "scenario": "poll, nothing new",
+      "implementation": "JavaScript (Hono)",
+      "requests": 320583,
+      "meanUs": 3.1193298178630613,
+      "p50Us": 1.8879999997807317,
+      "p95Us": 3.5530000000107975,
+      "p99Us": 14.826000000084605,
+      "perSecond": 320581.68208870693
+    },
+    {
+      "scenario": "state, 100 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 6054,
+      "meanUs": 165.1983457218371,
+      "p50Us": 89.83299999999872,
+      "p95Us": 833.6840000001757,
+      "p99Us": 1097.805000000335,
+      "perSecond": 6053.329381904416
+    },
+    {
+      "scenario": "state, 100 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 74028,
+      "meanUs": 13.508875695682862,
+      "p50Us": 9.086000000024796,
+      "p95Us": 13.979999999719439,
+      "p99Us": 53.90400000032969,
+      "perSecond": 74025.40540953958
+    },
+    {
+      "scenario": "state, 100 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 88922,
+      "meanUs": 11.245835721193915,
+      "p50Us": 7.945999999719788,
+      "p95Us": 10.84999999966385,
+      "p99Us": 43.66399999980786,
+      "perSecond": 88921.80401634348
+    },
+    {
+      "scenario": "state, 5 000 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 132,
+      "meanUs": 7615.406128787871,
+      "p50Us": 7109.151000000566,
+      "p95Us": 10974.771999997756,
+      "p99Us": 13476.949999996577,
+      "perSecond": 131.31276035558827
+    },
+    {
+      "scenario": "state, 5 000 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 2077,
+      "meanUs": 481.50316706788493,
+      "p50Us": 313.86100000236183,
+      "p95Us": 1147.581999997783,
+      "p99Us": 1936.7290000009234,
+      "perSecond": 2076.8295379851875
+    },
+    {
+      "scenario": "state, 5 000 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 1766,
+      "meanUs": 566.4561795016994,
+      "p50Us": 405.2240000019083,
+      "p95Us": 1422.5660000010976,
+      "p99Us": 2203.402000006463,
+      "perSecond": 1765.3616222876778
+    },
+    {
+      "scenario": "toggle, 100 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 2306,
+      "meanUs": 434.126288811797,
+      "p50Us": 270.2770000032615,
+      "p95Us": 1282.748999998148,
+      "p99Us": 1699.456000002101,
+      "perSecond": 2303.477181114736
+    },
+    {
+      "scenario": "toggle, 100 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 27527,
+      "meanUs": 36.32860584153815,
+      "p50Us": 28.748999997333158,
+      "p95Us": 56.29599999519996,
+      "p99Us": 120.75000000186265,
+      "perSecond": 27526.51737757025
+    },
+    {
+      "scenario": "toggle, 100 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 31002,
+      "meanUs": 32.25649090381273,
+      "p50Us": 20.35500000056345,
+      "p95Us": 50.658000000112224,
+      "p99Us": 121.99399999371963,
+      "perSecond": 31001.512315209697
+    },
+    {
+      "scenario": "toggle, 5 000 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 120,
+      "meanUs": 8358.154633333348,
+      "p50Us": 8065.6290000042645,
+      "p95Us": 11813.826999998128,
+      "p99Us": 15654.47700000368,
+      "perSecond": 119.64363473390132
+    },
+    {
+      "scenario": "toggle, 5 000 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 1562,
+      "meanUs": 640.3626459667092,
+      "p50Us": 573.8700000074459,
+      "p95Us": 1482.839000003878,
+      "p99Us": 2463.568999999552,
+      "perSecond": 1561.6151352650688
+    },
+    {
+      "scenario": "toggle, 5 000 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 2361,
+      "meanUs": 423.5733684879295,
+      "p50Us": 320.79900000826456,
+      "p95Us": 1009.7010000026785,
+      "p99Us": 2057.170000000042,
+      "perSecond": 2360.86608459308
+    },
+    {
+      "scenario": "add + remove, 100 todos",
+      "implementation": "F# → WasmGC (host core)",
+      "requests": 2186,
+      "meanUs": 457.48498719122085,
+      "p50Us": 313.9900000023772,
+      "p95Us": 852.2974999941653,
+      "p99Us": 1432.1990000025835,
+      "perSecond": 2185.8640785998455
+    },
+    {
+      "scenario": "add + remove, 100 todos",
+      "implementation": "JavaScript (hand-written)",
+      "requests": 28612,
+      "meanUs": 34.95074528170023,
+      "p50Us": 28.021000005537644,
+      "p95Us": 48.44500000035623,
+      "p99Us": 399.5835000023362,
+      "perSecond": 28611.693168202266
+    },
+    {
+      "scenario": "add + remove, 100 todos",
+      "implementation": "JavaScript (Hono)",
+      "requests": 25186,
+      "meanUs": 39.71934844755012,
+      "p50Us": 30.36499999871012,
+      "p95Us": 50.04700000426965,
+      "p99Us": 449.60100000025705,
+      "perSecond": 25176.64662401278
+    }
+  ]
+}
