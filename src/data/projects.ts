@@ -1,7 +1,7 @@
 // One source for what the projects of the platform are, so that the page /projects, the start page, the navigation, the roadmap and the READMEs of the repositories say the same.
 // A status is a statement about the day it was written (`updatedOn`), not a promise: "planned" means that nothing but a plan exists.
 
-export const updatedOn = '2026-11-22';
+export const updatedOn = '2026-11-24';
 const org = 'https://github.com/fsharp-wasm';
 
 export type Status = 'works' | 'growing' | 'planned';
@@ -184,10 +184,37 @@ export const layers: Layer[] = [
         id: 'accounting',
         name: 'fsharp-wasm-accounting',
         repo: 'fsharp-wasm-accounting',
-        what: 'A spreadsheet grid with formulas, folding of rows and columns into total lines, and a tree of the cells (the graph of what a cell is made of) that opens in a tab of its own.',
-        state: 'A repository exists; it has no code.',
-        status: 'planned',
+        what: 'A ledger of a million journal lines as a pivot table that folds rows and columns into total lines, turns, and opens the lines behind a cell in a tab of its own. Formulas over measures and the tree of what a cell is made of come next.',
+        state: 'Runs as a demo of the runtime repository: a module of 213 KB; a million lines turned in 4 to 5 ms (measured 2026-11-24 in a headless Chromium without a GPU).',
+        status: 'growing',
         icon: 'tabler:table',
+      },
+      {
+        id: 'sci',
+        name: 'fsharp-wasm-sci',
+        repo: 'fsharp-wasm-sci',
+        what: 'Scientific computing in F# for WebAssembly GC: linear algebra, geospatial analysis, chemistry and quantum simulation, as libraries above the tensors and tables of the base library.',
+        state: 'A plan with a repository; no code yet.',
+        status: 'planned',
+        icon: 'tabler:atom',
+      },
+      {
+        id: 'embedded',
+        name: 'fsharp-wasm-embedded',
+        repo: 'fsharp-wasm-embedded',
+        what: 'The universal shell: one application, compiled to WebAssembly GC, as a native app on Windows, macOS and Linux and on iOS and Android, with a window, packaging and a bridge to the device.',
+        state: 'A plan with two proposals and one working piece: a probe page that tells what the web view of a device can run. Device reports are welcome.',
+        status: 'planned',
+        icon: 'tabler:device-desktop',
+      },
+      {
+        id: 'mobile',
+        name: 'fsharp-wasm-mobile',
+        repo: 'fsharp-wasm-mobile',
+        what: 'The device APIs for those apps (haptics, share, secure storage, deep links, camera and more), web first and native where the web has nothing; television later.',
+        state: 'A catalogue of 32 APIs and a draft of the bridge contract; nothing is implemented.',
+        status: 'planned',
+        icon: 'tabler:device-mobile',
       },
       {
         id: 'data',
