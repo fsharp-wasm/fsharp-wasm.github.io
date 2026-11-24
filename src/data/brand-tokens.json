@@ -1,0 +1,425 @@
+{
+  "ramps": {
+    "violet": {
+      "50": "#f7f5fe",
+      "100": "#edeaff",
+      "200": "#ddd6ff",
+      "300": "#c6b8ff",
+      "400": "#a68cfb",
+      "500": "#8b5cf6",
+      "600": "#7b3dea",
+      "700": "#6d28d9",
+      "800": "#5a24b3",
+      "900": "#49288b",
+      "950": "#2e185c"
+    },
+    "indigo": {
+      "50": "#f3f5fd",
+      "100": "#e6eaff",
+      "200": "#d1d8ff",
+      "300": "#b1bcff",
+      "400": "#8792ff",
+      "500": "#666af9",
+      "600": "#4f46e5",
+      "700": "#4133cb",
+      "800": "#372daa",
+      "900": "#2c2986",
+      "950": "#1d1d56"
+    },
+    "ink": {
+      "50": "#f9fafd",
+      "100": "#f2f3f9",
+      "200": "#e6e7f1",
+      "300": "#d1d3e2",
+      "400": "#a0a3b8",
+      "500": "#7c7e95",
+      "600": "#5e617a",
+      "700": "#434560",
+      "800": "#1c1d37",
+      "900": "#0c0c24",
+      "950": "#040415"
+    },
+    "signal": {
+      "50": "#e7f9fc",
+      "100": "#cdf4f8",
+      "200": "#a6ecf4",
+      "300": "#76e1ed",
+      "400": "#40d0df",
+      "500": "#00bac9",
+      "600": "#0098a4",
+      "700": "#007781",
+      "800": "#00616a",
+      "900": "#004c53",
+      "950": "#003034"
+    },
+    "success": {
+      "50": "#ecf9ee",
+      "100": "#d9f3dd",
+      "200": "#b9eec2",
+      "300": "#93e4a4",
+      "400": "#5fd37f",
+      "500": "#28bc5e",
+      "600": "#009a46",
+      "700": "#007f38",
+      "800": "#09672e",
+      "900": "#0d5326",
+      "950": "#063215"
+    },
+    "warning": {
+      "50": "#fff7eb",
+      "100": "#ffeccd",
+      "200": "#ffdca1",
+      "300": "#ffcb70",
+      "400": "#fab72a",
+      "500": "#e9a700",
+      "600": "#c58d00",
+      "700": "#9f7100",
+      "800": "#825b00",
+      "900": "#694900",
+      "950": "#382500"
+    },
+    "danger": {
+      "50": "#fff2f0",
+      "100": "#ffe4e0",
+      "200": "#ffcdc6",
+      "300": "#ffaba1",
+      "400": "#fd7468",
+      "500": "#f53e39",
+      "600": "#e3121e",
+      "700": "#c60014",
+      "800": "#a3000e",
+      "900": "#861213",
+      "950": "#4f0a0a"
+    }
+  },
+  "light": {
+    "page": "#ffffff",
+    "surface": "#f9fafd",
+    "raised": "#f2f3f9",
+    "line": "#e6e7f1",
+    "control": "#7c7e95",
+    "text": "#0c0c24",
+    "heading": "#040415",
+    "muted": "#5e617a",
+    "primary": "#6d28d9",
+    "primary-hover": "#5a24b3",
+    "primary-pressed": "#49288b",
+    "on-primary": "#ffffff",
+    "link": "#6d28d9",
+    "accent": "#8b5cf6",
+    "secondary": "#4f46e5",
+    "signal": "#007781",
+    "focus": "#007781",
+    "success": "#007f38",
+    "warning": "#825b00",
+    "danger": "#c60014"
+  },
+  "dark": {
+    "page": "#040415",
+    "surface": "#0c0c24",
+    "raised": "#1c1d37",
+    "line": "#434560",
+    "control": "#7c7e95",
+    "text": "#f2f3f9",
+    "heading": "#f9fafd",
+    "muted": "#a0a3b8",
+    "primary": "#7b3dea",
+    "primary-hover": "#6d28d9",
+    "primary-pressed": "#5a24b3",
+    "on-primary": "#ffffff",
+    "link": "#a68cfb",
+    "accent": "#a68cfb",
+    "secondary": "#8792ff",
+    "signal": "#40d0df",
+    "focus": "#76e1ed",
+    "success": "#5fd37f",
+    "warning": "#fab72a",
+    "danger": "#fd7468"
+  },
+  "checks": [
+    {
+      "fore": "text",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "text (1.4.3)",
+      "light": 19.2,
+      "dark": 18.35
+    },
+    {
+      "fore": "text",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "text (1.4.3)",
+      "light": 18.4,
+      "dark": 17.34
+    },
+    {
+      "fore": "text",
+      "back": "raised",
+      "minimum": 4.5,
+      "why": "text (1.4.3)",
+      "light": 17.34,
+      "dark": 14.81
+    },
+    {
+      "fore": "heading",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "text (1.4.3)",
+      "light": 20.32,
+      "dark": 19.47
+    },
+    {
+      "fore": "heading",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "text (1.4.3)",
+      "light": 19.47,
+      "dark": 18.4
+    },
+    {
+      "fore": "heading",
+      "back": "raised",
+      "minimum": 4.5,
+      "why": "text (1.4.3)",
+      "light": 18.35,
+      "dark": 15.72
+    },
+    {
+      "fore": "muted",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "secondary text (1.4.3)",
+      "light": 6.06,
+      "dark": 8.15
+    },
+    {
+      "fore": "muted",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "secondary text (1.4.3)",
+      "light": 5.8,
+      "dark": 7.7
+    },
+    {
+      "fore": "muted",
+      "back": "raised",
+      "minimum": 4.5,
+      "why": "secondary text (1.4.3)",
+      "light": 5.47,
+      "dark": 6.58
+    },
+    {
+      "fore": "link",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "a link (1.4.3)",
+      "light": 7.1,
+      "dark": 7.51
+    },
+    {
+      "fore": "link",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "a link (1.4.3)",
+      "light": 6.81,
+      "dark": 7.1
+    },
+    {
+      "fore": "link",
+      "back": "raised",
+      "minimum": 4.5,
+      "why": "a link (1.4.3)",
+      "light": 6.42,
+      "dark": 6.07
+    },
+    {
+      "fore": "on-primary",
+      "back": "primary",
+      "minimum": 4.5,
+      "why": "a button label (1.4.3)",
+      "light": 7.1,
+      "dark": 5.68
+    },
+    {
+      "fore": "on-primary",
+      "back": "primary-hover",
+      "minimum": 4.5,
+      "why": "a button label (1.4.3)",
+      "light": 8.98,
+      "dark": 7.1
+    },
+    {
+      "fore": "on-primary",
+      "back": "primary-pressed",
+      "minimum": 4.5,
+      "why": "a button label (1.4.3)",
+      "light": 10.72,
+      "dark": 8.98
+    },
+    {
+      "fore": "control",
+      "back": "page",
+      "minimum": 3,
+      "why": "the edge of a control (1.4.11)",
+      "light": 3.98,
+      "dark": 5.11
+    },
+    {
+      "fore": "control",
+      "back": "surface",
+      "minimum": 3,
+      "why": "the edge of a control (1.4.11)",
+      "light": 3.81,
+      "dark": 4.82
+    },
+    {
+      "fore": "control",
+      "back": "raised",
+      "minimum": 3,
+      "why": "the edge of a control (1.4.11)",
+      "light": 3.59,
+      "dark": 4.12
+    },
+    {
+      "fore": "focus",
+      "back": "page",
+      "minimum": 3,
+      "why": "the focus ring (2.4.7, 1.4.11)",
+      "light": 5.31,
+      "dark": 13.32
+    },
+    {
+      "fore": "focus",
+      "back": "surface",
+      "minimum": 3,
+      "why": "the focus ring (2.4.7, 1.4.11)",
+      "light": 5.09,
+      "dark": 12.58
+    },
+    {
+      "fore": "focus",
+      "back": "raised",
+      "minimum": 3,
+      "why": "the focus ring (2.4.7, 1.4.11)",
+      "light": 4.79,
+      "dark": 10.75
+    },
+    {
+      "fore": "signal",
+      "back": "page",
+      "minimum": 3,
+      "why": "a mark that is not text (1.4.11)",
+      "light": 5.31,
+      "dark": 10.94
+    },
+    {
+      "fore": "signal",
+      "back": "surface",
+      "minimum": 3,
+      "why": "a mark that is not text (1.4.11)",
+      "light": 5.09,
+      "dark": 10.34
+    },
+    {
+      "fore": "success",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "a message in text (1.4.3)",
+      "light": 5.13,
+      "dark": 10.75
+    },
+    {
+      "fore": "success",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "a message in text (1.4.3)",
+      "light": 4.92,
+      "dark": 10.16
+    },
+    {
+      "fore": "warning",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "a message in text (1.4.3)",
+      "light": 6.09,
+      "dark": 11.49
+    },
+    {
+      "fore": "warning",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "a message in text (1.4.3)",
+      "light": 5.84,
+      "dark": 10.85
+    },
+    {
+      "fore": "danger",
+      "back": "page",
+      "minimum": 4.5,
+      "why": "a message in text (1.4.3)",
+      "light": 6.16,
+      "dark": 7.62
+    },
+    {
+      "fore": "danger",
+      "back": "surface",
+      "minimum": 4.5,
+      "why": "a message in text (1.4.3)",
+      "light": 5.9,
+      "dark": 7.2
+    }
+  ],
+  "scale": {
+    "space": [
+      0,
+      4,
+      8,
+      12,
+      16,
+      24,
+      32,
+      48,
+      64,
+      96
+    ],
+    "radius": {
+      "sm": 4,
+      "md": 8,
+      "lg": 14,
+      "pill": 9999
+    },
+    "size": {
+      "xs": 12,
+      "sm": 14,
+      "base": 16,
+      "lg": 18,
+      "xl": 22,
+      "2xl": 28,
+      "3xl": 36,
+      "4xl": 48,
+      "5xl": 64
+    },
+    "weight": {
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "heavy": 800
+    },
+    "leading": {
+      "tight": 1.15,
+      "snug": 1.3,
+      "normal": 1.55
+    },
+    "duration": {
+      "fast": 90,
+      "base": 160,
+      "slow": 280
+    },
+    "easeOut": "cubic-bezier(0.2, 0, 0, 1)",
+    "easeIn": "cubic-bezier(0.4, 0, 1, 1)",
+    "sans": "\"Inter Variable\", Inter, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif",
+    "mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+  }
+}

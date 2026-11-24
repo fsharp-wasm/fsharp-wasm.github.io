@@ -1,0 +1,287 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import tokens from '~/data/brand-tokens.json';
+
+// The values on this page are design/tokens.json of fsharp-wasm-core (FSharp.Wasm.Design, commit d637971, 2026-11-24), copied here and to /brand/tokens.json
+// and /brand/tokens.css.  Change them there (docs/design.md says how), generate, and copy the two files again.
+const metadata = {
+  title: 'Brand',
+  description:
+    'The colours, type, space and motion of fsharp-wasm: one set of tokens for a page, a canvas and an email, with the contrast of every pair measured.',
+};
+
+type Mode = 'light' | 'dark';
+const modes: Mode[] = ['light', 'dark'];
+const theme = tokens as unknown as Record<Mode, Record<string, string>> & {
+  ramps: Record<string, Record<string, string>>;
+  checks: { fore: string; back: string; minimum: number; why: string; light: number; dark: number }[];
+  scale: any;
+};
+
+const ramps = Object.entries(theme.ramps);
+const steps = Object.keys(ramps[0][1]);
+const roleNames = Object.keys(theme.light);
+const ratio = (n: number) => n.toFixed(2);
+const px = (n: number) => `${n / 16}rem`;
+const sizes = Object.entries(theme.scale.size as Record<string, number>);
+const weights = Object.entries(theme.scale.weight as Record<string, number>);
+const leading = Object.entries(theme.scale.leading as Record<string, number>);
+const durations = Object.entries(theme.scale.duration as Record<string, number>);
+const radius = Object.entries(theme.scale.radius as Record<string, number>);
+const space: number[] = theme.scale.space;
+const leadingUse: Record<string, string> = { tight: 'headings', snug: 'interface text', normal: 'running text' };
+const org = 'https://github.com/fsharp-wasm';
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Brand"
+    title="Precise, quiet and fast"
+    subtitle="One violet, the same on a web page, on a canvas and in an email. Every pair of colours that carries text or a control has its contrast measured, and the numbers are on this page."
+    callToAction={{ variant: 'primary', text: 'Download the tokens', href: '/brand/tokens.css', icon: 'tabler:download' }}
+    callToAction2={{ variant: 'secondary', text: 'How they are made', href: `${org}/fsharp-wasm-core/blob/main/docs/design.md`, target: '_blank', icon: 'tabler:book' }}
+  />
+
+  <WidgetWrapper id="principles" containerClass="max-w-6xl">
+    <Headline tagline="Principles" title="Grounded, with a signal" />
+    <div class="grid gap-6 md:grid-cols-3">
+      <div>
+        <h3 class="text-lg font-semibold mb-2 font-heading">Readable before anything</h3>
+        <p class="text-muted">Text is at least 4.5 : 1 on every background it meets, the edge of a control and the focus ring at least 3 : 1, in the light theme and in the dark. A test fails below that, so a colour cannot drift.</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-2 font-heading">Violet for the brand, ink for the rest</h3>
+        <p class="text-muted">The violet is the one colour that is ours. Everything neutral is an ink tinted toward it, so greys and brand belong together. The dark theme is a theme of its own, not an inversion.</p>
+      </div>
+      <div>
+        <h3 class="text-lg font-semibold mb-2 font-heading">Signal means live</h3>
+        <p class="text-muted">A cyan, used for what is happening now: the focus, a measurement, a selection that moves. It is not decoration, so when it appears, it means something.</p>
+      </div>
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="colour" containerClass="max-w-6xl">
+    <Headline tagline="Colour" title="Seven ramps of eleven steps" subtitle="Each step is a point of OKLCH, so equal steps look equally far apart. The violet runs through the colours the site has always used: 700 is the primary, 500 the accent; the indigo's 600 is the second colour. A step that sRGB cannot show gives up chroma, never lightness or hue." />
+    <div class="space-y-5">
+      {ramps.map(([name, ramp]) => (
+        <div>
+          <div class="flex items-baseline justify-between mb-1.5">
+            <h3 class="font-semibold capitalize font-heading">{name}</h3>
+            <span class="text-xs text-muted tabular-nums">{ramp['500']}</span>
+          </div>
+          <div class="grid grid-cols-11 gap-1" role="list" aria-label={`${name} ramp`}>
+            {steps.map((s) => (
+              <div role="listitem" class="min-w-0">
+                <div class="h-12 rounded-md ring-1 ring-black/10 dark:ring-white/15" style={`background:${ramp[s]}`} title={`${name} ${s}: ${ramp[s]}`}></div>
+                <div class="mt-1 text-[10px] sm:text-xs text-center text-muted tabular-nums">{s}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="roles" containerClass="max-w-6xl">
+    <Headline tagline="Roles" title="What a page reads, by meaning" subtitle="A page, a widget or an email asks for <code>text</code> or <code>primary</code>, not for a value. Each role has one value in the light theme and one in the dark; the cards below are those themes, whatever the site is showing." />
+    <div class="grid gap-6 md:grid-cols-2">
+      {modes.map((mode) => (
+        <div class="rounded-2xl p-5 border" style={`background:${theme[mode].page};color:${theme[mode].text};border-color:${theme[mode].line}`}>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold capitalize" style={`color:${theme[mode].heading}`}>{mode} theme</h3>
+            <span class="text-xs px-2 py-1 rounded-full" style={`background:${theme[mode].surface};color:${theme[mode].muted};border:1px solid ${theme[mode].line}`}>data-theme="{mode}"</span>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-5">
+            <span class="px-4 py-2 rounded-lg text-sm font-semibold" style={`background:${theme[mode].primary};color:${theme[mode]['on-primary']}`}>Primary</span>
+            <span class="px-4 py-2 rounded-lg text-sm font-semibold" style={`background:${theme[mode]['primary-hover']};color:${theme[mode]['on-primary']}`}>Hover</span>
+            <span class="px-4 py-2 rounded-lg text-sm font-semibold" style={`background:${theme[mode]['primary-pressed']};color:${theme[mode]['on-primary']}`}>Pressed</span>
+            <span class="px-4 py-2 rounded-lg text-sm font-semibold" style={`border:2px solid ${theme[mode].control};color:${theme[mode].text}`}>Control</span>
+            <span class="px-4 py-2 rounded-lg text-sm font-semibold" style={`background:${theme[mode].raised};outline:2px solid ${theme[mode].focus};outline-offset:2px;color:${theme[mode].text}`}>Focus</span>
+            <a href="#roles" class="px-1 py-2 text-sm font-semibold underline" style={`color:${theme[mode].link}`}>Link</a>
+          </div>
+          <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+            {roleNames.map((r) => (
+              <li class="flex items-center gap-2 min-w-0">
+                <span class="inline-block w-5 h-5 rounded shrink-0" style={`background:${theme[mode][r]};border:1px solid ${theme[mode].control}`}></span>
+                <span class="truncate" style={`color:${theme[mode].text}`}>{r}</span>
+                <span class="ml-auto tabular-nums text-xs" style={`color:${theme[mode].muted}`}>{theme[mode][r]}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <p class="mt-6 text-sm text-muted max-w-3xl">
+      One decision the roles record: white on the violet used for text (500) is 4.23 : 1, which is not enough for a button label, so the fill of a button is a step darker (600 in the dark theme, 5.68 : 1) and the violet as text is a role of its own, <code>link</code>.
+    </p>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="contrast" containerClass="max-w-6xl">
+    <Headline tagline="Contrast" title="Every pair, in both themes" subtitle="WCAG 2.2 ratios of the pairs a page or a widget draws. The minimum is 4.5 : 1 for text and 3 : 1 for the edge of a control, the focus ring and marks that are not text. Measured on 2026-11-24; the tests of FSharp.Wasm.Design fail below any of these." />
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left">
+        <thead class="text-xs uppercase text-muted">
+          <tr>
+            <th class="py-2 pr-4">Foreground</th>
+            <th class="py-2 pr-4">on</th>
+            <th class="py-2 pr-4 hidden md:table-cell">For</th>
+            <th class="py-2 pr-4 text-right">Min</th>
+            <th class="py-2 pr-4 text-right">Light</th>
+            <th class="py-2 text-right">Dark</th>
+          </tr>
+        </thead>
+        <tbody>
+          {theme.checks.map((c) => (
+            <tr class="border-t border-black/10 dark:border-white/10">
+              <td class="py-2 pr-4 font-medium">{c.fore}</td>
+              <td class="py-2 pr-4">{c.back}</td>
+              <td class="py-2 pr-4 text-muted hidden md:table-cell">{c.why}</td>
+              <td class="py-2 pr-4 text-right tabular-nums">{c.minimum.toFixed(1)}</td>
+              <td class="py-2 pr-4 text-right tabular-nums">
+                <span class="inline-flex items-center gap-2 justify-end">
+                  <span class="px-1.5 rounded text-xs font-semibold" style={`background:${theme.light[c.back]};color:${theme.light[c.fore]};border:1px solid ${theme.light.line}`}>Aa</span>
+                  {ratio(c.light)}
+                </span>
+              </td>
+              <td class="py-2 text-right tabular-nums">
+                <span class="inline-flex items-center gap-2 justify-end">
+                  <span class="px-1.5 rounded text-xs font-semibold" style={`background:${theme.dark[c.back]};color:${theme.dark[c.fore]};border:1px solid ${theme.dark.line}`}>Aa</span>
+                  {ratio(c.dark)}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="type" containerClass="max-w-6xl">
+    <Headline tagline="Type" title="Inter, on a scale of a quarter" subtitle="Inter (variable) is the typeface of the site and of the platform's pages; it is under the SIL Open Font License 1.1, with its text in the site's LICENSES folder. Code is set in the system's monospace. A step is about a quarter larger than the one before, in whole pixels." />
+    <div class="space-y-3">
+      {sizes.slice().reverse().map(([name, size]) => (
+        <div class="flex items-baseline gap-4 border-t border-black/10 dark:border-white/10 pt-3">
+          <span class="w-14 shrink-0 text-xs text-muted tabular-nums">{name}<br />{size} px</span>
+          <span class="truncate font-heading" style={`font-size:${px(size)};line-height:1.15;font-weight:600`}>Compiled to WebAssembly GC</span>
+        </div>
+      ))}
+    </div>
+    <div class="mt-8 grid gap-6 md:grid-cols-2">
+      <div>
+        <h3 class="font-semibold mb-2 font-heading">Weights</h3>
+        <ul class="space-y-1">
+          {weights.map(([name, w]) => (
+            <li class="flex items-baseline gap-3"><span class="w-20 text-xs text-muted tabular-nums">{name} {w}</span><span style={`font-weight:${w}`} class="text-lg">Hamburgefonstiv 0123456789</span></li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 font-heading">Line height</h3>
+        <ul class="space-y-1 text-sm text-muted">
+          {leading.map(([name, v]) => (
+            <li><span class="inline-block w-24 tabular-nums">{name} {v}</span>{leadingUse[name] ?? ''}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="shape" containerClass="max-w-6xl">
+    <Headline tagline="Space and shape" title="A grid of 4 px" subtitle="Space is 4 px times a step. Radius comes in four sizes; the default is 8 px." />
+    <div class="grid gap-8 md:grid-cols-2">
+      <div class="space-y-2" aria-label="space scale">
+        {space.map((s) => (
+          <div class="flex items-center gap-3">
+            <span class="w-24 text-xs text-muted tabular-nums">--fw-space-{s / 4}</span>
+            <span class="h-3 rounded-sm" style={`width:${Math.max(s, 1)}px;background:${theme.light.primary}`}></span>
+            <span class="text-xs text-muted tabular-nums">{s} px</span>
+          </div>
+        ))}
+      </div>
+      <div class="flex flex-wrap items-end gap-5">
+        {radius.map(([name, r]) => (
+          <div class="text-center">
+            <div class="w-20 h-20 border-2" style={`border-radius:${Math.min(r, 40)}px;border-color:${theme.light.primary};background:${theme.light.surface}`}></div>
+            <div class="mt-2 text-xs text-muted tabular-nums">{name}<br />{r === 9999 ? 'full' : `${r} px`}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="motion" containerClass="max-w-6xl">
+    <Headline tagline="Motion" title="Fast, and only for a reason" subtitle="Three durations and two easings. Feedback to a press is the fastest; a change of state is the base; an entrance is the slowest. Nothing animates for its own sake, and a page that asks for reduced motion gets none." />
+    <div class="grid gap-4 sm:grid-cols-3">
+      {durations.map(([name, ms]) => (
+        <div class="rounded-xl border border-black/10 dark:border-white/10 p-4">
+          <div class="text-2xl font-semibold tabular-nums font-heading">{ms} ms</div>
+          <div class="text-sm text-muted">--fw-duration-{name}</div>
+        </div>
+      ))}
+    </div>
+    <p class="mt-4 text-sm text-muted tabular-nums">ease-out <code>{theme.scale.easeOut}</code> · ease-in <code>{theme.scale.easeIn}</code></p>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="rules" containerClass="max-w-6xl">
+    <Headline tagline="Rules" title="What follows from the numbers" />
+    <div class="grid gap-6 md:grid-cols-2">
+      <div>
+        <h3 class="font-semibold mb-2 font-heading">Do</h3>
+        <ul class="list-disc pl-5 space-y-1.5 text-muted">
+          <li>Ask for a role (<code>--fw-text</code>, <code>--fw-primary</code>), not for a hex value.</li>
+          <li>Put white (<code>--fw-on-primary</code>) on <code>--fw-primary</code> and its hover and pressed states: all three are above 4.5 : 1 in both themes.</li>
+          <li>Show the focus with <code>--fw-focus</code>, 2 px, inside the box so that focusing never moves the layout.</li>
+          <li>Use <code>--fw-signal</code> for what is live and nothing else.</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 font-heading">Do not</h3>
+        <ul class="list-disc pl-5 space-y-1.5 text-muted">
+          <li>Put white text on <code>--fw-violet-500</code>: 4.23 : 1, under the minimum for text.</li>
+          <li>Use a ramp step for text because it looks right: the roles are the ones that were checked.</li>
+          <li>Invert the light theme for the dark one: the dark theme has its own roles and its own measurements.</li>
+          <li>Tell one thing apart from another by colour alone.</li>
+        </ul>
+      </div>
+    </div>
+  </WidgetWrapper>
+
+  <WidgetWrapper id="use" containerClass="max-w-6xl">
+    <Headline tagline="Use it" title="Tokens for a page, a canvas and an email" subtitle="The source is the F# library FSharp.Wasm.Design in fsharp-wasm-core; the files below are what it generates." />
+    <div class="grid gap-6 md:grid-cols-2">
+      <div>
+        <h3 class="font-semibold mb-2 font-heading">CSS</h3>
+        <pre class="rounded-xl p-4 text-sm overflow-x-auto bg-black/5 dark:bg-white/5"><code>{`<link rel="stylesheet" href="/brand/tokens.css">
+
+.card {
+  background: var(--fw-surface);
+  color: var(--fw-text);
+  border-radius: var(--fw-radius-md);
+  padding: var(--fw-space-4);
+}`}</code></pre>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2 font-heading">F#</h3>
+        <pre class="rounded-xl p-4 text-sm overflow-x-auto bg-black/5 dark:bg-white/5"><code>{`open FSharp.Wasm.Design
+
+let primary = Tokens.light.Primary   // Hex "#6d28d9"
+let failing =                        // [] — the test of the library
+  Tokens.checks
+  |> List.filter (fun c ->
+       Tokens.ratio Tokens.dark c
+       |> Option.exists (fun r -> r < c.Minimum))`}</code></pre>
+      </div>
+    </div>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a class="btn-primary" href="/brand/tokens.css" download>tokens.css</a>
+      <a class="btn-secondary" href="/brand/tokens.json" download>tokens.json</a>
+      <a class="btn-secondary" href={`${org}/fsharp-wasm-core/tree/main/FSharp.Wasm.Design`} target="_blank" rel="noopener">The library</a>
+    </div>
+    <p class="mt-6 text-sm text-muted max-w-3xl">
+      Not decided yet: the usage of the logo (it is used as it is on this site), a typeface for code, and moving the canvas widgets' theme (blue today) and the runtime's <code>theme.css</code> onto these tokens. The last one changes how every canvas application looks.
+    </p>
+  </WidgetWrapper>
+</Layout>
