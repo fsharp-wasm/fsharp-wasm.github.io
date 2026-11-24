@@ -118,6 +118,15 @@ For Docker-based deployment, see [docker-compose.yml](docker-compose.yml) and [n
 - Compiler foundation: [Fable](https://fable.io) — MIT License
 - Sponsor: [Amano Services](https://www.amano.services/); the organisation takes sponsorship through [GitHub Sponsors](https://github.com/sponsors/fsharp-wasm)
 
+## Contributing
+
+Welcome. [CONTRIBUTING](https://github.com/fsharp-wasm/.github/blob/develop/CONTRIBUTING.md) is the organisation's guide and [AGENTS.md](AGENTS.md) says how the platform is worked on (the compiler comes first: a fault found here
+is fixed in the compiler, not worked around here).
+
+- **Run the tests:** `npm run build` builds the site; `npm run dev` serves it.
+- **A good first contribution:** A page that confused you: fix it. Every number on the site must be one that a repository measured, with its date. Issues labelled [`good first issue`](https://github.com/fsharp-wasm/fsharp-wasm.github.io/labels/good%20first%20issue) are the places to start.
+- **A change** goes to `develop` as a pull request, with a test that fails without it. Open an issue first for anything larger than a fix.
+
 ## License
 
 Our content and code are [Apache License 2.0](LICENSE) (see [NOTICE](NOTICE)); the parts that come from the AstroWind template keep its MIT License, [LICENSES/MIT-AstroWind.md](LICENSES/MIT-AstroWind.md).
