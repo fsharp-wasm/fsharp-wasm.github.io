@@ -5,3 +5,6 @@ The content and code of this website that are ours are licensed under the Apache
 
 The site is built on the AstroWind template (https://github.com/onwidget/astrowind), MIT License, Copyright (c) 2023 onWidget.
 The parts that come from it keep that licence; its text is in LICENSES/MIT-AstroWind.md.
+
+The typeface of the site is Inter (variable), served from the npm package @fontsource-variable/inter 5.2.6 (https://fontsource.org/fonts/inter), under the SIL Open Font License,
+Version 1.1. The licence text, as the package ships it, is in LICENSES/OFL-1.1-Inter.txt. The font files are used as they are; they are not sold on their own.
