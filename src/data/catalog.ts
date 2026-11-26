@@ -53,6 +53,9 @@ export const demos: Demo[] = [
   { id: 'canvas-mandelbrot', title: 'Mandelbrot', group: 'graphics', icon: 'tabler:math-function', output: 'canvas', summary: 'Escape-time calculation in F#; every calculation is a native WebAssembly GC call.' },
   { id: 'graphics-gallery', title: 'Scene gallery', group: 'graphics', icon: 'tabler:photo', output: 'canvas', summary: 'Thirteen scenes of the FSharp.Graphics library: shapes, strokes, gradients, shadows, transforms, layout, clipping, layers, text, animation, interaction, a dashboard and a stress test.' },
   { id: 'widget-editor', title: 'Widget editor', group: 'graphics', icon: 'tabler:layout-grid', output: 'canvas', summary: 'A visual editor for widget layouts, itself written in F# and drawn by the module: palette, design surface, inspector, generated code.' },
+  { id: 'wasmos', title: 'WasmOS', group: 'graphics', icon: 'tabler:app-window', output: 'html', summary: 'One F# program as Windows, macOS, Android or a Linux desktop: windows you drag, resize and minimise, a launcher, a menu and five apps.' },
+  { id: 'charts', title: 'Charts', group: 'graphics', icon: 'tabler:chart-line', output: 'canvas', summary: 'A line of ten million samples, a stream, a density map of five million points and 200 000 candles: a frame costs the pixels, not the points.' },
+  { id: 'accounting-grid', title: 'Accounting grid', group: 'graphics', icon: 'tabler:table', output: 'canvas', summary: 'A ledger of a million journal lines as a pivot table that folds to its totals, turns, and opens the lines behind a cell; the budget is written with formulas.' },
   { id: 'bench', title: 'Benchmark', group: 'measure', icon: 'tabler:chart-bar', output: 'html + worker', summary: 'Thirteen kernels in F# and in plain JavaScript, measured in your browser, with the method and the spread.' },
 ];
 
@@ -297,3 +300,41 @@ export const totals = {
   demos: demos.length,
   kernels: kernels.length,
 };
+
+/** The big demos shown with a picture on the landing page and on /demos: WasmOS leads. */
+export const featuredDemos = [
+  {
+    title: 'WasmOS: one F# program, four systems',
+    badge: 'The universal shell',
+    summary:
+      'A small desktop (windows you drag, resize, minimise and maximise, a launcher, a menu, five apps) that is <b>Windows, macOS, Android or a Linux desktop</b> with one click. The model is a pure function (it also runs under .NET and is tested there); the module states the DOM and the page&rsquo;s CSS makes it look like each system. This is what the universal shell hosts: the same application in the chrome of the device it runs on.',
+    image: '/img/demos/wasmos.jpg',
+    alt: 'WasmOS on four systems at once: Windows, macOS, Android and a Linux desktop',
+    href: `${pages}/demos/wasmos/`,
+    source: 'https://github.com/fsharp-wasm/fsharp-wasm-embedded',
+  },
+  {
+    title: 'Widget editor',
+    badge: 'Drawn by the module',
+    summary: 'A visual editor for widget layouts, itself written in F# and drawn onto one canvas: palette, design surface, inspector, undo and redo, and the F# it exports.',
+    image: '/img/demos/widget-editor.jpg',
+    alt: 'The widget editor: a palette, a design surface with a sign-in form and an inspector',
+    href: `${pages}/demos/widget-editor/`,
+  },
+  {
+    title: 'Charts',
+    badge: 'Ten million samples',
+    summary: 'A line of ten million samples, a stream, five million points and 200 000 candles: a frame costs the pixels of the chart and not the points of the data.',
+    image: '/img/demos/charts.jpg',
+    alt: 'A line chart of ten million samples with spikes that every zoom still shows',
+    href: `${pages}/demos/charts/`,
+  },
+  {
+    title: 'Accounting grid',
+    badge: 'A million journal lines',
+    summary: 'A ledger as a pivot table that folds to its totals, turns and opens the lines behind a cell; the budget is written with formulas and every step is on a tape.',
+    image: '/img/demos/accounting-grid.jpg',
+    alt: 'The accounting grid: a pivot table of accounts by periods with totals',
+    href: `${pages}/demos/accounting-grid/`,
+  },
+];

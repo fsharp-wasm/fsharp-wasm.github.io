@@ -14,7 +14,8 @@ const metadata = {
   title: 'FSharp WasmGC — Compile F# to WebAssembly GC',
   ignoreTitleTemplate: true,
 };
-import { totals, recordedOn, updatedOn, updated } from '~/data/catalog';
+import { totals, recordedOn, updatedOn, updated, featuredDemos } from '~/data/catalog';
+import FeaturedDemos from '~/components/widgets/FeaturedDemos.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import { layers } from '~/data/projects';
 ---
@@ -70,6 +71,15 @@ import { layers } from '~/data/projects';
       Compact modules, no garbage collector and no runtime library to ship, in the browser and on the edge.
     </Fragment>
   </Hero>
+
+  <!-- Featured demos: WasmOS leads ====================================== -->
+  <FeaturedDemos
+    id="demos"
+    tagline="See it run"
+    title="Real programs, in your browser"
+    subtitle="F# compiled to WebAssembly GC by fsharp-wasm. Nothing to install: open one."
+    items={featuredDemos}
+  />
 
   <!-- Note ============================================================== -->
   <Note title="Built on Fable · WasmGC MVP Compliant · Apache-2.0 Licensed · Actively Developed" />

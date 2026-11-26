@@ -1,0 +1,75 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import Button from '~/components/ui/Button.astro';
+
+/** The big demos, with a picture of what they really show (taken from the demo itself): the first one is the lead and has the width of the page. */
+export interface Featured {
+  title: string;
+  summary: string;
+  /** a path under /img/demos */
+  image: string;
+  alt: string;
+  href: string;
+  /** a short line above the title: what kind of demo it is */
+  badge?: string;
+  source?: string;
+}
+export interface Props {
+  tagline?: string;
+  title?: string;
+  subtitle?: string;
+  items: Featured[];
+  id?: string;
+}
+
+const { tagline, title, subtitle, items, id } = Astro.props;
+const [lead, ...rest] = items;
+---
+
+<WidgetWrapper id={id}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} />
+
+  {
+    lead && (
+      <article class="grid md:grid-cols-5 gap-6 md:gap-10 items-center rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 md:p-6 shadow-md">
+        <a class="md:col-span-3 block overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700" href={lead.href} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+          <img src={lead.image} alt="" width="920" height="532" loading="lazy" decoding="async" class="w-full h-auto block" />
+        </a>
+        <div class="md:col-span-2">
+          {lead.badge && <p class="text-sm font-semibold uppercase tracking-wider text-primary mb-2">{lead.badge}</p>}
+          <h3 class="text-3xl font-bold leading-tighter tracking-tighter font-heading mb-3">
+            <a href={lead.href} target="_blank" rel="noopener" class="hover:text-primary">{lead.title}</a>
+          </h3>
+          <p class="text-muted mb-6" set:html={lead.summary} />
+          <div class="flex flex-wrap gap-3">
+            <Button variant="primary" text="Open the demo" href={lead.href} target="_blank" icon="tabler:player-play" />
+            {lead.source && <Button text="Source" href={lead.source} target="_blank" icon="tabler:brand-github" />}
+          </div>
+        </div>
+      </article>
+    )
+  }
+
+  {
+    rest.length > 0 && (
+      <div class="grid gap-6 md:grid-cols-3 mt-6">
+        {rest.map((d) => (
+          <article class="flex flex-col rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 shadow-md">
+            <a class="block overflow-hidden rounded-xl border border-gray-200 dark:border-slate-700 mb-4" href={d.href} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+              <img src={d.image} alt="" width="1200" height="720" loading="lazy" decoding="async" class="w-full h-auto block" />
+            </a>
+            {d.badge && <p class="text-xs font-semibold uppercase tracking-wider text-primary mb-1">{d.badge}</p>}
+            <h3 class="text-xl font-bold font-heading mb-2">
+              <a href={d.href} target="_blank" rel="noopener" class="hover:text-primary">{d.title}</a>
+            </h3>
+            <p class="text-muted text-sm mb-4 grow" set:html={d.summary} />
+            <div>
+              <Button text="Open the demo" href={d.href} target="_blank" icon="tabler:player-play" />
+            </div>
+          </article>
+        ))}
+      </div>
+    )
+  }
+</WidgetWrapper>

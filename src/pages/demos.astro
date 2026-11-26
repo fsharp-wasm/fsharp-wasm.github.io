@@ -3,7 +3,8 @@ import Layout from '~/layouts/PageLayout.astro';
 import HeroText from '~/components/widgets/HeroText.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
-import { demos, demoUrl } from '~/data/catalog';
+import { demos, demoUrl, featuredDemos } from '~/data/catalog';
+import FeaturedDemos from '~/components/widgets/FeaturedDemos.astro';
 import type { DemoGroup } from '~/data/catalog';
 
 const metadata = {
@@ -40,6 +41,8 @@ const groups: Array<{ group: DemoGroup; tagline: string; title: string; subtitle
       icon: 'tabler:chart-bar',
     }}
   />
+
+  <FeaturedDemos tagline="Start here" title="The big ones" subtitle="Each is a whole program, not a snippet." items={featuredDemos} />
 
   {
     groups.map((g) => (
