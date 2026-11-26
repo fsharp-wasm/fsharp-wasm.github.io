@@ -1,0 +1,41 @@
+---
+import Headline from '~/components/ui/Headline.astro';
+import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
+import type { Table as Props } from '~/types';
+
+const { title = '', subtitle = '', tagline = '', columns = [], rows = [], note = '', id, isDark = false, classes = {}, bg = await Astro.slots.render('bg') } = Astro.props;
+---
+
+<WidgetWrapper id={id} isDark={isDark} containerClass={`max-w-5xl mx-auto ${classes?.container ?? ''}`} bg={bg}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} />
+  <div class="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 shadow overflow-hidden dark:text-slate-300">
+    <!-- below md the table is a stack of cards: every cell carries its column name -->
+    <table class="block md:table w-full text-left">
+      <thead class="sr-only md:not-sr-only md:table-header-group bg-gray-50 dark:bg-slate-800">
+        <tr class="md:table-row">
+          {columns.map((c) => <th scope="col" class="px-4 py-3 text-sm font-semibold uppercase tracking-wide text-heading">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody class="block md:table-row-group divide-y divide-gray-200 dark:divide-gray-700">
+        {
+          rows.map((row) => (
+            <tr class="block md:table-row px-4 py-3 md:p-0">
+              {row.map((cell, i) =>
+                i === 0 ? (
+                  <th scope="row" class="block md:table-cell md:px-4 md:py-4 md:align-top text-lg font-semibold text-heading" set:html={cell} />
+                ) : (
+                  <td
+                    data-label={columns[i]}
+                    class="block md:table-cell md:px-4 md:py-4 md:align-top py-1 before:content-[attr(data-label)] before:block before:text-xs before:font-semibold before:uppercase before:tracking-wide before:text-muted md:before:hidden"
+                    set:html={cell}
+                  />
+                )
+              )}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  {note && <p class="mt-6 text-muted max-w-3xl mx-auto text-center" set:html={note} />}
+</WidgetWrapper>

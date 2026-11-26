@@ -227,6 +227,13 @@ export interface Stats extends Omit<Headline, 'classes'>, Widget {
   stats?: Array<Stat>;
 }
 
+/** A table that stacks as cards on a phone: the first column names the row, the cells are HTML we wrote. */
+export interface Table extends Omit<Headline, 'classes'>, Widget {
+  columns: Array<string>;
+  rows: Array<Array<string>>;
+  note?: string;
+}
+
 export interface Pricing extends Omit<Headline, 'classes'>, Widget {
   prices?: Array<Price>;
 }

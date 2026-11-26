@@ -4,13 +4,14 @@ import HeroText from '~/components/widgets/HeroText.astro';
 import Stats from '~/components/widgets/Stats.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import Content from '~/components/widgets/Content.astro';
+import Table from '~/components/widgets/Table.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { totals, recordedOn } from '~/data/catalog';
 
 const metadata = {
   title: 'Sponsor',
   description:
-    'What sponsoring fsharp-wasm pays for, what it has produced so far (measured, with the method), and what it does not promise.',
+    'The sponsor tiers, the funding goals with what each pays for, the way for companies, what the work has produced so far (measured, with the method), and what it does not promise.',
 };
 
 const fmt = (n: number) => n.toLocaleString('en-US').replace(/,/g, ' ');
@@ -44,6 +45,31 @@ const org = 'https://github.com/fsharp-wasm';
       { title: 'calls compared with .NET, 0 disagreements', amount: '183 012', icon: 'tabler:equal' },
       { title: 'live demos that run in your browser', amount: `${totals.demos}`, icon: 'tabler:player-play' },
     ]}
+  />
+
+  <Table
+    tagline="Tiers"
+    title="For individuals"
+    subtitle="Set 2026-11-26. Every tier is a tier of GitHub Sponsors; the name on the list is optional."
+    columns={['Tier', 'Per month', 'What you get']}
+    rows={[
+      ['Supporter', '$5 &ndash; $15', 'Your name on the list of sponsors of this page, if you want it there.'],
+      ['Indie backer', '$50', 'The above, and your bug reports and questions are answered first.'],
+    ]}
+  />
+
+  <Table
+    isDark
+    tagline="Tiers"
+    title="For companies and teams"
+    subtitle="What a team gets for a fixed amount that fits a budget. A company that depends on a tool for its work has a say in where the work goes."
+    columns={['Tier', 'Per month', 'What you get']}
+    rows={[
+      ['Bronze', '$250', 'Your logo and a link on this page and in the README of fsharp-wasm.'],
+      ['Silver', '$500', 'The above, and a say in the order of the roadmap: what you name is weighed with what the other sponsors name (a vote, not a veto).'],
+      ['Gold, founding partner', '$1 500 and up', 'The above, and an agreed number of engineering hours a month for your own use case: bringing the compiler into an existing F# codebase, a host binding, an optimisation. The hours and what they are for are set in writing with you.'],
+    ]}
+    note={'Sponsor as an organisation on GitHub Sponsors; where your organisation pays GitHub by invoice, the sponsorship is on that invoice. A direct invoice, or a written agreement for the hours of a Gold sponsorship: <a class="underline" href="/contact">write to us</a>.'}
   />
 
   <Features3
@@ -91,12 +117,24 @@ const org = 'https://github.com/fsharp-wasm';
     ]}
   />
 
+  <Table
+    tagline="Goals"
+    title="What the money unlocks, step by step"
+    subtitle="Set 2026-11-26. The progress is on GitHub Sponsors; this is what each step pays for, and where the work stands today."
+    columns={['Goal', 'Per month', 'What it pays for', 'Where it stands today']}
+    rows={[
+      ['Goal 1', '10 sponsors, about $500 &ndash; $1 000', 'Incorporating the organisation, so that companies can contract it and be invoiced; and live deployments of the edge host on Cloudflare, Vercel and Netlify, with public addresses for the Ghost Todo demo.', 'One backend module answers identically on eight test targets; no deployment is live yet.'],
+      ['Goal 2', '$2 500', 'Part-time funding of the Component Model work (WIT interfaces to Rust crates) and of the native desktop shell for Windows, macOS and Linux.', 'WIT exports are generated and two modules link at the Wasm level (two checks of the compiler suite). Calling a Rust crate through WIT is not done. The shell is a probe page and a browser demo (WasmOS); there is no native host yet.'],
+      ['Goal 3', '$5 000 and up', 'Focused work, up to full time, on the device APIs for iOS and Android (fsharp-wasm-mobile) and on the accessible GUI framework: semantic DOM, keyboard, screen readers.', 'fsharp-wasm-mobile has the catalogue of the APIs, and the native implementations are the work. The accessibility baseline is measured (above) and the semantics of the canvas are in progress.'],
+    ]}
+  />
+
   <Content
     isReversed
     tagline="Honestly"
     title="What it does not promise"
     items={[
-      { title: 'No full-time work', description: 'Sponsorship supports the work across the repositories; it does not promise a schedule or a person who is paid to do nothing else.' },
+      { title: 'No promised schedule', description: 'Sponsorship buys time on the work across the repositories. Until Goal 3 is funded it is done beside other work, and no tier buys a date or a feature that is not agreed in writing.' },
       { title: 'No hidden status', description: 'What exists and what is intended are listed apart, and the numbers on this site are from a recorded run with the date next to them.' },
       { title: 'No lock-in', description: 'Apache-2.0 for what we wrote (the two forks stay MIT), no sign-up, no tracking scripts on this site.' },
     ]}
