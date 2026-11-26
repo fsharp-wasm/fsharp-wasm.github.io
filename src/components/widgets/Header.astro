@@ -45,6 +45,9 @@ const {
 } = Astro.props;
 
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
+
+// the sponsor button is on every page: in the bar on a phone as well, not only inside the menu
+const sponsor = actions?.find((a) => a.text === 'Sponsor');
 ---
 
 <header
@@ -75,6 +78,19 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
         <Logo />
       </a>
       <div class="flex items-center md:hidden">
+        {
+          sponsor && (
+            <a
+              class="inline-flex items-center gap-1.5 mr-2 px-3 py-1.5 rounded-full text-sm font-semibold text-white bg-violet-600 hover:bg-violet-700"
+              href={sponsor.href}
+              target={sponsor.target}
+              rel="noopener"
+            >
+              {sponsor.text}
+              <Icon name="tabler:heart-filled" class="w-4 h-4" />
+            </a>
+          )
+        }
         <ToggleMenu />
       </div>
     </div>

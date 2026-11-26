@@ -38,6 +38,13 @@ export const headerData = {
   ],
   actions: [
     {
+      variant: 'primary',
+      text: 'Sponsor',
+      href: 'https://github.com/sponsors/fsharp-wasm',
+      target: '_blank',
+      icon: 'tabler:heart-filled',
+    },
+    {
       text: 'GitHub',
       href: 'https://github.com/fsharp-wasm/fsharp-wasm',
       target: '_blank',
@@ -109,6 +116,7 @@ export const footerData = {
     { text: 'Privacy Policy', href: getPermalink('/privacy') },
   ],
   socialLinks: [
+    { ariaLabel: 'Sponsor fsharp-wasm on GitHub', icon: 'tabler:heart', href: 'https://github.com/sponsors/fsharp-wasm' },
     { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
     {
       ariaLabel: 'GitHub',

@@ -30,6 +30,12 @@ import { layers } from '~/data/projects';
         icon: 'tabler:rocket',
       },
       {
+        text: 'Sponsor',
+        href: 'https://github.com/sponsors/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:heart-filled',
+      },
+      {
         text: 'Live demos',
         href: '/demos',
         icon: 'tabler:player-play',
@@ -270,6 +276,12 @@ import { layers } from '~/data/projects';
         target: '_blank',
         icon: 'tabler:star',
       },
+      {
+        text: 'Sponsor the work',
+        href: 'https://github.com/sponsors/fsharp-wasm',
+        target: '_blank',
+        icon: 'tabler:heart-filled',
+      },
     ]}
   >
     <Fragment slot="title">
@@ -277,7 +289,7 @@ import { layers } from '~/data/projects';
     </Fragment>
 
     <Fragment slot="subtitle">
-      FSharp WasmGC is open source and actively developed. Contributions, issues, and discussions are all welcome on GitHub.
+      FSharp WasmGC is open source and actively developed. Contributions, issues, and discussions are all welcome on GitHub; <a class="underline" href="/sponsor">what sponsoring pays for</a> is written down, with what it has produced.
     </Fragment>
   </CallToAction>
 </Layout>
