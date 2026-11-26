@@ -22,7 +22,7 @@ const { title = '', subtitle = '', tagline = '', columns = [], rows = [], note =
             <tr class="block md:table-row px-4 py-3 md:p-0">
               {row.map((cell, i) =>
                 i === 0 ? (
-                  <th scope="row" class="block md:table-cell md:px-4 md:py-4 md:align-top md:whitespace-nowrap text-lg font-semibold text-heading" set:html={cell} />
+                  <th scope="row" class="block md:table-cell md:px-4 md:py-4 md:align-top text-lg font-semibold text-heading" set:html={cell} />
                 ) : (
                   <td
                     data-label={columns[i]}
