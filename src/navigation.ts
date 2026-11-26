@@ -26,6 +26,7 @@ export const headerData = {
         { text: 'Benchmarks', href: getPermalink('/benchmarks') },
         { text: 'Backend benchmarks', href: getPermalink('/benchmarks/backend') },
         { text: 'Tests', href: getPermalink('/tests') },
+        { text: 'Status', href: getPermalink('/status') },
         { text: 'Backend on the edge', href: getPermalink('/backend') },
         { text: 'Roadmap', href: getPermalink('/docs/roadmap') },
         { text: 'Brand', href: getPermalink('/brand') },

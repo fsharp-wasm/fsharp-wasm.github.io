@@ -1,5 +1,9 @@
 # FSharp WasmGC — Website
 
+<!-- status -->
+[![Deploy](https://github.com/fsharp-wasm/fsharp-wasm.github.io/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/fsharp-wasm/fsharp-wasm.github.io/actions/workflows/deploy.yml) · [Status of every repository](https://fsharp-wasm.github.io/status/)
+<!-- /status -->
+
 This repository contains the source code for the [fsharp-wasm.github.io](https://fsharp-wasm.github.io) website — the landing page, documentation, and blog for the **FSharp WasmGC** compiler project.
 
 ## About FSharp WasmGC

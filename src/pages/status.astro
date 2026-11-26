@@ -1,0 +1,98 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import Table from '~/components/widgets/Table.astro';
+import status from '~/data/status.json';
+import { layers } from '~/data/projects';
+
+const metadata = {
+  title: 'Status',
+  description:
+    'Every repository of the fsharp-wasm platform and the state of its continuous integration, drawn live by GitHub for develop and for main, with what each workflow runs.',
+};
+
+interface Workflow {
+  file: string;
+  name: string;
+  what: string;
+  badge?: boolean;
+  branches?: string[];
+}
+interface Entry {
+  workflows: Workflow[];
+  gate?: string;
+}
+
+const org = status.org;
+const entries = status.repos as Record<string, Entry>;
+const projects = layers.flatMap((l) => l.projects);
+const describe = (repo: string) => projects.find((p) => p.repo === repo)?.what ?? 'The source of this site.';
+
+// the badge of one workflow on one branch: an image GitHub draws from the last run, linking to the runs on that branch
+const badge = (repo: string, w: Workflow, branch: string) => {
+  const base = `https://github.com/${org}/${repo}/actions/workflows/${w.file}`;
+  return `<a href="${base}?query=branch%3A${branch}"><img src="${base}/badge.svg?branch=${branch}" alt="${w.name} of ${repo} on ${branch}" height="20" loading="lazy"></a>`;
+};
+const shown = (w: Workflow, branch: string) => w.badge !== false && (w.branches ?? ['develop', 'main']).includes(branch);
+const cell = (repo: string, e: Entry, branch: string) => {
+  const badges = e.workflows.filter((w) => shown(w, branch)).map((w) => badge(repo, w, branch));
+  return badges.length ? `<span class="flex flex-wrap gap-1">${badges.join('')}</span>` : '&mdash;';
+};
+const runs = (e: Entry) =>
+  e.workflows.length
+    ? e.workflows.map((w) => `<strong>${w.name}</strong>: ${w.what}`).join('<br>')
+    : (e.gate ?? '');
+
+const rows = Object.entries(entries).map(([repo, e]) => [
+  `<a class="underline" href="https://github.com/${org}/${repo}">${repo}</a><span class="block max-w-xs whitespace-normal text-sm font-normal text-muted">${describe(repo)}</span>`,
+  cell(repo, e, 'develop'),
+  cell(repo, e, 'main'),
+  runs(e),
+]);
+---
+
+<Layout metadata={metadata}>
+  <HeroText
+    tagline="Status"
+    title="Every repository, today"
+    subtitle="The badges are live: GitHub draws each one from the last run of that workflow on that branch. Work lands on develop; main moves only by fast-forward to a develop commit whose run was green, so main is green by construction and develop shows the work in progress."
+    callToAction={{ variant: 'primary', text: 'All repositories on GitHub', href: `https://github.com/${org}`, target: '_blank', icon: 'tabler:brand-github' }}
+    callToAction2={{ variant: 'secondary', text: 'What the tests count', href: '/tests', icon: 'tabler:checklist' }}
+  />
+
+  <Table
+    tagline="Continuous integration"
+    title="The workflows, branch by branch"
+    subtitle={`Written ${status.updatedOn}. A dash is a branch the workflow does not run on, or a repository that has none.`}
+    columns={['Repository', 'develop', 'main', 'What it runs']}
+    rows={rows}
+    note={'The forks of the F# compiler and of Fable keep the workflows of their upstream and are not badged here. A badge that shows "no status" has not run on that branch yet.'}
+  />
+
+  <Features3
+    tagline="How to read it"
+    title="What a badge says, and what it cannot"
+    columns={3}
+    items={[
+      {
+        title: 'One run, one branch',
+        description:
+          'A badge is the result of the last run of that workflow on that branch, nothing more. Click it for the runs. The platform moves a repository to main only when the run of the commit it moves was green, and the commit is named by its full SHA, so a red badge on main means something broke after.',
+        icon: 'tabler:git-branch',
+      },
+      {
+        title: 'A green compiler includes its neighbours',
+        description:
+          'The compiler repository compiles and runs programs of the other repositories as gates (the core libraries, the newsletter designer, the widget editor), each pinned by a commit. A green compiler badge therefore says that those programs still compile and pass with that compiler.',
+        icon: 'tabler:circuit-pushbutton',
+      },
+      {
+        title: 'Counts are not badges',
+        description:
+          'How many tests exist is not something a badge can say. The numbers are recorded runs with their date on the <a href="/tests">tests page</a>, written once and checked against the suites.',
+        icon: 'tabler:list-numbers',
+      },
+    ]}
+  />
+</Layout>

@@ -1,0 +1,189 @@
+{
+  "updatedOn": "2026-11-26",
+  "org": "fsharp-wasm",
+  "note": "One source for the page /status and for the badges in the READMEs of the repositories (scripts/sync-readmes.mjs). A workflow listed here has a badge; `branches` are the ones it is shown for.",
+  "repos": {
+    "fsharp-wasm": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the 15 suites of tests/run-all.sh, and the programs of the other repositories compiled and run as gates (core libraries, newsletter, widget editor)"
+        },
+        {
+          "file": "release.yml",
+          "name": "Release",
+          "what": "four binaries, the NuGet packages and the template: a dry run on dispatch, published only on a tag",
+          "badge": false
+        }
+      ]
+    },
+    "fsharp-wasm-core": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the libraries under .NET (the same tests run as WebAssembly GC in the compiler's gate)"
+        }
+      ]
+    },
+    "fsharp-wasm-graphics": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the builds and the .NET suites: interact, charts, canvas, math, widgets, unit and property tests"
+        }
+      ]
+    },
+    "fsharp-glyph-aura": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "shaping and layout"
+        },
+        {
+          "file": "release.yml",
+          "name": "Release",
+          "what": "packages",
+          "badge": false
+        }
+      ]
+    },
+    "fsharp-wasm-runtime": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the glue and the demos in Chromium (events, keys, DOM, charts, WasmOS, site)"
+        },
+        {
+          "file": "pages.yml",
+          "name": "Pages",
+          "what": "the deployment of site/ to GitHub Pages",
+          "branches": [
+            "main"
+          ]
+        },
+        {
+          "file": "release.yml",
+          "name": "Release",
+          "what": "the npm package",
+          "badge": false
+        }
+      ]
+    },
+    "fsharp-wasm-ide": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the build, the session test, and the widget editor compiled by the compiler and driven in Chromium"
+        }
+      ]
+    },
+    "fsharp-wasm-newsletter": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the suites under .NET, and the designer compiled by the compiler and driven in a browser"
+        },
+        {
+          "file": "pages.yml",
+          "name": "Pages",
+          "what": "the deployment to GitHub Pages of what CI built, and a check that the live site answers",
+          "branches": [
+            "main"
+          ]
+        },
+        {
+          "file": "deploy.yml",
+          "name": "Deploy",
+          "what": "the deployment of what CI built, and a check that the live site answers",
+          "branches": [
+            "main"
+          ]
+        }
+      ]
+    },
+    "fsharp-wasm-backend": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "build and test of the server layer, the protocol and the reference libraries"
+        }
+      ]
+    },
+    "fsharp-wasm-edge": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the host and the platform matrix on eight emulated targets"
+        },
+        {
+          "file": "deploy.yml",
+          "name": "Deploy",
+          "what": "the deployment to Cloudflare, Vercel and Netlify and the live check of the scenario",
+          "branches": [
+            "main"
+          ]
+        }
+      ]
+    },
+    "fsharp-wasm-accounting": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the model under .NET, and the module compiled by the compiler and driven in Chromium"
+        }
+      ]
+    },
+    "fsharp-wasm-mobile": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the catalogue of the device APIs is valid, and docs/apis.md is what apis.json says"
+        }
+      ]
+    },
+    "fsharp-wasm-embedded": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "the device probe in Chromium, and the model of WasmOS under .NET (windows, gestures, the Android navigation, the apps)"
+        }
+      ]
+    },
+    "fsharp-wasm.github.io": {
+      "workflows": [
+        {
+          "file": "deploy.yml",
+          "name": "Deploy",
+          "what": "the build and the deployment of this site",
+          "branches": [
+            "main"
+          ]
+        }
+      ]
+    },
+    "fsharp-wasmecto": {
+      "workflows": [],
+      "gate": "Its suites run in the compiler's CI as the gate wasmecto; it has no workflow of its own."
+    },
+    "fsharp-wasm-sci": {
+      "workflows": [],
+      "gate": "No code yet, so nothing to run."
+    },
+    "fsharp": {
+      "workflows": [],
+      "gate": "A fork: it keeps the workflows of its upstream, and its README is upstream's."
+    }
+  }
+}
