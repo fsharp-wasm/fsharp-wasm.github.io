@@ -283,7 +283,7 @@ export const tests: RepoTests[] = [
     suites: [
       { name: 'Platform matrix', count: 29, workload: '29 checks on 8 targets; the answers are compared: identical in 20 steps', ci: 'yes', run: 'node tests/platforms/run.mjs', what: 'Unicode, patches applied to a shadow, parallel requests, a rolling log, 404 / 405 / 400, CORS, the page, the canvas client below /canvas/; where there is storage, the state survives a restart.' },
       { name: 'Package checks', ci: 'yes', run: 'see .github/workflows/ci.yml', what: 'wrangler deploy --dry-run for Cloudflare and netlify build --offline for Netlify, without an account.' },
-      { name: 'Live check', count: 29, duplicate: true, ci: 'no', run: 'node tests/platforms/live.mjs …', what: 'The same 29 checks against real deployments. Written and tested against local servers; no deployment exists yet.' },
+      { name: 'Live check', count: 29, duplicate: true, ci: 'no', run: 'node tests/platforms/live.mjs …', what: 'The same 29 checks against real deployments, run by the Deploy workflow after a deploy (not by CI), and tested against local servers. Against the live addresses on 2026-11-27: Cloudflare 29 of 29; Vercel and Netlify answer 503 until their shared store is set.' },
       { name: 'Workflow lint', ci: 'yes', run: 'actionlint', what: 'The workflows themselves.' },
     ],
   },
