@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Compile your first F# program to WebAssembly GC and run it — every step below was run as written.
+description: From nothing to an F# program running as WebAssembly GC, then to one that uses a library from NuGet — run as written on 2026-11-27, with what was not checked said at the top.
 order: 1
 tags:
   - getting-started
@@ -9,100 +9,115 @@ tags:
 
 # Getting started
 
-This page takes you from nothing to an F# function running as WebAssembly GC on Node. The steps were run as written on 2026-11-14.
+From nothing to an F# program running as WebAssembly GC, then to a program that uses a library from NuGet.
+
+**What was verified, and when (2026-11-27):** steps 1, 2 and 4 were run in an empty `HOME` with an empty NuGet packages folder, against nuget.org: `FSharp.Wasm.Cli` and `FSharp.Wasm.Templates`
+`0.1.0-preview` installed, the template created, `fsharp-wasm . --outDir out` compiled it in 4.9 s and `node run.mjs` printed what step 2 shows; step 4 restored `FSharp.Wasm.Data 0.1.0-preview` and `total ()` was 19.
+Step 3 was run earlier the same day against packages built from this repository. **Not verified:** macOS and Windows (Linux only), and the from-source route of step 1 was not run again for this page.
 
 ## What you need
 
-- the **.NET 10 SDK** (the compiler runs on .NET),
-- **Node.js 22 or later** to run the result (any engine with WebAssembly GC works: Chrome and Edge 119+, Firefox 120+, Safari 18.2+),
-- [`wasm-tools`](https://github.com/bytecodealliance/wasm-tools) to validate the output and for the Component Model (optional).
+| | version | for |
+|---|---|---|
+| [.NET SDK](https://dotnet.microsoft.com/download) | 10 | the compiler runs on it, and your project is an ordinary F# project |
+| [Node.js](https://nodejs.org/) | 22 or later | to run the module (any engine with WebAssembly GC does: Chrome and Edge 119+, Firefox 120+, Safari 18.2+) |
+| [wasm-tools](https://github.com/bytecodealliance/wasm-tools/releases) | 1.263.0 | optional: `wasm-tools validate out/Hello.wasm --features gc` |
 
-## 1. Get the compiler
-
-**From source** — this is the current compiler:
+## 1. The compiler and the template
 
 ```bash
-git clone https://github.com/fsharp-wasm/fsharp-wasm.git
-cd fsharp-wasm
-git submodule update --init --depth 1 vendor/Fable vendor/fsharp core
-
-# the patched F# compiler the front end uses (once; a few minutes; it pins the 10.0.3xx SDK band)
-(cd vendor/fsharp && mkdir -p artifacts && ./build/build.sh -c Release)
-export FSHARP_COMPILER=$PWD/vendor/fsharp/artifacts/bin/fsc/Release/net10.0/fsc.dll
-
-dotnet build tools/FSharp.Wasm.Cli -c Release
+dotnet tool install -g FSharp.Wasm.Cli --prerelease
+dotnet new install FSharp.Wasm.Templates
 ```
 
-**Or a release** — a self-contained binary for Linux, macOS (x64, arm64) and Windows with the F# base library beside it, from the
-[releases page](https://github.com/fsharp-wasm/fsharp-wasm/releases). The latest one, `v0.1.24-experimental`, is from April 2026 and predates most of the work described on this
-site; build from source for the current compiler.
+Or from source, to work on the compiler itself:
 
-## 2. Write a program
+```bash
+git clone https://github.com/fsharp-wasm/fsharp-wasm.git && cd fsharp-wasm
+git submodule update --init --depth 1 vendor/Fable vendor/fsharp core
+(cd vendor/fsharp && mkdir -p artifacts && ./build/build.sh -c Release)      # the patched F# compiler the front end uses: once, a few minutes
+export FSHARP_COMPILER=$PWD/vendor/fsharp/artifacts/bin/fsc/Release/net10.0/fsc.dll
+dotnet build tools/FSharp.Wasm.Cli -c Release
+# then use  dotnet tools/FSharp.Wasm.Cli/bin/Release/net10.0/fsharp-wasm.dll  where this page says  fsharp-wasm
+```
 
-`Hello.fs`:
+## 2. A program
+
+```bash
+dotnet new fsharp-wasm -o hello && cd hello
+fsharp-wasm . --outDir out        # hello.fs -> out/hello.wasm
+node run.mjs
+```
+
+```text
+fibonacci 10          = 55
+isPrime 97, 100       = 1 0
+sum of odd squares 9  = 165
+```
+
+`hello.fs` is ordinary F#; its public top-level functions are the exports of the module (a `bool` is an `i32` on the other side, hence `1 0`). The names follow the folder you give `-o`.
 
 ```fsharp
-module Hello
+module hello
 
-let fibonacci n =
+let fibonacci (n: int) : int =
     let mutable a, b = 0, 1
-    for _ in 1..n do
+    for _ in 1 .. n do
         let t = a + b
         a <- b
         b <- t
     a
 
-let isPrime n =
-    if n < 2 then false
-    else
-        let mutable i = 2
-        let mutable result = true
-        while i * i <= n && result do
-            if n % i = 0 then result <- false
-            i <- i + 1
-        result
+// isPrime and a list pipeline (sumOfSquaresOfOdds) follow in the file
 ```
 
-`Hello.fsproj`:
+`out/hello.wat` is the same module as text: read it. `out/wit/` is the WIT description of its exports. The page of the template runs the same module in a browser: `npx serve .` and open it.
 
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="Hello.fs" />
-  </ItemGroup>
-</Project>
-```
+## 3. The same program under .NET
 
-## 3. Compile it
+The project is an ordinary F# project: `dotnet build` builds it, and its functions can be called from a test project or from `dotnet fsi` (`#load "Hello.fs"`). It has no entry point
+(`dotnet run` says so and does nothing). That is the point of the platform: the code is written once and means the same thing in both places, and the suites of the platform run both ways
+and compare (the compiler's `tests/Differential`, and the gates that run the libraries' own tests as WebAssembly).
+
+## 4. A library from NuGet
 
 ```bash
-dotnet run -c Release --project tools/FSharp.Wasm.Cli -- path/to/Hello --outDir out
-# out/Hello.wasm   (419 bytes)
-# out/Hello.wat    (the same module as text: read it)
-# out/wit/         (the WIT world of its exports)
-wasm-tools validate out/Hello.wasm --features gc
+dotnet add package FSharp.Wasm.Data --prerelease
 ```
 
-The compiler takes a project or a directory (`--outDir`, `--noCache`, `--verbose`, `--silent`). Public top-level functions become exports.
+Put the code below in a file, `Json.fs`, and list it in the project (`<Compile Include="Json.fs" />`) in place of `hello.fs`:
 
-## 4. Run it
+```fsharp
+module Json
 
-```javascript
-// run.mjs — node run.mjs
-import { readFileSync } from "node:fs";
-const { instance } = await WebAssembly.instantiate(readFileSync("out/Hello.wasm"), {});
-const { fibonacci, isPrime } = instance.exports;
-console.log(fibonacci(10), isPrime(97), isPrime(100));   // 55 1 0   (a bool is an i32)
+open FSharp.Wasm.Data
+
+let total () : int =
+    match Json.parse """{ "items": [ { "qty": 2, "price": 3.5 }, { "qty": 1, "price": 12 } ] }""" with
+    | Error _ -> -1
+    | Ok doc -> doc |> Json.listOf "items" |> List.sumBy (fun i -> Json.numberOr "qty" 0.0 i * Json.numberOr "price" 0.0 i) |> int
 ```
 
-## Where to go next
+`fsharp-wasm . --outDir out` restores the package, takes its sources (they are in the package under `fable/`, next to the dll that .NET uses) into `out/fable_modules/` and compiles them with your code; `total ()` is 19.
+The libraries of the platform are packages in this way: `FSharp.Wasm.Core`, `Data`, `Ui`, `Edit`, `Frame`, `Graph`, `Live`, `FSharp.Graphics.*` (charts, diagrams, widgets) and `GlyphAura`.
 
-- **See what is possible:** the [live demos](/demos) and the [examples](/examples) — a counter and a todo list, a Web Worker actor, a canvas scene gallery, a server module.
-- **Talk to the browser:** [fsharp-wasm-runtime](https://github.com/fsharp-wasm/fsharp-wasm-runtime) has typed bindings (`Browser.*`) and the Elmish-style runtime the demos use.
-- **Run on a server:** [fsharp-wasm-edge](https://github.com/fsharp-wasm/fsharp-wasm-edge) runs a module on Node, Bun, Deno, Cloudflare Workers, Vercel and Netlify ([backend](/backend)).
-- **Know what is covered:** the [tests](/tests) page lists every suite, and the [status page](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/docs/STATUS.md) lists the programs that do not compile yet.
-- **How it works:** [architecture](/docs/architecture).
+## 5. In the browser, with a canvas
+
+The runtime is an npm package (`@fsharp-wasm/runtime`: the Elmish loop, the `Browser.Html` DSL, the glue for the canvas and the DOM). The demos are the way in:
+[charts](https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos/charts/) (400 000 points, a live histogram on the data graph, contours, a diagram of the graph itself),
+[widget editor](https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos/widget-editor/), [accounting grid](https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos/accounting-grid/)
+(a million lines), [WasmOS](https://fsharp-wasm.github.io/fsharp-wasm-runtime/demos/wasmos/); each is a few hundred kilobytes of WebAssembly.
+
+## When something does not work
+
+| you see | it means |
+|---|---|
+| `Unhandled import call '…'` or `error[WGC008]` | the program uses something the compiler does not compile yet. A minimal program and the compiler's [status](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/docs/STATUS.md) (the known gaps) are what we want: [open an issue](https://github.com/fsharp-wasm/fsharp-wasm/issues) |
+| `dotnet tool install` finds no package | add `--prerelease` (every version is 0.x) |
+| `node run.mjs` says `WebAssembly.instantiate(): … gc` | Node older than 22 |
+| a library compiles under .NET but not here | the same: a finding for the compiler, not for your program (we fix it there, not in the library) |
+
+## Where next
+
+[Live demos](https://fsharp-wasm.github.io/demos/) · [examples](https://fsharp-wasm.github.io/examples/) · [science charts and diagrams](https://github.com/fsharp-wasm/fsharp-wasm-graphics/blob/main/docs/science-charts.md) ·
+[what is tested](https://fsharp-wasm.github.io/tests/) · [the state of every repository](https://fsharp-wasm.github.io/status/) · [how we work](https://github.com/fsharp-wasm/fsharp-wasm/blob/main/AGENTS.md)
