@@ -168,7 +168,7 @@ export const layers: Layer[] = [
         name: 'fsharp-wasm-edge',
         repo: 'fsharp-wasm-edge',
         what: 'The host of the compiled modules and one small adapter per platform: Node, Bun, Deno, Cloudflare, Vercel, Netlify.',
-        state: '29 checks, identical answers on eight test targets; a benchmark against hand-written JavaScript and Hono. Not deployed yet.',
+        state: '29 checks, identical answers on eight test targets; a benchmark against hand-written JavaScript and Hono. Ghost Todo is live on Cloudflare (29 of 29 checks against the address, 2026-11-27); on Vercel and Netlify it is deployed and its API waits for a shared store.',
         status: 'growing',
         icon: 'tabler:world',
         page: { text: 'Backend on the edge', href: '/backend' },

@@ -12,6 +12,29 @@ const metadata = {
     'Backend modules written in F#, compiled to WebAssembly GC, run on Cloudflare Workers, Vercel, Netlify, Deno, Bun and Node by one small host.',
 };
 
+// the live deployments of Ghost Todo, as measured; `checked` is the date of the measurement
+const checked = '2026-11-27';
+const deployments = [
+  {
+    name: 'Cloudflare Workers + Durable Object',
+    url: 'https://ghost-todo.sascha-dewald.workers.dev',
+    state: 'live',
+    detail: `The 29 checks of the test matrix pass against this address (${checked}); the state lives in the Durable Object.`,
+  },
+  {
+    name: 'Vercel',
+    url: 'https://fsharp-wasm-edge.vercel.app',
+    state: 'deployed, API waiting for its store',
+    detail: 'The page answers (200). The API answers 503 until a shared store is configured: instances of a function share no memory, so the host keeps the todos in an Upstash Redis (REST) and says 503 when none is set.',
+  },
+  {
+    name: 'Netlify',
+    url: 'https://fsharp-wasm-edge.netlify.app',
+    state: 'deployed, API waiting for its store',
+    detail: 'The same as Vercel: the page answers (200), the API answers 503 until the Upstash Redis is configured.',
+  },
+];
+
 // what runs in the test matrix, and how real it is — the same table as the fsharp-wasm-edge README
 const platforms = [
   ['Node 24', 'the packaged adapter, as a process', "the platform's own runtime"],
@@ -46,12 +69,24 @@ const platforms = [
 
   <WidgetWrapper id="status">
     <div class="max-w-3xl mx-auto rounded-md border-l-4 border-amber-500 bg-amber-50 dark:bg-slate-800 p-5">
-      <h2 class="text-xl font-bold mb-2">Status: not deployed yet</h2>
-      <p class="text-muted">
-        There is no live URL to open yet, and we would rather say so than show a screenshot. In our test matrix the
-        same module answers identically on every platform below. The first deployments (Cloudflare first, then Vercel
-        and Netlify) are the next step, and the live <strong>Ghost Todo</strong> will be linked here as soon as an address answers.
-        Until then, run it yourself from the repository: <code>npm ci &amp;&amp; node build/package.mjs &amp;&amp; node dist/platforms/node/index.mjs</code>.
+      <h2 class="text-xl font-bold mb-2">Status: one platform live, two deployed</h2>
+      <p class="text-muted mb-4">
+        Measured on {checked}. The same module, <strong>Ghost Todo</strong>, is deployed to all three. Cloudflare answers every check of the
+        matrix; Vercel and Netlify serve the page and the host, and their API waits for a shared store, which we have not configured yet. We say so
+        rather than show a screenshot.
+      </p>
+      <ul class="space-y-3">
+        {
+          deployments.map((d) => (
+            <li>
+              <a class="font-semibold underline" href={d.url} target="_blank" rel="noopener">{d.name}</a>
+              <span class="text-muted"> — {d.state}. {d.detail}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="text-muted mt-4">
+        Or run it yourself from the repository: <code>npm ci &amp;&amp; node build/package.mjs &amp;&amp; node dist/platforms/node/index.mjs</code>.
       </p>
     </div>
   </WidgetWrapper>
@@ -80,7 +115,7 @@ const platforms = [
   />
 
   <WidgetWrapper id="matrix">
-    <Headline tagline="What is verified" title="Eight targets, and how real each one is" subtitle="Runtime means the platform's own engine; emulation means a stand-in for it. None of them is deployed yet." />
+    <Headline tagline="What is verified" title="Eight targets, and how real each one is" subtitle="Runtime means the platform's own engine; emulation means a stand-in for it. Ghost Todo is deployed to three of them (above); the matrix is what the tests exercise." />
     <div class="max-w-5xl mx-auto overflow-x-auto">
       <table class="w-full text-left text-sm border-collapse">
         <caption class="sr-only">Platforms in the test matrix, what runs there and how real that is</caption>
@@ -113,8 +148,8 @@ const platforms = [
     columns={3}
     items={[
       {
-        title: 'Real deployments',
-        description: 'Cloudflare, Vercel and Netlify, checked by the same 29 checks against the live addresses, with the addresses published here.',
+        title: 'Vercel and Netlify with a store',
+        description: 'The two are deployed; their API answers once an Upstash Redis is configured. Then the same 29 checks run against their live addresses too, as they do against Cloudflare.',
         icon: 'tabler:cloud-upload',
       },
       {
