@@ -14,7 +14,7 @@ const metadata = {
   title: 'FSharp WasmGC — Compile F# to WebAssembly GC',
   ignoreTitleTemplate: true,
 };
-import { totals, recordedOn, updatedOn, updated, featuredDemos } from '~/data/catalog';
+import { totals, recordedOn, recounts, featuredDemos } from '~/data/catalog';
 import FeaturedDemos from '~/components/widgets/FeaturedDemos.astro';
 import Features3 from '~/components/widgets/Features3.astro';
 import { layers } from '~/data/projects';
@@ -238,7 +238,7 @@ import { layers } from '~/data/projects';
   <!-- Stats ============================================================= -->
   <Stats
     title="Solid foundation, proven results"
-    subtitle={`Counted in a recorded run on ${recordedOn} and counted again on ${updatedOn} for what changed since (${updated.join(', ')}): every suite, demo and benchmark is listed on the Tests, Demos and Benchmarks pages.`}
+    subtitle={`Counted in a recorded run on ${recordedOn}, and counted again for what changed since (${recounts.map((r) => `${r.what.join(', ')} on ${r.on}`).join('; ')}): every suite, demo and benchmark is listed on the Tests, Demos and Benchmarks pages.`}
     stats={[
       { title: 'named tests and checks', amount: totals.tests.toLocaleString('en-US').replace(/,/g, '\u202f') },
       { title: 'live demos in your browser', amount: `${totals.demos}` },

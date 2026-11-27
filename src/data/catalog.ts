@@ -5,9 +5,12 @@
 // `ci` says whether that repository's CI runs the suite.  A suite that does not run, or does not pass, is listed as such.
 
 export const recordedOn = '2026-11-16';
-/** Suites whose counts were updated after that run, on this day: only these were counted again. */
-export const updatedOn = '2026-11-22';
-export const updated = ['QuickTest', 'String ABI', 'Host (graphics)', 'Widgets', 'Interact', 'the widget editor', 'the newsletter designer', 'the libraries of the core', 'the backend and the edge'];
+/** Suites counted again after that run, each group on its own day: only these were counted again. */
+export const recounts: { on: string; what: string[] }[] = [
+  { on: '2026-11-22', what: ['String ABI', 'Host (graphics)', 'Widgets', 'Interact', 'the widget editor', 'the newsletter designer', 'the libraries of the core', 'the backend and the edge'] },
+  { on: '2026-11-27', what: ['every suite of the compiler (tests/run-all.sh, 18 of 18 passed)'] },
+];
+export const updatedOn = recounts[recounts.length - 1].on;
 const org = 'https://github.com/fsharp-wasm';
 const pages = 'https://fsharp-wasm.github.io/fsharp-wasm-runtime';
 
@@ -177,7 +180,7 @@ export const tests: RepoTests[] = [
     repo: 'fsharp-wasm',
     summary: 'The compiler. tests/run-all.sh runs every suite and prints one table.',
     suites: [
-      { name: 'QuickTest', count: 699, ci: 'yes', run: 'bash tests/QuickTest/run.sh',
+      { name: 'QuickTest', count: 729, ci: 'yes', run: 'bash tests/QuickTest/run.sh',
         what: 'The compiler’s main regression suite: language features, collections, strings, closures, numerics, arrays; compiled once, run on Node. CI runs it three times: default, with unpacked bool[] / byte[], and with the inlining pass.' },
       { name: 'QuickTestMulti', workload: '17 domains, all passing', ci: 'yes', run: 'bash tests/QuickTestMulti/run.sh',
         what: 'The same kind of test, one compilation per domain (Array, Bitwise, Closures, DU, Exceptions, Interop, List, Map, Math, Option, Primitives, Printf, Result, Seq, Set, StringBuilder, Strings), so a failure names the area that broke.' },
@@ -185,7 +188,7 @@ export const tests: RepoTests[] = [
         what: 'Generated inputs go through the same F# functions on .NET (the reference) and as WebAssembly; the results must be identical. CI also runs it over the QuickTest and Showcase sources.' },
       { name: 'Showcase', count: 26, ci: 'yes', run: 'bash tests/Showcase/run.sh',
         what: 'Classic algorithms and small programs end to end (see Examples).' },
-      { name: 'Host interop', count: 14, ci: 'yes', run: 'bash tests/HostInterop/run.sh',
+      { name: 'Host interop', count: 15, ci: 'yes', run: 'bash tests/HostInterop/run.sh',
         what: 'The host boundary: callbacks delivered later, strings and numbers across, 500 closures called and called again after a GC.' },
       { name: 'String ABI (exports)', count: 12, ci: 'yes', run: 'bash tests/StringAbi/run.sh',
         what: 'The module imports no wasm:js-string; the accessor exports exist; non-ASCII text round-trips; the empty string and null; a string of 10 000 characters.' },
@@ -199,6 +202,18 @@ export const tests: RepoTests[] = [
       { name: 'Component linking', count: 22, ci: 'yes', run: 'cd examples/component-linking && bash run.sh', what: 'See Examples.' },
       { name: 'Wasmecto tests (tests/Wasm)', count: 81, ci: 'yes', run: 'bash tests/Wasm/run-tests.sh',
         what: 'A test project written with the Wasmecto framework, compiled to WebAssembly and run in Node: language core, collections, closures, a compiler pipeline smoke test.' },
+      { name: 'Dogfood: core libraries', count: 176, duplicate: true, ci: 'yes', run: 'bash tests/Dogfood/run.sh core-libs',
+        what: 'The suites of fsharp-wasm-core (JSON and numbers, typed CSS and HTML, editing, columnar tables, the data graph, formulas, telemetry, actors), compiled by this compiler and run as WebAssembly: a real program is the gate, not a small test. The same tests run under .NET in the core repository, so they are not added to the total twice.' },
+      { name: 'Dogfood: newsletter', count: 87, duplicate: true, ci: 'yes', run: 'bash tests/Dogfood/run.sh newsletter',
+        what: 'The newsletter library’s suite as WebAssembly, and the designer module (an Elmish program on the HTML DSL) compiled, validated and loaded (463 245 bytes on 2026-11-27).' },
+      { name: 'Dogfood: widget editor', ci: 'yes', run: 'bash tests/Dogfood/run.sh widget-editor',
+        what: 'The whole FSharp.Graphics stack (widgets, scene, tea, canvas) compiled as one module of 312 993 bytes on 2026-11-27, validated, and its exports checked.' },
+      { name: 'Dogfood: graphics libraries', count: 226, ci: 'yes', run: 'bash tests/Dogfood/run.sh graphics-libs',
+        what: 'The science charts (169 checks), the charts on the data graph (37) and the diagrams (20) of fsharp-wasm-graphics, compiled as WebAssembly and run: the same checks as under .NET.' },
+      { name: 'Dogfood: Amano.Tui', ci: 'yes', run: 'bash tests/Dogfood/run.sh tui',
+        what: 'The terminal UI library’s dashboard frame is drawn under .NET and as WebAssembly; the checksums of the plain and the ANSI output must be identical.' },
+      { name: 'Packages', count: 3, ci: 'yes', run: 'bash tests/Packages/run.sh',
+        what: 'A program that uses a NuGet package: the package is packed from a fixture, restored into an empty packages folder, its sources land inside the program’s output folder and compile with it.' },
     ],
   },
   {
