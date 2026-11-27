@@ -1,5 +1,5 @@
 {
-  "updatedOn": "2026-11-26",
+  "updatedOn": "2026-11-27",
   "org": "fsharp-wasm",
   "note": "One source for the page /status and for the badges in the READMEs of the repositories (scripts/sync-readmes.mjs). A workflow listed here has a badge; `branches` are the ones it is shown for.",
   "repos": {
@@ -8,7 +8,7 @@
         {
           "file": "ci.yml",
           "name": "CI",
-          "what": "the 15 suites of tests/run-all.sh, and the programs of the other repositories compiled and run as gates (core libraries, newsletter, widget editor)"
+          "what": "the 18 suites of tests/run-all.sh, and the programs of the other repositories compiled and run as gates (core libraries, newsletter, widget editor, charts, Amano.Tui)"
         },
         {
           "file": "release.yml",
@@ -180,6 +180,15 @@
     "fsharp-wasm-sci": {
       "workflows": [],
       "gate": "No code yet, so nothing to run."
+    },
+    "Amano.Tui": {
+      "workflows": [
+        {
+          "file": "ci.yml",
+          "name": "CI",
+          "what": "build, tests and golden frames on Linux, macOS and Windows, the example under a pseudo-terminal (Linux, macOS), the package; the same frame as WebAssembly GC is a gate of the compiler"
+        }
+      ]
     },
     "fsharp": {
       "workflows": [],
